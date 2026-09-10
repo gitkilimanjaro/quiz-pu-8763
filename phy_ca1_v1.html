@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Physical Sci - Matter &amp; Sound</title>
+<style>
+:root{
+  --navy:#1a1a2e; --page:#f5f6fa; --card:#ffffff;
+  --green:#2e7d32; --red:#c62828; --orange:#f57c00;
+  --muted:#5b6270; --line:#e3e6ef;
+  --shadow:0 2px 8px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--page); color:var(--navy);
+  font-family:system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  font-size:16px; line-height:1.45; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:620px;margin:0 auto;padding:18px 14px 40px}
+.hide{display:none !important}
+
+/* ---------- header ---------- */
+.hdr{position:relative;padding-top:4px;margin-bottom:16px}
+.ver{position:absolute;top:0;right:0;font-size:11px;color:var(--muted);letter-spacing:.04em}
+h1{font-size:26px;line-height:1.2;margin:0 10px 0 0;font-weight:800;letter-spacing:-.01em;padding-right:52px}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:#fff;border:1.5px solid;line-height:1.5;white-space:nowrap}
+
+/* ---------- cards ---------- */
+.card{background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
+.stats{display:flex;gap:12px;text-align:center}
+.stat{flex:1}
+.stat .n{font-size:30px;font-weight:800;line-height:1.1}
+.stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.stat.done .n{color:var(--green)}
+.bar{height:9px;border-radius:99px;background:#eceef5;overflow:hidden;margin:14px 0 6px}
+.bar>i{display:block;height:100%;width:0;border-radius:99px;background:var(--navy);transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.pct{font-size:12px;color:var(--muted);text-align:right}
+.how{font-size:13px;color:var(--muted);margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+
+/* ---------- buttons ---------- */
+.btn{display:block;width:100%;border:0;border-radius:10px;padding:14px;font-size:16px;font-weight:700;
+     font-family:inherit;cursor:pointer;transition:transform .12s,filter .15s}
+.btn:active{transform:scale(.985)}
+.btn.primary{background:var(--navy);color:#fff;box-shadow:var(--shadow)}
+.btn.ghost{background:#fff;color:var(--red);border:1.5px solid var(--red);margin-top:10px;font-size:14px;padding:11px}
+
+/* ---------- topic grid ---------- */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tcard{background:var(--card);border-radius:10px;box-shadow:var(--shadow);padding:11px 11px 12px;min-width:0}
+.tname{font-size:12.5px;font-weight:800;line-height:1.25;margin-bottom:7px;overflow-wrap:anywhere}
+.trow{display:flex;align-items:baseline;justify-content:space-between;gap:6px;font-size:11.5px;color:var(--muted)}
+.half{color:var(--orange);font-weight:800;cursor:help;white-space:nowrap}
+.tcount{font-weight:700;color:var(--navy);white-space:nowrap}
+.tbar{height:6px;border-radius:99px;background:#eceef5;overflow:hidden;margin-top:7px}
+.tbar>i{display:block;height:100%;width:0;border-radius:99px;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+@media (max-width:359px){ .tgrid{grid-template-columns:1fr} }
+
+/* ---------- quiz ---------- */
+.qtop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.qcount{font-size:12px;color:var(--muted);font-weight:700;white-space:nowrap}
+.qtext{font-size:19px;font-weight:700;line-height:1.35;text-align:center;margin:6px 0 16px}
+.hintbtn{display:block;width:100%;background:#fff;border:1.5px dashed #c8ccda;color:var(--muted);
+   border-radius:10px;padding:10px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;margin-bottom:14px}
+.hintbtn[disabled]{background:#f1f2f6;color:#a8adbb;border-color:#e0e3ec;cursor:not-allowed}
+.hintbox{background:#fffdf3;border:1px solid #f0e2b6;border-radius:10px;padding:11px 13px;font-size:13.5px;margin-bottom:14px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:10px;
+  padding:13px 14px;font-size:15px;font-family:inherit;color:var(--navy);cursor:pointer;
+  line-height:1.4;transition:background .15s,border-color .15s,color .15s}
+.opt:hover:not(:disabled){border-color:#b9c0d4}
+.opt:disabled{cursor:default}
+.opt.right{background:#e8f5e9;border-color:var(--green);color:#1b5e20;font-weight:700}
+.opt.wrong{background:#ffebee;border-color:var(--red);color:#8e1b1b;font-weight:700}
+.fb{margin-top:16px}
+.expl{background:#fff;border-radius:10px;box-shadow:var(--shadow);padding:14px;font-size:14.5px}
+.expl b{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.insight{margin-top:11px;background:#f4f1fb;border:1.5px solid #ddd5f2;border-left:4px solid #4527a0;
+  border-radius:10px;padding:13px 14px;font-size:14px}
+.insight b{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#4527a0;margin-bottom:5px}
+.nextbar{position:sticky;bottom:0;padding:12px 0 max(12px,env(safe-area-inset-bottom));
+  background:linear-gradient(to top,var(--page) 62%,rgba(245,246,250,0));margin-top:18px}
+
+/* ---------- results ---------- */
+.score{text-align:center;padding:6px 0 2px}
+.score .n{font-size:42px;font-weight:800;line-height:1}
+.score .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.badge{margin-top:14px;background:#e8f5e9;border:1.5px solid #b6dcb8;color:#1b5e20;
+  border-radius:10px;padding:11px;text-align:center;font-weight:700;font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:9px 4px;text-align:left;border-bottom:1px solid var(--line)}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
+td.num,th.num{text-align:center;width:26%}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:middle}
+
+/* ---------- modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,22,35,.55);display:flex;align-items:center;
+  justify-content:center;padding:22px;z-index:50}
+.modal{background:#fff;border-radius:14px;padding:22px;max-width:340px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.modal h3{margin:0 0 8px;font-size:18px}
+.modal p{margin:0 0 18px;font-size:14px;color:var(--muted)}
+.mrow{display:flex;gap:10px}
+.mrow .btn{padding:12px;font-size:14px}
+.btn.cancel{background:#eceef5;color:var(--navy)}
+.btn.danger{background:var(--red);color:#fff}
+.note{font-size:12.5px;color:var(--muted);text-align:center;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ================= HOME ================= -->
+<section id="home">
+  <div class="hdr">
+    <div class="ver">ver1.00</div>
+    <h1>Physical Sci - Matter &amp; Sound</h1>
+    <div class="pills" id="pills"></div>
+  </div>
+
+  <div class="card">
+    <div class="stats">
+      <div class="stat"><div class="n" id="sActive">0</div><div class="l">Active Questions</div></div>
+      <div class="stat done"><div class="n" id="sDone">0</div><div class="l">Completed</div></div>
+    </div>
+    <div class="bar"><i id="mainBar"></i></div>
+    <div class="pct" id="mainPct">0% complete</div>
+    <div class="how" id="howText"></div>
+  </div>
+
+  <button class="btn primary" id="btnGo">&#9654; Continue Progress</button>
+  <button class="btn ghost" id="btnReset">&#8634; Start All Over</button>
+
+  <div class="tgrid" id="tgrid" style="margin-top:16px"></div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section id="quiz" class="hide">
+  <div class="qtop">
+    <span class="pill" id="qTopic"></span>
+    <span class="qcount" id="qCount"></span>
+  </div>
+  <div class="qtext" id="qText"></div>
+  <button class="hintbtn" id="hintBtn">&#128161; Show hint</button>
+  <div class="hintbox hide" id="hintBox"></div>
+  <div class="opts" id="opts"></div>
+  <div class="fb hide" id="fb">
+    <div class="expl"><b>Explanation</b><span id="explText"></span></div>
+    <div class="insight"><b>Key takeaway</b><span id="insightText"></span></div>
+  </div>
+  <div class="nextbar hide" id="nextBar">
+    <button class="btn primary" id="btnNext">Next &#8594;</button>
+  </div>
+</section>
+
+<!-- ================= RESULTS ================= -->
+<section id="results" class="hide">
+  <h1 style="font-size:22px;margin:0 0 14px">Round complete</h1>
+  <div class="card">
+    <div class="score"><div class="n" id="rScore">0 / 0</div><div class="l">Correct this round</div></div>
+    <div class="badge hide" id="rBadge"></div>
+  </div>
+  <div class="card">
+    <table>
+      <thead><tr><th>Topic</th><th class="num">Correct</th><th class="num">Asked</th></tr></thead>
+      <tbody id="rTable"></tbody>
+    </table>
+  </div>
+  <button class="btn primary" id="btnBack">Continue Studying &#8594;</button>
+</section>
+
+<!-- ================= RESET MODAL ================= -->
+<div class="overlay hide" id="modal">
+  <div class="modal">
+    <h3>Start all over?</h3>
+    <p>This will erase all your progress. Are you sure?</p>
+    <div class="mrow">
+      <button class="btn cancel" id="mCancel" style="flex:1">Cancel</button>
+      <button class="btn danger" id="mOk" style="flex:1">Confirm</button>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+"use strict";
+/* ============ CONFIG ============ */
+var LS_KEY = "physical-sci-matter-sound_v1";
+var QS_PER_ROUND = 16;
+var STREAK_TO_MASTER = 3;
+var FINAL_PASS_SPACING_MS = 600000;
+var COLORS = {"Elements & Symbols": "#1565c0", "Atoms & Molecules": "#7b1fa2", "Metals & Non-metals": "#c2185b", "The Periodic Table": "#00838f", "Compounds & Formulae": "#4527a0", "Sound & Travel": "#00695c", "The Ear & Hearing": "#8d6e63", "Pitch, Loudness & Waves": "#455a64"};
+var BANK = [{"t": "Elements & Symbols", "q": "Which statement best defines a chemical element?", "o": ["A substance that cannot be broken down into simpler substances by chemical reactions.", "A substance made of two or more different elements chemically combined in fixed proportions.", "A substance formed when two or more substances are mixed without any chemical reaction occurring.", "A substance that can be separated into its component parts by physical methods such as filtration."], "a": 0, "h": "Think about what happens when you try to break the substance down chemically.", "expl": "An element is the simplest form of a pure substance — no chemical reaction can split it into anything simpler.", "insight": "An element is a substance that cannot be broken down into simpler substances by chemical means. It contains only one type of atom."}, {"t": "Elements & Symbols", "q": "Why is the chemical symbol for cobalt written as Co and never as CO?", "o": ["The second letter must be lower case, since CO would represent carbon joined with oxygen.", "The first letter must be lower case, since cO is the accepted written symbol for cobalt.", "Both letters must be upper case whenever the element name begins with a hard consonant sound.", "The second letter must be upper case, since Co is instead reserved for the element copper."], "a": 0, "h": "Two capital letters side by side would be read as two separate elements.", "expl": "A symbol's first letter is always upper case and the second is always lower case. CO would be read as one carbon atom plus one oxygen atom.", "insight": "In a chemical symbol the first letter is always upper case and the second letter is always lower case."}, {"t": "Elements & Symbols", "q": "What is the chemical symbol for potassium?", "o": ["K", "P", "Po", "Pt"], "a": 0, "h": "This symbol comes from the element's Latin name, kalium.", "expl": "Potassium is K, from the Latin kalium. P is phosphorus, Po is polonium and Pt is platinum.", "insight": "Potassium has the symbol K, taken from its Latin name kalium."}, {"t": "Elements & Symbols", "q": "Which element has the chemical symbol Na?", "o": ["sodium", "nitrogen", "nickel", "neon"], "a": 0, "h": "The English name of this element does not begin with the letter N.", "expl": "Na stands for sodium, from the Latin natrium. Nitrogen is N, nickel is Ni and neon is Ne.", "insight": "Sodium has the symbol Na, taken from its Latin name natrium."}, {"t": "Elements & Symbols", "q": "Which of these symbols comes from the element's Latin name rather than its English name?", "o": ["Ag", "Al", "Ar", "As"], "a": 0, "h": "One of these four elements is a precious metal used in jewellery and mirrors.", "expl": "Ag is silver, from the Latin argentum. Aluminium, argon and arsenic all take their symbols from their English names.", "insight": "Some symbols are taken from names in other languages, for example silver (Ag, argentum) and copper (Cu, cuprum)."}, {"t": "Elements & Symbols", "q": "Which element is the most abundant in the universe?", "o": ["hydrogen", "helium", "oxygen", "carbon"], "a": 0, "h": "It is also the lightest and simplest of all the elements.", "expl": "Hydrogen is the most abundant element in the universe, followed by helium.", "insight": "Hydrogen is the most abundant element in the universe; helium is the second most abundant."}, {"t": "Elements & Symbols", "q": "What is the chemical symbol for iron?", "o": ["Fe", "Ir", "In", "I"], "a": 0, "h": "The symbol comes from ferrum, the Latin name for this metal.", "expl": "Iron is Fe, from the Latin ferrum. Ir is iridium, In is indium and I is iodine.", "insight": "Iron has the symbol Fe, taken from its Latin name ferrum."}, {"t": "Elements & Symbols", "q": "What is true about the atoms present in a sample of pure copper?", "o": ["Every atom in the sample is a copper atom, identical to every other atom present.", "The sample contains copper atoms bonded to a small fixed number of oxygen atoms.", "The sample contains a mixture of copper atoms and other metal atoms of similar size.", "Each atom in the sample differs slightly, giving copper its wide range of useful properties."], "a": 0, "h": "Recall the defining rule about how many types of atom an element contains.", "expl": "An element contains only one type of atom, and all atoms of that element are identical to one another.", "insight": "An element contains only one type of repeating atom. Atoms of one element are identical, and differ from the atoms of every other element."}, {"t": "Elements & Symbols", "q": "What is the chemical symbol for calcium?", "o": ["Ca", "C", "Cl", "Cu"], "a": 0, "h": "This symbol uses the first two letters of the element's English name.", "expl": "Calcium is Ca. C is carbon, Cl is chlorine and Cu is copper.", "insight": "Calcium has the symbol Ca, taken from the first two letters of its English name."}, {"t": "Elements & Symbols", "q": "Which of these substances is an element?", "o": ["helium", "ammonia", "brass", "limestone"], "a": 0, "h": "Three of these can be broken down or separated into something simpler.", "expl": "Helium is an element. Ammonia and limestone are compounds, and brass is a mixture of copper and zinc.", "insight": "An element contains only one type of atom, so it cannot be broken down into simpler substances."}, {"t": "Elements & Symbols", "q": "What is the chemical symbol for magnesium?", "o": ["Mg", "Mn", "Mo", "Ma"], "a": 0, "h": "The second letter is taken from later in the element's name, not the second letter of it.", "expl": "Magnesium is Mg. Mn is manganese and Mo is molybdenum; Ma is not a chemical symbol.", "insight": "Some symbols use the first letter plus another letter from the name, for example magnesium (Mg) and chlorine (Cl)."}, {"t": "Atoms & Molecules", "q": "Which statement best defines an atom?", "o": ["The smallest particle of an element that still shows the properties of that element.", "The smallest particle of a compound that still shows the properties of that compound.", "A group of two or more particles of an element chemically joined by shared electrons.", "The smallest particle of matter that can still be broken down by chemical reactions."], "a": 0, "h": "Focus on which kind of substance the particle belongs to, and how small it is.", "expl": "An atom is the smallest particle of an element, and it is the smallest unit that still shows that element's properties.", "insight": "An atom is the smallest particle of an element, and the smallest unit that still shows the properties of that element."}, {"t": "Atoms & Molecules", "q": "What is a molecule?", "o": ["Two or more atoms chemically combined, either the same type or different types.", "Two or more atoms held close together by physical forces without any chemical bonding.", "Two or more different elements mixed together in any proportion by mass.", "A single atom that carries an overall electrical charge after gaining or losing electrons."], "a": 0, "h": "The key word is 'chemically' — and the atoms need not all be the same.", "expl": "A molecule is formed when two or more atoms join together chemically. They may be the same type or different types.", "insight": "A molecule is formed when two or more atoms are chemically combined, usually through covalent bonding."}, {"t": "Atoms & Molecules", "q": "How does a molecule of an element differ from a molecule of a compound?", "o": ["It contains a fixed number of the same type of atom chemically combined.", "It contains a fixed number of two or more different types of atoms chemically combined.", "It contains atoms held together physically rather than by any chemical bonding.", "It contains a variable number of the same type of atom loosely combined."], "a": 0, "h": "Count how many different types of atom are present, not how many atoms.", "expl": "A molecule of an element contains only one type of atom, such as O₂. A molecule of a compound contains two or more different types, such as CO₂.", "insight": "A molecule of an element consists of a fixed number of the same type of atom chemically combined; a molecule of a compound contains two or more different types of atom."}, {"t": "Atoms & Molecules", "q": "Ozone, O₃, is best classified as which of the following?", "o": ["molecule of an element", "molecule of a compound", "mixture of two elements", "single unbonded oxygen atom"], "a": 0, "h": "Look at how many different element symbols appear in the formula.", "expl": "O₃ contains three oxygen atoms — one type of atom only — so it is a molecule of an element.", "insight": "A molecule of an element contains only one type of atom, even when several atoms are joined, as in O₃ and S₈."}, {"t": "Atoms & Molecules", "q": "Elements in Group VIII exist naturally as single, unbonded atoms. What are such elements described as?", "o": ["monatomic", "diatomic", "triatomic", "polyatomic"], "a": 0, "h": "The prefix tells you how many atoms are joined together.", "expl": "Monatomic means made of single atoms. Group VIII elements such as helium and argon are monatomic.", "insight": "Monatomic elements exist as single atoms; Group VIII elements are monatomic."}, {"t": "Atoms & Molecules", "q": "What name is given to a molecule that contains exactly two atoms?", "o": ["diatomic", "monatomic", "triatomic", "polyatomic"], "a": 0, "h": "The prefix means 'two'.", "expl": "A molecule containing two atoms is diatomic, for example O₂ and H₂.", "insight": "A molecule containing exactly two atoms is described as diatomic."}, {"t": "Atoms & Molecules", "q": "What is a covalent bond?", "o": ["A bond formed when a pair of electrons is shared between two atoms.", "A bond formed when a pair of electrons is transferred from one atom to another.", "A bond formed when two atoms are held together by their opposite electrical charges.", "A bond formed when a pair of protons is shared between two neighbouring atoms."], "a": 0, "h": "Two things matter here: which particle is involved, and whether it is shared or moved.", "expl": "A covalent bond is made when a pair of electrons is shared by two atoms. Transferring electrons instead gives an ionic bond.", "insight": "A covalent bond is formed when a pair of electrons is shared between two atoms."}, {"t": "Atoms & Molecules", "q": "Which list places these objects in order from largest to smallest?", "o": ["Grain of sand, human cell, bacterium, virus, atom", "Grain of sand, bacterium, human cell, virus, atom", "Human cell, grain of sand, bacterium, atom, virus", "Bacterium, grain of sand, human cell, virus, atom"], "a": 0, "h": "A human cell is large enough to contain many bacteria inside it.", "expl": "Sand is about 10⁻³ m, a human cell 10⁻⁵ m, a bacterium 10⁻⁶ m, a virus 10⁻⁸ m and an atom 10⁻¹⁰ m.", "insight": "An atom has a diameter of roughly 10⁻¹⁰ m (0.1 nm), making it far smaller than a virus, a bacterium or a cell."}, {"t": "Atoms & Molecules", "q": "How many atoms in total are there in one molecule of Mg(NO₃)₂?", "o": ["9", "6", "7", "8"], "a": 0, "h": "The bracket multiplies everything inside it, so treat it like multiplication.", "expl": "One Mg, plus 2 × (1 N + 3 O) = 2 N and 6 O. That gives 1 + 2 + 6 = 9 atoms.", "insight": "A subscript outside a bracket multiplies every atom inside that bracket."}, {"t": "Atoms & Molecules", "q": "How many hydrogen atoms are there in one molecule of sucrose, C₁₂H₂₂O₁₁?", "o": ["22", "12", "11", "24"], "a": 0, "h": "Read the subscript that follows the symbol H.", "expl": "The subscript after H is 22, so each sucrose molecule contains 22 hydrogen atoms.", "insight": "In a chemical formula the subscript after a symbol gives the number of atoms of that element in one molecule."}, {"t": "Atoms & Molecules", "q": "In a ball-and-stick model of a molecule, what do the sticks represent?", "o": ["The forces holding the atoms together, not any physical rod between them.", "The actual physical rods that keep the atoms apart at a fixed distance.", "The electrons that orbit around the outside of each atom in the molecule.", "The relative sizes of the different atoms that make up the whole molecule."], "a": 0, "h": "The model is a representation — the sticks stand for something you cannot see.", "expl": "Each ball represents an atom and each stick represents the force that holds the atoms together. There is no real rod in a molecule.", "insight": "In a ball-and-stick model each ball represents an atom and each stick represents the force holding the atoms together."}, {"t": "Atoms & Molecules", "q": "Which element exists naturally as single, unbonded atoms?", "o": ["argon", "oxygen", "nitrogen", "chlorine"], "a": 0, "h": "Look for the element that belongs to Group VIII of the Periodic Table.", "expl": "Argon is a Group VIII element and is monatomic. Oxygen, nitrogen and chlorine all exist as diatomic molecules.", "insight": "Group VIII elements are monatomic; most other non-metal elements exist as diatomic molecules."}, {"t": "Metals & Non-metals", "q": "Which set of properties is typical of most metal elements?", "o": ["Shiny, malleable, ductile and good conductors of both heat and electricity.", "Dull, brittle, poor conductors of heat and mostly gases at room temperature.", "Shiny, brittle, poor conductors of electricity and always liquid at room temperature.", "Dull, malleable, good conductors of heat but very poor conductors of electricity."], "a": 0, "h": "Picture a length of copper wire and how it looks, bends and carries current.", "expl": "Metals are lustrous, malleable, ductile, sonorous and good conductors of heat and electricity.", "insight": "Metals are typically lustrous, malleable, ductile, sonorous and good conductors of heat and electricity."}, {"t": "Metals & Non-metals", "q": "Which metal is a liquid at room temperature?", "o": ["mercury", "bromine", "sodium", "gallium"], "a": 0, "h": "It is the metal traditionally used inside thermometers.", "expl": "Mercury is the only metal that is liquid at room temperature. Bromine is a liquid but is a non-metal.", "insight": "Metals are solid at room temperature, with mercury as the one exception."}, {"t": "Metals & Non-metals", "q": "What does it mean to describe a metal as sonorous?", "o": ["It produces a ringing sound when it is struck with a hard object.", "It can be drawn out into a thin wire without breaking into pieces.", "It can be hammered into a thin sheet without cracking or shattering apart.", "It allows heat to pass through it quickly from one end to another."], "a": 0, "h": "Think about what you hear when a bell or a cymbal is hit.", "expl": "Sonorous means the metal rings when struck. Being drawn into wire is ductility; being hammered into sheets is malleability.", "insight": "A sonorous material produces a ringing sound when struck; this is a typical property of metals."}, {"t": "Metals & Non-metals", "q": "Which term describes a metal that can be drawn out into a thin wire?", "o": ["ductile", "malleable", "sonorous", "lustrous"], "a": 0, "h": "A different word is used for being hammered flat into sheets.", "expl": "Ductile means it can be drawn into wire. Malleable means it can be hammered into sheets.", "insight": "Ductility is the ability to be drawn into a wire; malleability is the ability to be hammered into a sheet."}, {"t": "Metals & Non-metals", "q": "Which statement describes the typical properties of non-metal elements?", "o": ["They are dull and brittle, and they conduct heat and electricity poorly.", "They are shiny and brittle, and they conduct heat and electricity very well.", "They are dull and malleable, and they conduct heat well but electricity poorly.", "They are shiny and malleable, and they conduct heat and electricity rather poorly."], "a": 0, "h": "Think about a lump of sulfur or a piece of charcoal.", "expl": "Non-metals are dull, brittle and poor conductors of heat and electricity. Many are gases at room temperature.", "insight": "Non-metals are typically dull, brittle and poor conductors of heat and electricity."}, {"t": "Metals & Non-metals", "q": "A student says that all metals are solids at room temperature. Why is this not quite correct?", "o": ["Mercury is a metal, and it is a liquid at room temperature.", "Bromine is a metal, and it is a liquid at room temperature.", "Sodium is a metal, and it is a gas at room temperature.", "Carbon is a metal, and it melts well below room temperature."], "a": 0, "h": "There is exactly one metal that breaks this rule.", "expl": "Mercury is the single exception — a metal that is liquid at room temperature. Bromine is a liquid but is a non-metal.", "insight": "All metals are solid at room temperature except mercury, which is liquid."}, {"t": "Metals & Non-metals", "q": "Which of these elements is a non-metal?", "o": ["sulfur", "copper", "zinc", "iron"], "a": 0, "h": "Three of these are shiny, bendable and conduct electricity well.", "expl": "Sulfur is a dull, brittle non-metal. Copper, zinc and iron are all metals.", "insight": "Non-metals such as sulfur are dull and brittle, unlike the lustrous, malleable metals."}, {"t": "Metals & Non-metals", "q": "Why can a non-metal such as sulfur not be hammered into a thin sheet?", "o": ["It is brittle, so it cracks and breaks apart when it is struck.", "It is ductile, so it stretches into a thin wire when it is struck.", "It is malleable, so it flows into the shape of the hammer instead.", "It is sonorous, so it absorbs the energy of the blow as sound."], "a": 0, "h": "Non-metal solids shatter rather than bend.", "expl": "Non-metal solids are brittle: they break into pieces rather than changing shape when hit.", "insight": "Non-metals are brittle, so they shatter when struck instead of being hammered into sheets like malleable metals."}, {"t": "The Periodic Table", "q": "What name is given to a horizontal row in the Periodic Table?", "o": ["period", "group", "family", "series"], "a": 0, "h": "The other common term is used for the vertical columns.", "expl": "Horizontal rows are called periods; vertical columns are called groups.", "insight": "In the Periodic Table, horizontal rows are periods and vertical columns are groups."}, {"t": "The Periodic Table", "q": "What name is given to a vertical column in the Periodic Table?", "o": ["group", "period", "row", "block"], "a": 0, "h": "Elements in this arrangement share similar properties.", "expl": "Vertical columns are called groups. Elements in the same group share similar chemical properties.", "insight": "Vertical columns in the Periodic Table are called groups, and elements within a group share similar properties."}, {"t": "The Periodic Table", "q": "What do elements in the same group of the Periodic Table have in common?", "o": ["They show similar chemical properties and follow similar patterns of behaviour.", "They have exactly the same mass and take up exactly the same volume.", "They all react to form compounds with exactly the same chemical formula.", "They are all metals, and they all conduct electricity to the same degree."], "a": 0, "h": "The word 'similar' matters more than the word 'identical'.", "expl": "Elements in the same group show similar chemical properties and trends, but they are not identical in mass, size or reactivity.", "insight": "Elements in the same group share similar patterns, trends and chemical properties."}, {"t": "The Periodic Table", "q": "What happens to the character of the elements as you move from left to right across a period?", "o": ["They change gradually from metallic to non-metallic in character.", "They change gradually from non-metallic to metallic in character.", "They stay metallic throughout, becoming steadily more reactive across the row.", "They alternate between metallic and non-metallic character in a repeating pattern."], "a": 0, "h": "Metals sit on the left-hand side of the table.", "expl": "Moving across a period, elements change from metallic to non-metallic in character.", "insight": "Across a period, elements change from metallic to non-metallic in character."}, {"t": "The Periodic Table", "q": "Which element is found in Group 1, Period 2?", "o": ["lithium", "sodium", "beryllium", "hydrogen"], "a": 0, "h": "Period 2 is the second full row of the table.", "expl": "Lithium sits in Group 1, Period 2. Sodium is Group 1, Period 3, and beryllium is Group 2, Period 2.", "insight": "An element's position is given by its group (column) and period (row); lithium is Group 1, Period 2."}, {"t": "The Periodic Table", "q": "Which element is found in Group 2, Period 3?", "o": ["magnesium", "calcium", "sodium", "aluminium"], "a": 0, "h": "Move one place to the right of sodium.", "expl": "Magnesium is in Group 2, Period 3. Calcium is Group 2, Period 4, and sodium is Group 1, Period 3.", "insight": "Group gives the column and period gives the row; magnesium is Group 2, Period 3."}, {"t": "The Periodic Table", "q": "Which element is found in Group 7, Period 3?", "o": ["chlorine", "fluorine", "sulfur", "bromine"], "a": 0, "h": "Group 7 elements are the halogens, near the right-hand edge.", "expl": "Chlorine is in Group 7, Period 3. Fluorine is Period 2 and bromine is Period 4.", "insight": "Chlorine sits in Group 7, Period 3 of the Periodic Table."}, {"t": "Compounds & Formulae", "q": "What is a compound?", "o": ["A pure substance made of two or more different elements chemically combined together.", "A pure substance made of one type of atom repeated throughout the whole structure.", "An impure substance made of two or more elements simply mixed in any proportion.", "A pure substance whose elements can be separated again by simple physical methods."], "a": 0, "h": "Two conditions matter: different elements, and how they are joined.", "expl": "A compound is a pure substance consisting of two or more different elements chemically combined, such as water or calcium carbonate.", "insight": "A compound is a pure substance made of two or more different elements chemically combined."}, {"t": "Compounds & Formulae", "q": "Which statement about compounds is correct?", "o": ["Their elements are combined in a fixed proportion by mass in every sample.", "Their elements are combined in any proportion by mass depending on the sample.", "Their elements keep the same properties they had before they were combined.", "Their elements can be separated again by filtering or by simple evaporation."], "a": 0, "h": "This is one of the main differences between a compound and a mixture.", "expl": "In a compound the elements are always combined in a fixed proportion by mass, and the compound's properties differ from those of its elements.", "insight": "Compounds have their elements combined in a fixed proportion by mass, and their properties differ from those of the constituent elements."}, {"t": "Compounds & Formulae", "q": "In a reaction, 4 g of magnesium combines completely with 6 g of oxygen. What mass of magnesium oxide is produced?", "o": ["10 g", "4 g", "6 g", "24 g"], "a": 0, "h": "Mass is conserved, so nothing is lost during the reaction.", "expl": "Mass is conserved in a chemical reaction, so 4 g + 6 g = 10 g of magnesium oxide is formed.", "insight": "Mass is conserved in a chemical reaction: the total mass of the products equals the total mass of the reactants."}, {"t": "Compounds & Formulae", "q": "How can a compound be broken down into the elements it contains?", "o": ["Only by a chemical reaction, because the elements are chemically bonded together.", "Only by a physical method such as filtering, because the elements are simply mixed.", "By either a chemical reaction or a physical method, depending on the compound involved.", "It cannot be broken down at all once the elements have been combined together."], "a": 0, "h": "Consider how the compound was formed in the first place.", "expl": "Compounds are formed by chemical reactions and can only be broken down by chemical reactions, not by physical separation.", "insight": "Compounds are formed by chemical reactions and can only be broken down by chemical reactions."}, {"t": "Compounds & Formulae", "q": "What is the chemical formula of ammonia?", "o": ["NH₃", "NH₄", "N₃H", "NH₂"], "a": 0, "h": "One nitrogen atom is joined to three hydrogen atoms.", "expl": "Ammonia is NH₃: one nitrogen atom combined with three hydrogen atoms.", "insight": "Ammonia has the formula NH₃, a simple covalent compound of nitrogen and hydrogen."}, {"t": "Compounds & Formulae", "q": "What is the chemical formula of carbon dioxide?", "o": ["CO₂", "CO", "C₂O", "CO₃"], "a": 0, "h": "The prefix 'di–' tells you how many oxygen atoms are present.", "expl": "Carbon dioxide is CO₂. CO is carbon monoxide, and CO₃ is the carbonate group rather than a compound on its own.", "insight": "Carbon dioxide has the formula CO₂, a simple covalent compound of one carbon and two oxygen atoms."}, {"t": "Compounds & Formulae", "q": "How many atoms in total are there in one unit of Na₂SO₄?", "o": ["7", "8", "9", "10"], "a": 0, "h": "Add up every subscript, including the one on sodium.", "expl": "Na₂SO₄ contains 2 sodium, 1 sulfur and 4 oxygen atoms, giving 2 + 1 + 4 = 7 atoms in total.", "insight": "To count atoms in a formula, add the subscript of every element, treating a missing subscript as one."}, {"t": "Compounds & Formulae", "q": "How many oxygen atoms are there in one unit of Mg(NO₃)₂?", "o": ["6", "3", "4", "5"], "a": 0, "h": "The number outside the bracket multiplies everything inside it.", "expl": "There are 3 oxygen atoms inside the bracket and the bracket is multiplied by 2, giving 3 × 2 = 6 oxygen atoms.", "insight": "A subscript outside a bracket multiplies every atom inside that bracket."}, {"t": "Compounds & Formulae", "q": "In the formula H₂O, what does the subscript 2 tell you?", "o": ["There are two hydrogen atoms in each molecule of water.", "There are two water molecules joined together in the whole structure.", "There are two oxygen atoms in each molecule of water.", "The hydrogen atoms carry two units of electrical charge each."], "a": 0, "h": "A subscript always refers to the symbol immediately before it.", "expl": "The subscript 2 follows H, so it means two hydrogen atoms. Oxygen has no subscript, so there is one oxygen atom.", "insight": "A subscript gives the number of atoms of the element it follows; no subscript means one atom."}, {"t": "Compounds & Formulae", "q": "Why are brackets used in the formula Mg(NO₃)₂?", "o": ["They show that the whole nitrate group is multiplied by two.", "They show that only the oxygen atoms are multiplied by two.", "They show that the magnesium and nitrogen atoms are bonded first.", "They show that the nitrate group carries two units of negative charge."], "a": 0, "h": "Think of the bracket as working like multiplication in maths.", "expl": "The subscript outside the bracket multiplies the entire group inside, so there are two complete NO₃ groups.", "insight": "Brackets group a polyatomic unit together; the subscript outside multiplies the whole group."}, {"t": "Compounds & Formulae", "q": "The reaction 'nitrogen monoxide + oxygen → nitrogen dioxide' shows which combination?", "o": ["compound + element", "element + element", "compound + compound", "element + compound"], "a": 0, "h": "Classify each reactant separately before choosing.", "expl": "Nitrogen monoxide is a compound and oxygen is an element, so this is compound + element forming a compound.", "insight": "Compounds can be formed from element + element, element + compound, or compound + compound."}, {"t": "Compounds & Formulae", "q": "In the word equation 'potassium hydroxide + sulfuric acid → potassium sulfate + water', what are the products?", "o": ["potassium sulfate and pure water", "potassium hydroxide and sulfuric acid", "sulfuric acid and potassium sulfate", "potassium hydroxide and pure water"], "a": 0, "h": "The products are always written after the arrow.", "expl": "Reactants are written before the arrow and products after it, so the products here are potassium sulfate and water.", "insight": "In a word equation, reactants are written before the arrow and products after it."}, {"t": "Compounds & Formulae", "q": "What is the name of the compound NaCl?", "o": ["sodium chloride", "sodium chlorate", "sodium chlorine", "chlorine sodide"], "a": 0, "h": "A single non-metal atom takes the ending –ide.", "expl": "The metal keeps its name, and the monatomic non-metal chlorine becomes chloride, giving sodium chloride.", "insight": "Metal + monatomic non-metal: the metal keeps its name and the non-metal ending changes to –ide."}, {"t": "Compounds & Formulae", "q": "What is the name of the compound CaCO₃?", "o": ["calcium carbonate", "calcium carbide", "calcium chlorate", "calcium sulfate"], "a": 0, "h": "The CO₃ group is polyatomic, so its name ends in –ate.", "expl": "CO₃ is the carbonate group, so CaCO₃ is calcium carbonate — the main substance in chalk and limestone.", "insight": "Polyatomic groups such as CO₃ (carbonate), SO₄ (sulfate) and NO₃ (nitrate) usually end in –ate."}, {"t": "Compounds & Formulae", "q": "What is the name of the compound Na₂SO₄?", "o": ["sodium sulfate", "sodium sulfide", "sodium sulfite", "sodium hydroxide"], "a": 0, "h": "Identify the polyatomic group before naming the second part.", "expl": "SO₄ is the sulfate group, so Na₂SO₄ is sodium sulfate. Sodium sulfide would be Na₂S.", "insight": "SO₄ is named sulfate; a single S atom bonded to a metal would instead be named sulfide."}, {"t": "Compounds & Formulae", "q": "What is the name of the compound LiOH?", "o": ["lithium hydroxide", "lithium oxide", "lithium hydride", "lithium nitrate"], "a": 0, "h": "The OH group is the one polyatomic group whose name ends in –ide.", "expl": "OH is the hydroxide group, so LiOH is lithium hydroxide. Lithium oxide would be Li₂O.", "insight": "Most polyatomic groups end in –ate, but the OH group is named hydroxide."}, {"t": "Compounds & Formulae", "q": "A compound's name ends in –ate. What does that tell you about the non-metal part?", "o": ["It is a polyatomic group, made of more than one type of atom.", "It is a monatomic group, made of only a single type of atom.", "It is a metal group, made of two different metal atoms combined.", "It is a polyatomic group, made of only hydrogen and oxygen atoms."], "a": 0, "h": "Compare the ending used for a single non-metal atom with the ending used for a group.", "expl": "An –ate ending signals a polyatomic group such as sulfate, nitrate or carbonate. A single non-metal atom takes –ide instead.", "insight": "An –ide ending indicates a monatomic non-metal; an –ate ending indicates a polyatomic group."}, {"t": "Compounds & Formulae", "q": "When naming a compound made from a metal and a non-metal, which part is written first?", "o": ["The metal, which keeps its original element name unchanged.", "The non-metal, which keeps its original element name unchanged.", "The metal, which changes its ending to –ide before the non-metal.", "The non-metal, which changes its ending to –ate before the metal."], "a": 0, "h": "Recall the order in a name such as sodium chloride.", "expl": "The metal is written first and keeps its own name. Only the non-metal part has its ending changed.", "insight": "In naming, the metal comes first and keeps its name; the non-metal part follows with a changed ending."}, {"t": "Sound & Travel", "q": "How is sound produced?", "o": ["By an object vibrating, which passes energy to the particles around it.", "By an object heating up, which releases energy into the particles around it.", "By an object moving steadily forwards, pushing particles ahead of it continuously.", "By an object reflecting energy that has already been produced somewhere else."], "a": 0, "h": "Feel your throat while you hum a note.", "expl": "Sound is a form of energy produced by vibrations. A plucked guitar string or vibrating vocal cords disturb the particles around them.", "insight": "Sound is a form of energy produced by vibrations, and it is detected by the ears."}, {"t": "Sound & Travel", "q": "Why can sound not travel through a vacuum?", "o": ["There are no particles to pass the vibrations from one place to another.", "There are no particles, so the sound waves travel far too quickly to hear.", "The particles present are too far apart to vibrate at a detectable frequency.", "The vibrations are absorbed by the empty space before they reach the listener."], "a": 0, "h": "Sound is a mechanical wave — it needs something to carry it.", "expl": "Sound is a mechanical wave, so it needs particles to transfer the energy. A vacuum has no particles, so no sound can travel.", "insight": "Sound needs a medium to travel, so it passes through solids, liquids and gases but not through a vacuum."}, {"t": "Sound & Travel", "q": "What is a compression in a sound wave?", "o": ["A region where the air particles are pushed closer together than normal.", "A region where the air particles are spread further apart than normal.", "A region where the air particles stop moving completely for a short time.", "A region where the air particles move at right angles to the wave."], "a": 0, "h": "It forms when the vibrating surface pushes outwards.", "expl": "When a vibrating surface moves outwards it squeezes nearby particles together, forming a compression — a region of higher pressure.", "insight": "A compression is a region where particles are pushed closer together; a rarefaction is where they spread apart."}, {"t": "Sound & Travel", "q": "What name is given to a region of a sound wave where the particles are spread apart?", "o": ["rarefaction", "compression", "wavelength", "amplitude"], "a": 0, "h": "It forms when the vibrating surface moves back inwards.", "expl": "A rarefaction is the low-pressure region where particles spread out, alternating with compressions along the wave.", "insight": "Sound travels as a series of compressions and rarefactions of the particles in the medium."}, {"t": "Sound & Travel", "q": "What happens to individual air particles as a sound wave travels across a room?", "o": ["They vibrate back and forth about fixed points, parallel to the wave direction.", "They vibrate up and down about fixed points, at right angles to the wave.", "They travel all the way across the room from the source to the listener.", "They stay completely still while the electrical energy passes through the space."], "a": 0, "h": "The energy crosses the room, but the particles themselves do not.", "expl": "Sound is a longitudinal wave: particles oscillate about fixed positions parallel to the direction of travel, bumping their neighbours and returning.", "insight": "In a longitudinal wave the particles vibrate parallel to the direction of travel; energy moves along the wave but the particles do not."}, {"t": "Sound & Travel", "q": "What type of wave is sound?", "o": ["longitudinal", "transverse", "electromagnetic", "stationary"], "a": 0, "h": "The name describes particles vibrating along the same line as the wave travels.", "expl": "Sound is a longitudinal wave, because the particles vibrate parallel to the direction the wave travels.", "insight": "Sound is a longitudinal mechanical wave, made of compressions and rarefactions."}, {"t": "Sound & Travel", "q": "Why does sound travel faster in steel than in air?", "o": ["Steel particles are packed closely, so collisions pass energy on more quickly.", "Steel particles are packed closely, so they block the wave from spreading out.", "Steel particles are far apart, so the wave meets less resistance travelling through.", "Steel particles are heavier, so they carry more energy in each single collision."], "a": 0, "h": "Compare how far a particle must travel before it hits its neighbour.", "expl": "In a solid the particles are tightly packed, so vibrations transfer between neighbours very rapidly. In a gas the particles must cross large gaps first.", "insight": "Sound travels fastest in solids because tightly packed particles transfer energy through collisions more rapidly than widely spaced gas particles."}, {"t": "Sound & Travel", "q": "Approximately how fast does sound travel in air at 20 °C?", "o": ["343 m/s", "443 m/s", "543 m/s", "643 m/s"], "a": 0, "h": "It is usually rounded to about 340 metres every second.", "expl": "Sound travels at about 343 m/s in air at 20 °C, often rounded to 340 m/s.", "insight": "The speed of sound in air at 20 °C is approximately 343 m/s."}, {"t": "Sound & Travel", "q": "Approximately how fast does sound travel in water at 20 °C?", "o": ["1482 m/s", "1082 m/s", "1182 m/s", "1282 m/s"], "a": 0, "h": "It is roughly four times faster than in air, but far slower than in steel.", "expl": "Sound travels at about 1482 m/s in water, compared with 343 m/s in air and 5960 m/s in steel.", "insight": "Sound travels faster in liquids than gases and fastest in solids: about 343 m/s in air, 1482 m/s in water and 5960 m/s in steel."}, {"t": "Sound & Travel", "q": "In the bell jar experiment, what is observed as the air is pumped out?", "o": ["The hammer is still seen striking, but the ringing fades to silence.", "The hammer stops striking, and the ringing fades away to complete silence.", "The hammer is still seen striking, and the ringing grows steadily louder.", "The hammer strikes more slowly, and the ringing drops to a much lower pitch."], "a": 0, "h": "The bell keeps working — it is the medium that is being removed.", "expl": "The hammer continues to strike the bell, but as the air is removed there are fewer particles to carry the sound, so it fades to silence.", "insight": "The bell jar experiment shows that sound requires a medium: removing the air leaves the bell visibly striking but silent."}, {"t": "Sound & Travel", "q": "A student claims that air particles travel from a speaker into their ear. Why is this incorrect?", "o": ["The particles oscillate about fixed positions; only the energy moves across the room.", "The particles travel across the room, but far too slowly to be detected.", "The particles are destroyed as the wave passes and are replaced by new ones.", "The particles move only in solids and liquids, never in a gas such as air."], "a": 0, "h": "Distinguish between what moves and what is transferred.", "expl": "Air particles vibrate about fixed positions and bump their neighbours. It is the energy, not the particles, that crosses the room.", "insight": "In a sound wave, energy is transferred through the medium while the particles themselves oscillate about fixed positions."}, {"t": "Sound & Travel", "q": "Which part of a guitar vibrates to produce the sound?", "o": ["the strings", "the pegs", "the neck", "the strap"], "a": 0, "h": "Something must move to and fro rapidly when the instrument is played.", "expl": "Plucking makes the strings vibrate, and the hollow body then amplifies those vibrations by displacing the surrounding air.", "insight": "In a string instrument the vibrating string is the source of the sound; the hollow body amplifies it."}, {"t": "Sound & Travel", "q": "Sound is best described as which of the following?", "o": ["energy", "matter", "pressure", "mass"], "a": 0, "h": "It is transferred from a source to your ear, but nothing material arrives.", "expl": "Sound is a form of energy produced by vibrations and transferred through a medium.", "insight": "Sound is a form of energy produced by vibrations and transferred through a medium as a wave."}, {"t": "The Ear & Hearing", "q": "Which part of the ear collects sound waves from the air?", "o": ["pinna", "cochlea", "stirrup", "eardrum"], "a": 0, "h": "It is the funnel-shaped part you can see on the outside of the head.", "expl": "The pinna is the funnel-shaped outer ear. It collects sound waves and directs them into the ear canal.", "insight": "The pinna collects sound waves and directs them along the ear canal to the ear drum."}, {"t": "The Ear & Hearing", "q": "Which structure passes vibrations directly on to the cochlea?", "o": ["stirrup", "hammer", "anvil", "pinna"], "a": 0, "h": "It is the last of the three tiny bones in the chain.", "expl": "The three ear bones pass vibrations in the order hammer, anvil, stirrup. The stirrup then passes them to the cochlea.", "insight": "The three ear bones amplify vibrations in the order hammer, anvil, stirrup, and the stirrup passes them to the cochlea."}, {"t": "The Ear & Hearing", "q": "Which structure is a coiled tube filled with fluid and tiny hairs?", "o": ["cochlea", "pinna", "eardrum", "anvil"], "a": 0, "h": "It sits in the inner ear and is shaped like a snail shell.", "expl": "The cochlea is a coiled, fluid-filled tube containing tiny hair cells that respond to the vibrating fluid.", "insight": "The cochlea is a coiled, fluid-filled tube whose tiny hair cells convert vibrations into signals for the auditory nerve."}, {"t": "The Ear & Hearing", "q": "What is the function of the ear drum?", "o": ["A thin membrane that vibrates when sound waves arrive along the ear canal.", "A thin membrane that converts vibrations directly into electrical signals for the brain.", "A coiled tube filled with fluid that moves tiny hairs when it vibrates.", "A funnel-shaped flap that collects sound waves and directs them further inward."], "a": 0, "h": "Compare it with the skin of a drum being struck.", "expl": "The ear drum is a thin membrane stretched across the end of the ear canal. Vibrating air particles make it vibrate.", "insight": "The ear drum is a thin membrane stretched across the end of the ear canal; it vibrates when sound waves reach it."}, {"t": "The Ear & Hearing", "q": "What do the hammer, anvil and stirrup do?", "o": ["They act as a lever, amplifying the vibrations received from the ear drum.", "They act as a filter, removing unwanted frequencies before they reach the cochlea.", "They act as a funnel, collecting sound waves and directing them into the canal.", "They act as a nerve, converting the vibrations into electrical signals for the brain."], "a": 0, "h": "They are arranged so that the vibrations leaving them are greater than those arriving.", "expl": "The three bones are arranged in a lever-like manner, so the vibrations at the stirrup are greater than those at the ear drum.", "insight": "The hammer, anvil and stirrup are arranged like a lever, amplifying the vibrations passed from the ear drum to the cochlea."}, {"t": "The Ear & Hearing", "q": "What is the role of the auditory nerve?", "o": ["It carries electrical signals from the cochlea to the brain for interpretation.", "It carries vibrations from the ear drum to the three tiny bones nearby.", "It carries fluid from the cochlea into the semicircular canals for balance.", "It carries sound waves from the outer ear along the canal inward."], "a": 0, "h": "By this stage the vibrations have already been converted into something else.", "expl": "Hair cells in the cochlea produce tiny electrical signals, and the auditory nerve carries these to the brain, which interprets them as sound.", "insight": "The auditory nerve carries electrical signals from the cochlea to the brain, which interprets them as sound."}, {"t": "The Ear & Hearing", "q": "Which structure helps to control your balance?", "o": ["semicircular canals", "auditory nerve", "eustachian tube", "cochlear fluid"], "a": 0, "h": "These loop-shaped structures sit above the cochlea.", "expl": "The semicircular canals help control overall balance. They are not directly involved in hearing.", "insight": "The semicircular canals of the inner ear control balance rather than hearing."}, {"t": "The Ear & Hearing", "q": "What is the function of the eustachian tube?", "o": ["It equalises the air pressure on both sides of the ear drum.", "It amplifies the incoming vibrations before they are passed on to the cochlea.", "It drains any excess fluid out of the cochlea and into the throat.", "It collects sound waves and directs them along the ear canal inward."], "a": 0, "h": "Think about why your ears 'pop' on an aeroplane.", "expl": "The eustachian tube connects the ear to the air passageway and equalises pressure on each side of the ear drum.", "insight": "The eustachian tube connects the middle ear to the air passageway and equalises pressure across the ear drum."}, {"t": "The Ear & Hearing", "q": "Which sequence correctly describes how sound travels through the ear?", "o": ["Pinna, ear canal, ear drum, ear bones, cochlea, auditory nerve", "Pinna, ear drum, ear canal, cochlea, ear bones, auditory nerve", "Ear canal, pinna, ear bones, ear drum, auditory nerve, cochlea", "Pinna, ear canal, ear bones, ear drum, auditory nerve, cochlea"], "a": 0, "h": "Work from the outside of the head inwards, ending at the brain.", "expl": "Sound is collected by the pinna, passes along the ear canal to the ear drum, is amplified by the three bones, reaches the cochlea, and leaves via the auditory nerve.", "insight": "Sound travels pinna to ear canal to ear drum to the three ear bones to the cochlea, and then as electrical signals along the auditory nerve to the brain."}, {"t": "The Ear & Hearing", "q": "Why might damage to the tiny hairs in the cochlea cause hearing loss?", "o": ["The vibrating fluid can no longer be converted into signals for the nerve.", "The sound waves can no longer be collected and funnelled into the ear canal.", "The air pressure on each side of the ear drum can no longer be equalised.", "The vibrations can no longer be amplified as they pass through the middle ear."], "a": 0, "h": "Identify which single job the hair cells are responsible for.", "expl": "The hair cells sense movement of the fluid and produce the electrical signals. If they are damaged, that conversion step fails.", "insight": "Hearing loss can result from a blocked ear canal, fluid in the middle ear, a ruptured ear drum, damaged cochlear hair cells or a defective auditory nerve."}, {"t": "Pitch, Loudness & Waves", "q": "What is the unit of frequency?", "o": ["hertz", "decibel", "metre", "second"], "a": 0, "h": "It is named after a nineteenth-century German physicist.", "expl": "Frequency is measured in hertz (Hz). One hertz means one complete wave passes a point each second.", "insight": "Frequency is measured in hertz (Hz), where 1 Hz is one complete vibration per second."}, {"t": "Pitch, Loudness & Waves", "q": "What is frequency?", "o": ["The number of complete waves that pass a point in one second.", "The number of complete waves that fit into one metre of space.", "The greatest distance a particle moves away from its rest position.", "The distance between one crest of a wave and the next crest."], "a": 0, "h": "The definition involves counting, and it involves time.", "expl": "Frequency is the number of complete waves passing a point each second — equivalently, the number of vibrations of the source per second.", "insight": "Frequency is the number of complete waves that pass a point in one second; it is a measure of the number of vibrations per second."}, {"t": "Pitch, Loudness & Waves", "q": "What is the amplitude of a sound wave?", "o": ["The height of a crest or trough measured from the centre line.", "The distance from one crest to the next crest along the wave.", "The number of crests that pass a fixed point in one second.", "The total height measured from the top of a crest down to the trough."], "a": 0, "h": "Measure from the rest position, not from the very bottom of the wave.", "expl": "Amplitude is measured from the centre line (rest position) to a crest or trough. It shows how far the particles are displaced.", "insight": "Amplitude is the height of the crest or trough of a sound wave measured from the centre line, and it shows the extent of particle displacement."}, {"t": "Pitch, Loudness & Waves", "q": "Which property of a sound wave determines its loudness?", "o": ["amplitude", "pitch", "speed", "wavelength"], "a": 0, "h": "Larger vibrations of the source produce this larger property.", "expl": "Amplitude controls loudness. Large vibrations displace air particles further, producing waves of larger amplitude and louder sound.", "insight": "Loudness is determined by amplitude: larger amplitude means a louder sound."}, {"t": "Pitch, Loudness & Waves", "q": "Which property of a sound wave determines its pitch?", "o": ["frequency", "amplitude", "loudness", "volume"], "a": 0, "h": "Faster vibration of the source raises this property.", "expl": "Frequency controls pitch. A high frequency produces a high-pitched sound; a low frequency produces a low-pitched sound.", "insight": "Pitch is determined by frequency: higher frequency means a higher-pitched sound."}, {"t": "Pitch, Loudness & Waves", "q": "What is the approximate range of frequencies a human ear can detect?", "o": ["20 Hz to 20 000 Hz", "10 Hz to 40 000 Hz", "50 Hz to 15 000 Hz", "20 Hz to 90 000 Hz"], "a": 0, "h": "The upper limit is exactly one thousand times the lower limit.", "expl": "Humans can hear roughly 20 Hz to 20 000 Hz. Below this is infrasound and above it is ultrasound.", "insight": "The human ear detects frequencies from about 20 Hz to 20 000 Hz; sounds below are infrasound and above are ultrasound."}, {"t": "Pitch, Loudness & Waves", "q": "Which term describes sound at frequencies too low for humans to hear?", "o": ["infrasound", "ultrasound", "resonance", "reverberation"], "a": 0, "h": "Giraffes use it to communicate over long distances.", "expl": "Frequencies below 20 Hz are infrasound. Frequencies above 20 000 Hz are ultrasound.", "insight": "Infrasound is sound below 20 Hz and ultrasound is sound above 20 000 Hz; neither can be detected by human ears."}, {"t": "Pitch, Loudness & Waves", "q": "Two oscilloscope traces have the same amplitude, but trace X shows more waves in the same time. What is true of trace X?", "o": ["It has a higher frequency, so its sound has a higher pitch than the other.", "It has a higher frequency, so its sound is louder than the other trace shown.", "It has a larger amplitude, so its sound has a higher pitch than the other.", "It has a larger amplitude, so its sound is louder than the other trace shown."], "a": 0, "h": "More waves in the same time means the crests are closer together.", "expl": "More waves in the same time means a higher frequency, which means a higher pitch. Amplitude is unchanged, so loudness is unchanged.", "insight": "On an oscilloscope, crests closer together indicate higher frequency and therefore higher pitch; amplitude and loudness are independent of this."}, {"t": "Pitch, Loudness & Waves", "q": "Why does a double bass produce lower-pitched notes than a violin?", "o": ["Its strings are longer and thicker, so they vibrate at a lower frequency.", "Its strings are shorter and thinner, so they vibrate at a much lower frequency.", "Its strings are longer and thicker, so they vibrate with a larger amplitude.", "Its strings are pulled much tighter, so they vibrate at a lower frequency."], "a": 0, "h": "Two things change together here: the size of the string and how fast it vibrates.", "expl": "Long, thick strings vibrate more slowly, giving a lower frequency and therefore a lower pitch. Short, thin strings give a higher pitch.", "insight": "Short, thin strings vibrate at high frequency giving high pitch; long, thick strings vibrate at low frequency giving low pitch."}, {"t": "Pitch, Loudness & Waves", "q": "How can a violinist raise the pitch of a string?", "o": ["By pressing a finger on the fingerboard to shorten the vibrating length.", "By pressing a finger on the fingerboard to lengthen the vibrating string.", "By loosening the string so that it vibrates with a much lower tension.", "By bowing the string harder so that it vibrates with much more energy."], "a": 0, "h": "Shorter vibrating sections vibrate faster.", "expl": "Pressing the string against the fingerboard shortens the vibrating length, raising the frequency and therefore the pitch. Tightening the string also raises pitch.", "insight": "Increasing the tension of a string, or shortening its vibrating length, increases the frequency and pitch of the sound produced."}, {"t": "Pitch, Loudness & Waves", "q": "What is meant by noise in the context of sound?", "o": ["Sound that is unwanted or too loud, with an irregular wave trace.", "Sound that is regular and repeating, with a smooth and even wave trace.", "Sound that is too high in pitch for the human ear to detect.", "Sound that has been reflected off a hard surface back to the listener."], "a": 0, "h": "Its oscilloscope trace does not repeat neatly.", "expl": "Noise is unwanted or excessively loud sound. Its trace is irregular, with random frequencies and amplitudes, unlike the regular trace of a musical note.", "insight": "Noise is unwanted or loud sound; its oscilloscope trace is irregular, whereas a pure musical note gives a regular repeating trace."}, {"t": "Pitch, Loudness & Waves", "q": "What is the highest point of a wave called?", "o": ["crest", "trough", "node", "baseline"], "a": 0, "h": "The opposite point, at the bottom, has a different name.", "expl": "The highest point is the crest and the lowest point is the trough.", "insight": "A crest is the highest point of a wave and a trough is the lowest point."}, {"t": "Pitch, Loudness & Waves", "q": "What is the length of one complete wave called?", "o": ["wavelength", "amplitude", "frequency", "displacement"], "a": 0, "h": "It can be measured from one crest to the very next crest.", "expl": "Wavelength is the length of one complete wave, measured between the same point on two successive waves, such as crest to crest.", "insight": "Wavelength is the length of one wave, measured from the same point on two successive waves, such as crest to crest."}, {"t": "Pitch, Loudness & Waves", "q": "Hitting a drum harder produces a louder sound. What happens to the sound wave?", "o": ["Its amplitude increases, because the air particles are displaced further.", "Its frequency increases, because the air particles vibrate more often.", "Its wavelength increases, because the crests are pushed further apart.", "Its speed increases, because the air particles carry more energy along."], "a": 0, "h": "Larger vibrations of the source lead to larger vibrations of the air.", "expl": "Hitting harder makes the drum skin vibrate more, displacing air particles further. That means larger amplitude and a louder sound.", "insight": "Large vibrations of a source displace air particles further, producing sound waves of large amplitude, which are heard as loud sounds."}];
+BANK.forEach(function(q,i){ q.id = i; });
+var TOPICS = Object.keys(COLORS);
+
+/* ============ STATE ============ */
+function blank(){
+  var s = {};
+  BANK.forEach(function(q){ s[q.id] = {streak:0, status:"active", lastCorrect:0}; });
+  return s;
+}
+var state = blank();
+function load(){
+  try{
+    if(typeof localStorage === "undefined" || !localStorage) return;
+    var raw = localStorage.getItem(LS_KEY);
+    if(!raw) return;
+    var p = JSON.parse(raw);
+    if(!p || typeof p !== "object") return;
+    BANK.forEach(function(q){
+      var e = p[q.id];
+      if(e && typeof e === "object"){
+        var st = parseInt(e.streak,10); if(isNaN(st)||st<0) st = 0;
+        if(st > STREAK_TO_MASTER) st = STREAK_TO_MASTER;
+        var lc = parseInt(e.lastCorrect,10); if(isNaN(lc)||lc<0) lc = 0;
+        state[q.id] = {
+          streak: st,
+          status: (e.status === "mastered" || st >= STREAK_TO_MASTER) ? "mastered" : "active",
+          lastCorrect: lc
+        };
+      }
+    });
+  }catch(err){ state = blank(); }
+}
+function save(){
+  try{
+    if(typeof localStorage === "undefined" || !localStorage) return;
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+  }catch(err){ /* storage unavailable - session still works */ }
+}
+load();
+
+/* ============ HELPERS ============ */
+var $ = function(id){ return document.getElementById(id); };
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function shuffle(a){
+  for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+function show(name){
+  ["home","quiz","results"].forEach(function(s){ $(s).classList.toggle("hide", s !== name); });
+  window.scrollTo(0,0);
+}
+function isFinalPass(id){
+  return state[id].status === "active" && state[id].streak === STREAK_TO_MASTER - 1;
+}
+function spacingReady(id){
+  if(!isFinalPass(id) || FINAL_PASS_SPACING_MS <= 0) return true;
+  return (Date.now() - state[id].lastCorrect) >= FINAL_PASS_SPACING_MS;
+}
+
+/* ============ HOME ============ */
+function renderHome(){
+  var pills = TOPICS.map(function(t){
+    return '<span class="pill" style="border-color:'+COLORS[t]+';color:'+COLORS[t]+'">'+esc(t)+'</span>';
+  }).join("");
+  $("pills").innerHTML = pills;
+
+  var done = 0, active = 0;
+  BANK.forEach(function(q){ state[q.id].status === "mastered" ? done++ : active++; });
+  $("sActive").textContent = active;
+  $("sDone").textContent = done;
+  var pct = BANK.length ? Math.round(100*done/BANK.length) : 0;
+  $("mainPct").textContent = pct + "% complete";
+  $("howText").textContent =
+    "Answer correctly " + STREAK_TO_MASTER + " times in a row to complete a question. " +
+    "A wrong answer resets your progress on that question. " +
+    "Work through all " + BANK.length + " questions to finish.";
+
+  var rows = TOPICS.map(function(t){
+    var qs = BANK.filter(function(q){ return q.t === t; });
+    var m = qs.filter(function(q){ return state[q.id].status === "mastered"; }).length;
+    var half = qs.filter(function(q){ return state[q.id].status === "active" && state[q.id].streak > 0; }).length;
+    var p = qs.length ? Math.round(100*m/qs.length) : 0;
+    return '<div class="tcard">' +
+      '<div class="tname" style="color:'+COLORS[t]+'">'+esc(t)+'</div>' +
+      '<div class="trow">' +
+        (half > 0 ? '<span class="half" title="One more correct answer to complete these">&#9654;'+half+'</span>' : '<span></span>') +
+        '<span class="tcount">'+m+'/'+qs.length+'</span>' +
+      '</div>' +
+      '<div class="tbar"><i data-w="'+p+'" style="background:'+COLORS[t]+'"></i></div>' +
+    '</div>';
+  }).join("");
+  $("tgrid").innerHTML = rows;
+
+  $("btnGo").textContent = (done >= BANK.length) ? "↺ Review Again" : "▶ Continue Progress";
+
+  requestAnimationFrame(function(){
+    $("mainBar").style.width = pct + "%";
+    Array.prototype.forEach.call(document.querySelectorAll(".tbar > i"), function(el){
+      el.style.width = el.getAttribute("data-w") + "%";
+    });
+  });
+}
+
+/* ============ SESSION ============ */
+var session = null;
+function buildSession(){
+  var active = BANK.filter(function(q){ return state[q.id].status === "active"; });
+  if(active.length === 0) return null;
+
+  var ready  = shuffle(active.filter(function(q){ return spacingReady(q.id); }));
+  var picked = ready.slice(0, QS_PER_ROUND);
+
+  /* --- relief valve: not enough questions have cleared the spacing window --- */
+  var waived = 0;
+  if(picked.length < QS_PER_ROUND){
+    var waiting = shuffle(active.filter(function(q){ return !spacingReady(q.id); }));
+    var need = QS_PER_ROUND - picked.length;
+    var extra = waiting.slice(0, need);
+    waived = extra.length;
+    picked = picked.concat(extra);
+  }
+  return {
+    qs: shuffle(picked), i: 0, correct: 0, mastered: 0, waived: waived,
+    per: {}, answered: false
+  };
+}
+function startSession(){
+  session = buildSession();
+  if(!session){ renderHome(); show("home"); return; }
+  show("quiz");
+  renderQ();
+}
+
+/* ============ QUIZ ============ */
+function renderQ(){
+  var q = session.qs[session.i];
+  session.answered = false;
+
+  $("qTopic").textContent = q.t;
+  $("qTopic").style.borderColor = COLORS[q.t];
+  $("qTopic").style.color = COLORS[q.t];
+  $("qCount").textContent = "Q " + (session.i+1) + " of " + session.qs.length;
+  $("qText").textContent = q.q;
+
+  var last = isFinalPass(q.id);
+  var hb = $("hintBtn");
+  hb.classList.remove("hide");
+  $("hintBox").classList.add("hide");
+  if(last){
+    hb.disabled = true;
+    hb.innerHTML = "&#128274; Hint unavailable on the final pass";
+  }else{
+    hb.disabled = false;
+    hb.innerHTML = "&#128161; Show hint";
+  }
+
+  var order = shuffle(q.o.map(function(txt,i){ return {txt:txt, i:i}; }));
+  $("opts").innerHTML = order.map(function(o,n){
+    return '<button class="opt" data-i="'+o.i+'" data-n="'+n+'">'+esc(o.txt)+'</button>';
+  }).join("");
+  Array.prototype.forEach.call(document.querySelectorAll(".opt"), function(b){
+    b.addEventListener("click", function(){ answer(parseInt(b.getAttribute("data-i"),10)); });
+  });
+
+  $("fb").classList.add("hide");
+  $("nextBar").classList.add("hide");
+  window.scrollTo(0,0);
+}
+
+function answer(chosen){
+  if(session.answered) return;
+  session.answered = true;
+  var q = session.qs[session.i];
+  var right = (chosen === q.a);
+  var e = state[q.id];
+
+  if(right){
+    e.streak += 1;
+    e.lastCorrect = Date.now();
+    if(e.streak >= STREAK_TO_MASTER){ e.status = "mastered"; session.mastered++; }
+    session.correct++;
+  }else{
+    e.streak = 0;
+  }
+  save();   /* persisted immediately after every answer */
+
+  if(!session.per[q.t]) session.per[q.t] = {c:0, n:0};
+  session.per[q.t].n++;
+  if(right) session.per[q.t].c++;
+
+  Array.prototype.forEach.call(document.querySelectorAll(".opt"), function(b){
+    b.disabled = true;
+    var i = parseInt(b.getAttribute("data-i"),10);
+    if(i === q.a) b.classList.add("right");
+    else if(i === chosen) b.classList.add("wrong");
+  });
+
+  $("hintBtn").classList.add("hide");
+  $("explText").textContent = q.expl;
+  $("insightText").textContent = q.insight;
+  $("fb").classList.remove("hide");
+  $("nextBar").classList.remove("hide");
+}
+
+function next(){
+  session.i++;
+  if(session.i >= session.qs.length){ renderResults(); }
+  else { renderQ(); }
+}
+
+/* ============ RESULTS ============ */
+function renderResults(){
+  $("rScore").textContent = session.correct + " / " + session.qs.length;
+  var b = $("rBadge");
+  if(session.mastered > 0){
+    b.textContent = "✓ " + session.mastered + " question" + (session.mastered===1?"":"s") + " completed this round";
+    b.classList.remove("hide");
+  }else{
+    b.classList.add("hide");
+  }
+  $("rTable").innerHTML = TOPICS.filter(function(t){ return session.per[t]; }).map(function(t){
+    var p = session.per[t];
+    return '<tr><td><span class="dot" style="background:'+COLORS[t]+'"></span>'+esc(t)+'</td>' +
+           '<td class="num">'+p.c+'</td><td class="num">'+p.n+'</td></tr>';
+  }).join("");
+  show("results");
+}
+
+/* ============ EVENTS ============ */
+$("btnGo").addEventListener("click", startSession);
+$("btnNext").addEventListener("click", next);
+$("btnBack").addEventListener("click", function(){ renderHome(); show("home"); });
+$("hintBtn").addEventListener("click", function(){
+  if(this.disabled) return;
+  var q = session.qs[session.i];
+  $("hintBox").textContent = q.h;
+  $("hintBox").classList.remove("hide");
+  this.classList.add("hide");
+});
+$("btnReset").addEventListener("click", function(){ $("modal").classList.remove("hide"); });
+$("mCancel").addEventListener("click", function(){ $("modal").classList.add("hide"); });
+$("mOk").addEventListener("click", function(){
+  try{ if(typeof localStorage !== "undefined" && localStorage) localStorage.removeItem(LS_KEY); }catch(err){}
+  state = blank();
+  $("modal").classList.add("hide");
+  renderHome(); show("home");
+});
+
+renderHome();
+show("home");
+</script>
+</body>
+</html>
