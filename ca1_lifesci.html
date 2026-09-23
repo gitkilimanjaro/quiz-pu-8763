@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CA1 Science: Nutrition &amp; Digestion Quiz</title>
+<style>
+  :root{
+    --navy:#1a1a2e; --bg:#f5f6fa; --text:#1a1a2e; --muted:#5f6475;
+    --green:#2e7d32; --green-bg:#e8f5e9; --red:#c62828; --red-bg:#ffebee;
+    --orange:#f57c00; --card-shadow:0 2px 8px rgba(0,0,0,.08); --radius:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text)}
+  body{font-family:system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .app{max-width:600px;margin:0 auto;padding:16px 16px 110px}
+  .hidden{display:none!important}
+  .card{background:#fff;border-radius:var(--radius);box-shadow:var(--card-shadow);padding:18px}
+
+  /* Home */
+  .home-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:4px 0 12px}
+  h1{font-size:1.55rem;font-weight:800;line-height:1.2}
+  .version{font-size:.75rem;color:var(--muted);white-space:nowrap;padding-top:6px}
+  .pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+  .pill{background:#fff;border:1.5px solid;border-radius:999px;padding:3px 10px;font-size:.75rem;font-weight:600}
+  .stats{display:flex;gap:12px;margin-bottom:14px}
+  .stat{flex:1;text-align:center}
+  .stat .num{font-size:2.1rem;font-weight:800;line-height:1.1}
+  .stat .lbl{font-size:.8rem;color:var(--muted)}
+  .bar{height:10px;background:#e7e9f0;border-radius:999px;overflow:hidden}
+  .bar>span{display:block;height:100%;width:0;border-radius:999px;transition:width .8s ease}
+  .bar.main>span{background:var(--navy)}
+  .pct{font-size:.8rem;color:var(--muted);text-align:right;margin-top:4px}
+  .how{font-size:.88rem;color:var(--muted);margin-top:12px}
+  .notice{margin-top:12px;font-size:.88rem;background:#fff8e1;border:1px solid #ffe0a3;border-radius:8px;padding:10px 12px}
+  .notice.done{background:var(--green-bg);border-color:#b9dfbb}
+  .btn{display:block;width:100%;border:none;border-radius:10px;padding:14px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s,transform .15s}
+  .btn:active{transform:scale(.98)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn-primary{background:var(--navy);color:#fff}
+  .btn-outline{background:#fff;color:var(--red);border:1.5px solid var(--red)}
+  .btn-link{background:none;color:var(--navy);text-decoration:underline;font-weight:600;padding:8px;font-size:.9rem}
+  .btns{display:grid;gap:10px;margin:16px 0}
+  .topics{display:grid;gap:10px}
+  .topics.two{grid-template-columns:1fr 1fr}
+  .tcard{background:#fff;border-radius:10px;box-shadow:var(--card-shadow);padding:10px 11px;min-width:0}
+  .tname{font-weight:700;font-size:.85rem;line-height:1.25;margin-bottom:6px;overflow-wrap:anywhere}
+  .trow{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--muted);margin-bottom:6px;gap:4px}
+  .half{color:var(--orange);font-weight:700;cursor:help}
+  .tcard .bar{height:7px}
+
+  /* Quiz */
+  .qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px}
+  .badge{border:1.5px solid;background:#fff;border-radius:999px;padding:3px 10px;font-size:.75rem;font-weight:700}
+  .qcount{font-size:.85rem;color:var(--muted);font-weight:600;white-space:nowrap}
+  .qtext{font-size:1.2rem;font-weight:700;text-align:center;margin:6px 0 14px}
+  .hint-btn{background:#fff;border:1.5px dashed #9aa0b4;color:var(--navy);border-radius:10px;padding:9px 12px;width:100%;font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;text-align:left}
+  .hint-btn:disabled{background:#eceef3;color:#9aa0b4;border-color:#d3d6df;cursor:not-allowed}
+  .hint-body{margin-top:6px;background:#f3f5ff;border-radius:8px;padding:10px 12px;font-size:.9rem}
+  .opts{display:grid;gap:10px;margin:14px 0}
+  .opt{background:#fff;border:1.5px solid #d9dce5;border-radius:10px;padding:13px 14px;font-size:.98rem;text-align:left;cursor:pointer;font-family:inherit;color:var(--text);transition:background .15s,border-color .15s,color .15s;box-shadow:var(--card-shadow)}
+  .opt:hover:not(:disabled){border-color:var(--navy)}
+  .opt:disabled{cursor:default}
+  .opt.correct{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:700}
+  .opt.wrong{background:var(--red-bg);border-color:var(--red);color:var(--red);font-weight:700}
+  .opt.dim{opacity:.6}
+  .verdict{font-weight:800;margin-bottom:6px}
+  .verdict.ok{color:var(--green)} .verdict.no{color:var(--red)}
+  .expl{margin-top:4px;font-size:.93rem}
+  .insight{margin-top:12px;border:1.5px solid #c5cae9;background:#f5f6ff;border-radius:10px;padding:12px;font-size:.92rem}
+  .insight b{display:block;font-size:.75rem;letter-spacing:.04em;text-transform:uppercase;color:#3949ab;margin-bottom:4px}
+  .nextbar{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 70%,rgba(245,246,250,0))}
+  .nextbar .btn{max-width:568px;margin:0 auto}
+  .quit{display:block;margin:4px auto 0}
+
+  /* Results */
+  .score{font-size:2.6rem;font-weight:800;text-align:center}
+  .score-lbl{text-align:center;color:var(--muted);margin-bottom:10px}
+  .done-badge{display:block;width:max-content;max-width:100%;margin:0 auto 14px;background:var(--green-bg);color:var(--green);font-weight:700;border-radius:999px;padding:6px 14px;font-size:.9rem}
+  table{width:100%;border-collapse:collapse;font-size:.88rem}
+  th,td{padding:8px 6px;border-bottom:1px solid #eceef3;text-align:left}
+  th{color:var(--muted);font-weight:600;font-size:.78rem}
+  td.n,th.n{text-align:center}
+
+  /* Modal */
+  .modal{position:fixed;inset:0;background:rgba(26,26,46,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
+  .modal .card{max-width:380px;width:100%;text-align:center}
+  .modal h2{font-size:1.15rem;margin-bottom:8px}
+  .modal p{color:var(--muted);margin-bottom:16px}
+  .modal .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn-grey{background:#eceef3;color:var(--text)}
+  .btn-red{background:var(--red);color:#fff}
+  @media (min-width:600px){ h1{font-size:1.8rem} .qtext{font-size:1.3rem} }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="home-top">
+      <h1 id="quizTitle"></h1>
+      <span class="version" id="version"></span>
+    </div>
+    <div class="pills" id="pills"></div>
+
+    <div class="card">
+      <div class="stats">
+        <div class="stat"><div class="num" id="activeNum">0</div><div class="lbl">Active Questions</div></div>
+        <div class="stat"><div class="num" id="doneNum">0</div><div class="lbl">Completed</div></div>
+      </div>
+      <div class="bar main"><span id="mainBar"></span></div>
+      <div class="pct" id="mainPct"></div>
+      <p class="how" id="howText"></p>
+      <div class="notice hidden" id="notice"></div>
+    </div>
+
+    <div class="btns">
+      <button class="btn btn-primary" id="continueBtn">▶ Continue Progress</button>
+      <button class="btn btn-link hidden" id="anywayBtn">Practise the resting questions now anyway</button>
+      <button class="btn btn-outline" id="resetBtn">↺ Start All Over</button>
+    </div>
+
+    <div class="topics" id="topics"></div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="hidden">
+    <div class="qhead">
+      <span class="badge" id="qBadge"></span>
+      <span class="qcount" id="qCount"></span>
+    </div>
+    <div class="card">
+      <p class="qtext" id="qText"></p>
+      <button class="hint-btn" id="hintBtn">💡 Show hint</button>
+      <div class="hint-body hidden" id="hintBody"></div>
+    </div>
+    <div class="opts" id="opts"></div>
+    <div class="card hidden" id="feedback">
+      <div class="verdict" id="verdict"></div>
+      <div class="expl" id="expl"></div>
+      <div class="insight"><b>Key point</b><span id="insight"></span></div>
+    </div>
+    <button class="btn btn-link quit" id="quitBtn">Back to home</button>
+    <div class="nextbar hidden" id="nextBar"><button class="btn btn-primary" id="nextBtn">Next →</button></div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" class="hidden">
+    <div class="card">
+      <div class="score" id="score"></div>
+      <div class="score-lbl">correct this round</div>
+      <span class="done-badge hidden" id="doneBadge"></span>
+      <table>
+        <thead><tr><th>Topic</th><th class="n">Correct</th><th class="n">Drawn this session</th></tr></thead>
+        <tbody id="resTable"></tbody>
+      </table>
+    </div>
+    <div class="btns"><button class="btn btn-primary" id="backBtn">Continue Studying →</button></div>
+  </section>
+</div>
+
+<!-- RESET MODAL -->
+<div class="modal hidden" id="modal">
+  <div class="card">
+    <h2>Start all over?</h2>
+    <p>This will erase all your progress. Are you sure?</p>
+    <div class="row">
+      <button class="btn btn-grey" id="cancelBtn">Cancel</button>
+      <button class="btn btn-red" id="confirmBtn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const BANK = [
+  // ===================== Nutrients & Sources (14) =====================
+  {
+    t: "Nutrients & Sources",
+    q: "Which food is the richest source of vitamin C?",
+    o: ["Oranges", "Butter", "Rice", "Bread"],
+    a: 0,
+    h: "This vitamin is found mainly in fresh fruits and is easily destroyed by long cooking.",
+    expl: "Citrus fruits such as oranges are rich in vitamin C. Butter is mainly fat, while rice and bread are mainly starch (carbohydrate).",
+    insight: "Sources of vitamin C: citrus fruits (oranges, lemons) and fresh green vegetables."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "A lack of vitamin C in the diet causes which deficiency disease?",
+    o: ["Scurvy", "Rickets", "Anaemia", "Goitre"],
+    a: 0,
+    h: "Sailors on long voyages without fresh fruit used to suffer from this disease.",
+    expl: "Scurvy is caused by a lack of vitamin C; symptoms include bleeding gums and slow wound healing. Rickets is caused by lack of vitamin D or calcium, anaemia by lack of iron, and goitre by lack of iodine.",
+    insight: "Deficiency of vitamin C → scurvy (bleeding gums, wounds heal slowly)."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "A lack of vitamin D in a child's diet can cause which disease?",
+    o: ["Rickets", "Scurvy", "Anaemia", "Beriberi"],
+    a: 0,
+    h: "This vitamin is needed for the growth and development of bones and teeth.",
+    expl: "Rickets is caused by a lack of vitamin D. It leads to stunted growth and softening of the bones and teeth. Scurvy is caused by lack of vitamin C, anaemia by lack of iron, and beriberi by lack of vitamin B1.",
+    insight: "Deficiency of vitamin D → rickets (stunted growth, softening of bones and teeth)."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Which vitamin can the body make in the skin when it is exposed to sunlight?",
+    o: ["Vitamin D", "Vitamin C", "Vitamin A", "Vitamin K"],
+    a: 0,
+    h: "This vitamin is needed for the growth and development of bones and teeth.",
+    expl: "The skin makes vitamin D when exposed to sunlight. It is also found in dairy products, eggs and liver.",
+    insight: "Sources of vitamin D: dairy products, eggs, liver, and produced when sunlight falls on the skin."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Which vitamin, found in carrots and pumpkins, is needed for good eyesight and healthy skin?",
+    o: ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin K"],
+    a: 0,
+    h: "Orange-coloured vegetables contain a pigment that the body converts into this vitamin.",
+    expl: "Vitamin A is needed for good eyesight and healthy skin; a lack of it causes night blindness and dry, scaly skin. Carrots, pumpkins, green vegetables, eggs and fish are good sources.",
+    insight: "Vitamin A (carrots, pumpkins, green vegetables): good eyesight, healthy skin; deficiency → night blindness, dry scaly skin."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Iron is needed by the body to make which substance?",
+    o: ["Haemoglobin", "Bile", "Saliva", "Enamel"],
+    a: 0,
+    h: "This substance is found inside red blood cells.",
+    expl: "Iron is needed to make haemoglobin, the red pigment in red blood cells that carries oxygen.",
+    insight: "Iron is needed to make haemoglobin, which carries oxygen in red blood cells."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "A person who is often tired and has pale skin may be lacking iron. What is this condition called?",
+    o: ["Anaemia", "Scurvy", "Rickets", "Goitre"],
+    a: 0,
+    h: "Without enough of the oxygen-carrying pigment, the blood carries less oxygen.",
+    expl: "A lack of iron means less haemoglobin is made, so less oxygen is carried by the blood. This is anaemia, which causes tiredness and pale skin.",
+    insight: "Deficiency of iron → anaemia (tiredness and lack of energy)."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Which food is the best source of iron?",
+    o: ["Red meat", "White rice", "Olive oil", "Table sugar"],
+    a: 0,
+    h: "Iron is often found in foods that are dark red or dark green.",
+    expl: "Liver, meat, eggs and green vegetables are rich in iron. Rice and sugar are mainly carbohydrate, and olive oil is fat.",
+    insight: "Sources of iron: liver, meat, eggs, green vegetables."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Milk and cheese are rich in calcium. What is calcium mainly needed for?",
+    o: [
+      "Building strong bones and teeth, and helping blood to clot",
+      "Making haemoglobin so that red blood cells can carry oxygen",
+      "Keeping the gums healthy and helping wounds to heal quickly",
+      "Helping the thyroid gland to make hormones that control growth"
+    ],
+    a: 0,
+    h: "Think about the hardest parts of your body.",
+    expl: "Calcium is needed for strong bones and teeth, muscle contraction and blood clotting. Making haemoglobin needs iron, healthy gums need vitamin C, and thyroid hormones need iodine.",
+    insight: "Calcium (dairy products, green vegetables, eggs): strong bones and teeth, blood clotting; deficiency → brittle bones and teeth, tooth decay."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Which mineral is needed by the thyroid gland, and prevents a swelling in the neck called goitre?",
+    o: ["Iodine", "Iron", "Calcium", "Potassium"],
+    a: 0,
+    h: "It is found in seafood and is added to some table salt.",
+    expl: "Iodine is needed to make thyroid hormones. A lack of iodine causes goitre, a swelling of the thyroid gland in the neck.",
+    insight: "Iodine (seafood, seaweed, iodised table salt): formation of thyroid hormones; deficiency → goitre."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Why is dietary fibre important even though the body cannot digest it?",
+    o: [
+      "It adds bulk to food so gut muscles can push it along, preventing constipation",
+      "It is broken down by enzymes into glucose, which gives the body extra energy",
+      "It is absorbed into the blood and used to build and repair damaged cells",
+      "It dissolves fats in the small intestine so that lipase can work faster"
+    ],
+    a: 0,
+    h: "Think about what happens to food that passes through the gut without being digested.",
+    expl: "Fibre (roughage) is made of cellulose, which the body cannot break down. It adds bulk to food, helping the intestine muscles push food along, which keeps the intestines healthy and prevents constipation.",
+    insight: "Fibre keeps the intestines healthy and working properly; it adds bulk and prevents constipation."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Which food is the best source of dietary fibre?",
+    o: ["Brown rice", "Fried chicken", "Boiled egg", "Fresh milk"],
+    a: 0,
+    h: "Fibre comes from the cell walls of plants.",
+    expl: "Fibre comes from plant cell walls, so whole grains (brown rice, wholemeal bread), vegetables and fruit are good sources. Chicken, eggs and milk are animal foods with almost no fibre.",
+    insight: "Sources of fibre: fruits, vegetables, brown rice, wholemeal bread."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Which of these is a function of water in the body?",
+    o: [
+      "It acts as a solvent and transports dissolved substances around the body",
+      "It provides most of the body's energy when carbohydrate stores run low",
+      "It is the main material used to build new muscle and repair damaged tissues",
+      "It is stored under the skin to insulate the body and reduce heat loss"
+    ],
+    a: 0,
+    h: "Think about blood plasma, and what glucose must do in order to be carried.",
+    expl: "Water dissolves nutrients and transports them around the body; it is the main component of cells and blood plasma, and chemical reactions need it. It provides no energy.",
+    insight: "Water: needed for breaking down food, dissolving nutrients and transporting them; main component of cells and blood plasma."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Which two nutrients do NOT provide energy but are needed in small amounts to stay healthy?",
+    o: ["Vitamins and minerals", "Proteins and fats", "Fats and carbohydrates", "Carbohydrates and proteins"],
+    a: 0,
+    h: "These are needed only in milligrams or micrograms each day.",
+    expl: "Vitamins and minerals are needed in small amounts for good health but release no energy. Carbohydrates, fats and proteins can all provide energy.",
+    insight: "Vitamins and minerals are needed in small amounts; they do not provide energy."
+  },
+
+  {
+    t: "Nutrients & Sources",
+    q: "A lack of vitamin B1 causes which disease that affects the nerves and muscles?",
+    o: ["Beriberi", "Scurvy", "Rickets", "Goitre"],
+    a: 0,
+    h: "This vitamin is found in yeast and wholegrain cereals.",
+    expl: "A lack of vitamin B1 causes beriberi, a disease affecting the nerves and muscles. Vitamin B1 is needed to release energy from carbohydrates.",
+    insight: "Vitamin B1 (yeast, wholegrain cereals, peas): releases energy from carbohydrates; deficiency → beriberi."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Which vitamin is needed for blood clotting and is also made by bacteria in the gut?",
+    o: ["Vitamin K", "Vitamin A", "Vitamin C", "Vitamin E"],
+    a: 0,
+    h: "A lack of this vitamin causes easy bruising and prolonged bleeding.",
+    expl: "Vitamin K is needed for blood clotting. It is found in vegetables and liver, and is made by bacteria in the large intestine.",
+    insight: "Vitamin K (vegetables, liver, gut bacteria): blood clotting; deficiency → easy bruising, prolonged bleeding."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Which vitamin must be eaten regularly because it dissolves in water and is not stored in the body?",
+    o: ["Vitamin C", "Vitamin A", "Vitamin D", "Vitamin K"],
+    a: 0,
+    h: "Vitamins A, D, E and K are fat-soluble and are stored in fat tissue.",
+    expl: "Vitamin C (and vitamin B1) are water-soluble, so they are not stored and must be taken regularly. Vitamins A, D, E and K are fat-soluble and are stored in fat tissues.",
+    insight: "Water-soluble vitamins (B1, C) are not stored — take regularly. Fat-soluble vitamins (A, D, E, K) are stored in fat tissues."
+  },
+  {
+    t: "Nutrients & Sources",
+    q: "Dietary fibre is made up of which substance that the body cannot break down?",
+    o: ["Cellulose", "Glycogen", "Starch", "Glucose"],
+    a: 0,
+    h: "This substance makes up plant cell walls.",
+    expl: "Fibre (roughage) is made of cellulose, which the body cannot break down. It passes through the body and leaves as faeces. Starch and glucose can be digested and absorbed.",
+    insight: "Fibre (roughage) is made up of cellulose that cannot be broken down by the body."
+  },
+
+  // ===================== Carbs, Proteins & Fats (10) =====================
+  {
+    t: "Carbs, Proteins & Fats",
+    q: "What is the main function of carbohydrates in the diet?",
+    o: [
+      "To provide the body with its main source of energy",
+      "To provide materials for the growth and repair of cells",
+      "To store energy under the skin and insulate the body",
+      "To help the body fight infections and heal wounds"
+    ],
+    a: 0,
+    h: "Rice, bread and noodles are eaten in large amounts for this reason.",
+    expl: "Carbohydrates are the body's main source of energy, released during respiration. Growth and repair is the job of proteins; insulation is a job of fats.",
+    insight: "Carbohydrates (starch and sugars) supply most of the energy needed by the body."
+  },
+  {
+    t: "Carbs, Proteins & Fats",
+    q: "Which food is mainly a source of carbohydrate?",
+    o: ["Potatoes", "Eggs", "Butter", "Fish"],
+    a: 0,
+    h: "Look for a starchy food that comes from a plant.",
+    expl: "Potatoes are rich in starch, a carbohydrate. Eggs and fish are mainly protein, and butter is mainly fat.",
+    insight: "Starch: rice, noodles, bread, potatoes, cereals. Sugars: fruit, candies, cakes, soft drinks."
+  },
+  {
+    t: "Carbs, Proteins & Fats",
+    q: "What are the small units that join together to make a protein?",
+    o: ["Amino acids", "Fatty acids", "Glucose molecules", "Glycerol molecules"],
+    a: 0,
+    h: "Each of these units contains nitrogen.",
+    expl: "Proteins are long chains of amino acids. Fatty acids and glycerol make up fats, and glucose molecules make up starch.",
+    insight: "Proteins are made of amino acids; protease digests proteins into amino acids."
+  },
+  {
+    t: "Carbs, Proteins & Fats",
+    q: "Why do growing children and people recovering from injury need more protein?",
+    o: [
+      "Protein provides the materials for growth and for repairing damaged tissues",
+      "Protein is the fastest source of energy for muscles during exercise",
+      "Protein forms a thick fat layer under the skin that protects organs",
+      "Protein keeps food moving through the gut and prevents constipation"
+    ],
+    a: 0,
+    h: "Think about what new cells are built from.",
+    expl: "Proteins provide the materials (amino acids) needed to build new cells for growth and to repair damaged tissues. Carbohydrates are the main energy source, fats insulate, and fibre prevents constipation.",
+    insight: "Proteins: make cells, tissues, enzymes and hormones; essential for growth and repair of worn-out parts of the body."
+  },
+  {
+    t: "Carbs, Proteins & Fats",
+    q: "Which group of foods is richest in protein?",
+    o: ["Fish, eggs and tofu", "Rice, bread and pasta", "Butter, oil and cream", "Oranges, lemons and limes"],
+    a: 0,
+    h: "Think of foods that come from animal muscle, or from beans.",
+    expl: "Fish, eggs and tofu (made from soya beans) are rich in protein. Rice, bread and pasta are carbohydrates; butter, oil and cream are fats; citrus fruits give vitamin C.",
+    insight: "Sources of protein: fish, meat, eggs, cheese, nuts, beans, milk."
+  },
+  {
+    t: "Carbs, Proteins & Fats",
+    q: "When fats are digested, which two products are formed?",
+    o: ["Fatty acids and glycerol", "Amino acids and glycerol", "Glucose and fatty acids", "Maltose and amino acids"],
+    a: 0,
+    h: "One of the products has a name that includes the word for the nutrient itself.",
+    expl: "Lipase digests fats into fatty acids and glycerol. Amino acids come from proteins; glucose and maltose come from carbohydrates.",
+    insight: "Fats → fatty acids + glycerol (digested by lipase)."
+  },
+  {
+    t: "Carbs, Proteins & Fats",
+    q: "Which nutrient has the highest energy value per gram?",
+    o: ["Fats", "Proteins", "Carbohydrates", "Vitamins"],
+    a: 0,
+    h: "This nutrient is stored in the body as a reserve supply of energy.",
+    expl: "Fats have the highest energy value — about twice that of carbohydrates or proteins per gram. Vitamins provide no energy.",
+    insight: "Energy value = amount of energy stored in food. Fats have the highest energy value."
+  },
+  {
+    t: "Carbs, Proteins & Fats",
+    q: "Which nutrient does the body use FIRST as its source of energy?",
+    o: ["Carbohydrates", "Fats", "Proteins", "Minerals"],
+    a: 0,
+    h: "It does not have the highest energy value, but it is used before the others.",
+    expl: "Carbohydrates are the first source of energy the body uses. Fats are used when carbohydrates run out, and proteins only when carbohydrates and fats are not available.",
+    insight: "Carbohydrates are the first source of energy the body uses, even though fats have a higher energy value."
+  },
+  {
+    t: "Carbs, Proteins & Fats",
+    q: "When does the body use proteins to supply energy?",
+    o: [
+      "When the carbohydrates and fats in the body are not available",
+      "Always first, before any carbohydrates or fats are broken down",
+      "Only during sleep, when the body is repairing damaged cells and tissues",
+      "Only right after a meal, when there is extra protein in the gut"
+    ],
+    a: 0,
+    h: "Using proteins for energy causes muscles to break down, so it is the last choice.",
+    expl: "Proteins are used for energy only when carbohydrates and fats are not available. When this happens, muscles are broken down.",
+    insight: "Proteins supply energy when carbohydrates and fats are not available; muscles break down if proteins are used as an energy source."
+  },
+  {
+    t: "Carbs, Proteins & Fats",
+    q: "Excess carbohydrates that are not used up by the body are converted into what?",
+    o: ["Fats", "Proteins", "Vitamins", "Fibre"],
+    a: 0,
+    h: "Eating too much rice and sugar can make a person gain body weight.",
+    expl: "Excess carbohydrates are converted into fats and stored in the body. Too much stored fat can lead to obesity.",
+    insight: "Excess carbohydrates are converted into fats and stored in the body."
+  },
+  {
+    t: "Carbs, Proteins & Fats",
+    q: "Besides storing energy, which is another function of fat in the body?",
+    o: [
+      "Keeping the body warm and helping it absorb fat-soluble vitamins",
+      "Carrying oxygen in the blood to all the cells of the body",
+      "Forming the main structure of new muscle fibres during growth",
+      "Speeding up chemical reactions such as the digestion of food"
+    ],
+    a: 0,
+    h: "Think about animals that live in very cold places, like seals, and about vitamins A, D, E and K.",
+    expl: "Fats keep us warm and help the body absorb fat-soluble vitamins (A, D, E, K). Carrying oxygen is haemoglobin's job, growth uses protein, and enzymes speed up reactions.",
+    insight: "Fats: reserve supply of energy, keep us warm, help absorb fat-soluble vitamins."
+  },
+
+  // ===================== Benedict's Test (7) =====================
+  {
+    t: "Benedict's Test",
+    q: "Benedict's solution is used to test a food for the presence of what?",
+    o: ["Glucose", "Starch", "Protein", "Fat"],
+    a: 0,
+    h: "This test can show whether amylase has worked on starch.",
+    expl: "Benedict's solution tests for glucose, a simple sugar. Starch is tested with iodine solution instead.",
+    insight: "Benedict's solution tests for glucose (a simple sugar): blue solution + glucose, heated → orange-red precipitate."
+  },
+  {
+    t: "Benedict's Test",
+    q: "What colour is Benedict's solution before it is heated with a food sample?",
+    o: ["Blue", "Green", "Red", "Purple"],
+    a: 0,
+    h: "The solution contains copper(II) sulfate.",
+    expl: "Benedict's solution is blue because it contains copper(II) sulfate. If no glucose is present, it stays blue after heating.",
+    insight: "Benedict's solution is blue; if no sugar is present it remains blue after heating."
+  },
+  {
+    t: "Benedict's Test",
+    q: "A food sample containing a lot of glucose is heated with Benedict's solution. What is the final colour?",
+    o: ["Orange-red", "Blue-black", "Purple", "Green"],
+    a: 0,
+    h: "The more sugar there is, the further along the colour sequence the result goes.",
+    expl: "When glucose is present and heated with Benedict's solution, an orange-red (brick-red) precipitate forms. Green shows only a trace. Blue-black is the positive result for starch with iodine solution.",
+    insight: "Glucose present → orange-red (brick-red) precipitate forms on heating."
+  },
+  {
+    t: "Benedict's Test",
+    q: "Which shows the correct order of colours with Benedict's solution as the amount of sugar increases?",
+    o: [
+      "Blue → green → yellow → orange → brick-red",
+      "Blue → orange → yellow → green → brick-red",
+      "Green → blue → yellow → brick-red → orange",
+      "Blue → yellow → green → brick-red → orange"
+    ],
+    a: 0,
+    h: "The sequence moves steadily from cool colours to warm colours.",
+    expl: "As the amount of sugar increases, the colour changes from blue → green → yellow → orange → brick-red (orange-red).",
+    insight: "Benedict's colour sequence (increasing sugar): blue → green → yellow → orange → brick-red."
+  },
+  {
+    t: "Benedict's Test",
+    q: "What must be done to a mixture of food and Benedict's solution for a colour change to happen?",
+    o: [
+      "Heat it in a boiling water bath for a few minutes",
+      "Leave it standing at room temperature for a few minutes",
+      "Add a few drops of iodine solution and shake it well",
+      "Place it in an ice-water bath for a few minutes"
+    ],
+    a: 0,
+    h: "The reaction in this test needs energy to take place.",
+    expl: "The mixture must be heated in a boiling (hot) water bath for a few minutes. Without heating, no colour change happens even if glucose is present.",
+    insight: "Add Benedict's solution to the food sample and heat in a boiling water bath for a few minutes."
+  },
+  {
+    t: "Benedict's Test",
+    q: "After heating with Benedict's solution, a food sample stays blue. What does this show?",
+    o: [
+      "No glucose or other simple sugar is present in the sample",
+      "A large amount of glucose is present in the food sample",
+      "A small trace of glucose is present in the food sample",
+      "Starch is present, so the sample must be a carbohydrate"
+    ],
+    a: 0,
+    h: "Compare the final colour with the starting colour of the reagent.",
+    expl: "If the solution stays blue, no glucose (simple sugar) is present. Benedict's solution does not detect starch, so it cannot show whether starch is present.",
+    insight: "Remains blue → no glucose present (negative result)."
+  },
+  {
+    t: "Benedict's Test",
+    q: "A food sample turns green after heating with Benedict's solution. What does this indicate?",
+    o: [
+      "A very small amount of glucose is present",
+      "A very large amount of glucose is present",
+      "Starch has been converted into protein during heating",
+      "No sugar is present, but the sample contains fat"
+    ],
+    a: 0,
+    h: "Green is only one step along the colour sequence.",
+    expl: "Green is the first colour after blue, so it shows only a trace (very small amount) of glucose. A large amount would give orange-red / brick-red.",
+    insight: "Green → trace of sugar; yellow/orange → moderate amount; orange-red / brick-red → large amount."
+  },
+
+  {
+    t: "Benedict's Test",
+    q: "A food turns blue-black with iodine solution but stays blue when heated with Benedict's solution. What does it contain?",
+    o: ["Starch only", "Glucose only", "Both nutrients", "Neither nutrient"],
+    a: 0,
+    h: "Each reagent tests for a different carbohydrate.",
+    expl: "Iodine solution turns from brown to blue-black when starch is present. Benedict's staying blue means no glucose. So the food contains starch but no glucose.",
+    insight: "Iodine solution (brown) → blue-black: starch present. Benedict's solution (blue) → orange-red on heating: glucose present."
+  },
+
+  // ===================== Balanced Diet (8) =====================
+  {
+    t: "Balanced Diet",
+    q: "What is a balanced diet?",
+    o: [
+      "A diet containing all the nutrients in the correct proportions",
+      "A diet containing equal amounts of every nutrient in every meal",
+      "A diet containing mostly protein, with small amounts of the others",
+      "A diet containing only foods that are low in fat and sugar"
+    ],
+    a: 0,
+    h: "Different nutrients are needed in different amounts.",
+    expl: "A balanced diet contains all the nutrients — carbohydrates, proteins, fats, vitamins, minerals, fibre and water — in the correct amounts to meet the body's needs. Equal amounts would not be balanced, as nutrients are needed in different quantities.",
+    insight: "A balanced diet contains the right amounts of carbohydrates, proteins, fats, vitamins, minerals, fibre and water to meet the nutritional and energy needs of our body."
+  },
+  {
+    t: "Balanced Diet",
+    q: "Which person is likely to need the MOST energy each day?",
+    o: ["A construction worker", "An office clerk", "A young toddler", "An elderly retiree"],
+    a: 0,
+    h: "Energy needs depend strongly on how physically active a person is.",
+    expl: "A construction worker does heavy physical work every day, so uses much more energy than someone who sits at a desk, a small child, or an elderly person who is less active.",
+    insight: "Different people have different energy needs, depending on age, sex, body size and level of activity."
+  },
+  {
+    t: "Balanced Diet",
+    q: "Why does a pregnant woman need extra protein, iron and calcium?",
+    o: [
+      "To support the growth of the baby's tissues, blood and bones",
+      "To store extra fat that will keep the baby warm after birth",
+      "To stop her own body from digesting food too quickly",
+      "To replace the energy she loses by being less active"
+    ],
+    a: 0,
+    h: "Think about what the growing baby is building.",
+    expl: "The developing baby needs protein to build tissues, iron to make haemoglobin for its blood, and calcium for its bones and teeth — all supplied through the mother's diet.",
+    insight: "Pregnant women need extra protein, iron and calcium for the growth and development of the fetus."
+  },
+  {
+    t: "Balanced Diet",
+    q: "Eating too much fat and sugar over a long time is most likely to lead to which condition?",
+    o: ["Obesity", "Scurvy", "Anaemia", "Rickets"],
+    a: 0,
+    h: "Energy that is eaten but not used by the body is stored.",
+    expl: "If the body takes in more energy than it uses, the extra is stored as fat, leading to obesity. Scurvy, anaemia and rickets are caused by a lack of nutrients, not an excess.",
+    insight: "More energy taken in than used up → stored as fat → obesity (linked to heart disease, diabetes, high blood pressure)."
+  },
+  {
+    t: "Balanced Diet",
+    q: "Obesity is linked to which group of health problems?",
+    o: [
+      "Heart disease, diabetes and high blood pressure",
+      "Scurvy, rickets, goitre and poor night vision",
+      "Anaemia, beriberi, tooth decay and brittle bones",
+      "Kwashiorkor, muscle weakness, tiredness and muscle cramps"
+    ],
+    a: 0,
+    h: "These problems come from having too much stored fat, not from lacking a nutrient.",
+    expl: "Obesity is linked to heart disease, diabetes and high blood pressure. High blood pressure can lead to stroke and kidney failure. The other options are deficiency problems caused by too little of a nutrient.",
+    insight: "Obesity is linked to heart disease, diabetes and high blood pressure; high blood pressure can lead to stroke and kidney failure."
+  },
+  {
+    t: "Balanced Diet",
+    q: "A severe lack of protein in a child's diet, common in areas with famine, causes which disease?",
+    o: ["Kwashiorkor", "Scurvy", "Goitre", "Beriberi"],
+    a: 0,
+    h: "It is a deficiency problem caused by not eating enough, not by lacking a vitamin or mineral.",
+    expl: "Kwashiorkor is caused by a severe lack of proteins in the diet of children. It is common in areas with famine. Scurvy, goitre and beriberi are caused by lacking vitamin C, iodine and vitamin B1.",
+    insight: "Severe lack of proteins in children → kwashiorkor (common in areas with famine)."
+  },
+  {
+    t: "Balanced Diet",
+    q: "What is malnutrition?",
+    o: [
+      "Taking in too much or too little energy or nutrients in the diet",
+      "Eating food that has not been cooked long enough to be safe",
+      "Being unable to digest food because the body lacks enzymes",
+      "Eating the correct amounts of food but at irregular times"
+    ],
+    a: 0,
+    h: "It is the opposite of eating a balanced diet — and it can mean eating too much.",
+    expl: "Malnutrition means the diet is not balanced: it has too little of some nutrients (e.g. causing scurvy) or too much (e.g. causing obesity).",
+    insight: "Malnutrition refers to too much or too little intake of energy or nutrients."
+  },
+  {
+    t: "Balanced Diet",
+    q: "Which meal is the most balanced?",
+    o: [
+      "Brown rice, steamed fish, broccoli and orange",
+      "White bread, butter, jam and sweet tea",
+      "Fried chicken, French fries and fizzy cola",
+      "Grilled steak, fried eggs and bacon strips"
+    ],
+    a: 0,
+    h: "Look for a meal that has carbohydrate, protein, fibre and vitamins together.",
+    expl: "Brown rice (carbohydrate and fibre), fish (protein), broccoli and orange (vitamins, minerals and fibre) give a good mix. The others are high in fat, sugar or protein and low in fibre and vitamins.",
+    insight: "A balanced meal contains carbohydrate, protein, a little fat, vitamins, minerals, fibre and water in the right proportions."
+  },
+  {
+    t: "Balanced Diet",
+    q: "Which factor does NOT affect how much energy a person needs each day?",
+    o: ["Eye colour", "Activity level", "Body size", "Age group"],
+    a: 0,
+    h: "Ask which of these changes how much work the body's cells must do.",
+    expl: "Energy needs depend on age, sex, body size, activity level and whether a woman is pregnant. Eye colour has no effect on energy use.",
+    insight: "Energy requirement depends on age, sex, body size, activity level and pregnancy."
+  },
+
+  // ===================== Digestion & Enzymes (14) =====================
+  {
+    t: "Digestion & Enzymes",
+    q: "Why must food be digested before the body can use it?",
+    o: [
+      "Large insoluble molecules must be broken into small soluble ones that can enter cells",
+      "Small soluble molecules must be joined into large ones that can be stored in cells",
+      "Food must be heated inside the stomach so that harmful bacteria are killed first",
+      "Food must be mixed with water so it becomes soft enough to swallow easily"
+    ],
+    a: 0,
+    h: "Think about what must happen for food to pass through the gut wall into the blood.",
+    expl: "Food molecules such as starch, proteins and fats are too large and insoluble to pass through the gut wall. Digestion breaks them into small, soluble molecules that can be absorbed into the blood.",
+    insight: "Digestion is the breakdown of large insoluble molecules into smaller soluble ones. Food must be digested because most food molecules are too large or insoluble to pass through cell membranes."
+  },
+  {
+    t: "Digestion & Enzymes",
+    q: "What is an enzyme?",
+    o: [
+      "A protein that speeds up chemical reactions without being used up",
+      "A carbohydrate that provides the energy for chemical reactions in cells",
+      "A fat that dissolves large food molecules into smaller pieces",
+      "A mineral that is used up as it breaks down food molecules"
+    ],
+    a: 0,
+    h: "Enzymes are sometimes called biological catalysts.",
+    expl: "Enzymes are proteins that act as biological catalysts: they speed up chemical reactions and remain unchanged at the end, so they can be used again.",
+    insight: "Enzymes are biological catalysts (special proteins produced by the body) that speed up certain chemical reactions."
+  },
+  {
+    t: "Digestion & Enzymes",
+    q: "Which enzyme breaks down starch?",
+    o: ["Amylase", "Protease", "Lipase", "Maltase"],
+    a: 0,
+    h: "This enzyme is found in saliva.",
+    expl: "Amylase breaks starch down into maltose. Protease digests proteins, lipase digests fats, and maltase digests maltose into glucose.",
+    insight: "Salivary amylase (mouth) breaks down starch into maltose; pancreatic amylase continues in the small intestine."
+  },
+  {
+    t: "Digestion & Enzymes",
+    q: "Which enzyme breaks down proteins?",
+    o: ["Protease", "Amylase", "Lipase", "Maltase"],
+    a: 0,
+    h: "This enzyme works in both the stomach and the small intestine.",
+    expl: "Proteases break proteins down: into shorter chains in the stomach, then into amino acids in the small intestine. Amylase digests starch, lipase digests fats, and maltase digests maltose.",
+    insight: "Proteases: stomach — long protein chains → shorter chains; small intestine — shorter chains → amino acids."
+  },
+  {
+    t: "Digestion & Enzymes",
+    q: "Which option correctly matches an enzyme to what it digests and the product formed?",
+    o: [
+      "Protease: proteins → amino acids",
+      "Amylase: proteins → amino acids",
+      "Lipase: starch → simple sugars",
+      "Protease: fats → fatty acids"
+    ],
+    a: 0,
+    h: "Each enzyme works only on one type of food molecule.",
+    expl: "Protease digests proteins into amino acids. Amylase digests starch (not proteins), lipase digests fats (not starch), and protease does not act on fats.",
+    insight: "Enzymes are specific: amylase (starch → maltose), protease (protein → amino acids), lipase (fats → fatty acids + glycerol)."
+  },
+  {
+    t: "Digestion & Enzymes",
+    q: "Which enzyme digests fats into fatty acids and glycerol?",
+    o: ["Lipase", "Amylase", "Protease", "Maltase"],
+    a: 0,
+    h: "This enzyme is made by the pancreas and works best after bile has acted on fat.",
+    expl: "Lipase digests fats into fatty acids and glycerol in the small intestine. Bile first emulsifies the fat to give lipase a larger surface area.",
+    insight: "Lipase: fats → fatty acids + glycerol (in the small intestine)."
+  },
+  {
+    t: "Digestion & Enzymes",
+    q: "In which part of the alimentary canal does the digestion of starch begin?",
+    o: ["Mouth", "Stomach", "Duodenum", "Oesophagus"],
+    a: 0,
+    h: "Starch digestion starts as soon as food is mixed with the first digestive juice.",
+    expl: "Starch digestion begins in the mouth, where salivary amylase in saliva starts breaking starch into maltose.",
+    insight: "Digestion of food starts in the mouth: salivary amylase breaks down large starch molecules into smaller maltose molecules."
+  },
+  {
+    t: "Digestion & Enzymes",
+    q: "Amylase digests starch into which sugar?",
+    o: ["Maltose", "Sucrose", "Lactose", "Fructose"],
+    a: 0,
+    h: "It is a sugar made of two glucose units joined together.",
+    expl: "Amylase breaks starch into maltose. Other carbohydrases in the small intestine then break maltose into simple sugars (glucose), which are small enough to be absorbed.",
+    insight: "Starch → maltose (amylase) → simple sugars (carbohydrases in the small intestine)."
+  },
+  {
+    t: "Digestion & Enzymes",
+    q: "What is the role of hydrochloric acid in the stomach?",
+    o: [
+      "It kills unwanted bacteria in food and helps the proteases to work",
+      "It digests proteins directly into amino acids without help from enzymes",
+      "It emulsifies fats into small droplets so that lipase can digest them",
+      "It neutralises the alkaline saliva so food can be absorbed more quickly"
+    ],
+    a: 0,
+    h: "Think about bacteria in food, and the conditions the stomach enzyme needs.",
+    expl: "Hydrochloric acid kills most bacteria (germs) in food and provides the acidic conditions that stomach protease needs to work best. It does not digest food by itself.",
+    insight: "Hydrochloric acid in gastric juice activates the proteases and kills bacteria."
+  },
+  {
+    t: "Digestion & Enzymes",
+    q: "What does bile do in the small intestine?",
+    o: [
+      "It breaks large fat droplets into smaller ones for enzymes to act on",
+      "It chemically digests fats into fatty acids and glycerol as an enzyme",
+      "It breaks starch into maltose so that it can be absorbed in the ileum",
+      "It adds acid to the small intestine so that protease works well"
+    ],
+    a: 0,
+    h: "Bile is not an enzyme — it works in a physical way.",
+    expl: "Bile breaks up large fat droplets into smaller fat droplets, giving the enzymes (lipase) more surface to act on. Bile is not an enzyme and does not chemically digest fat.",
+    insight: "Bile (produced by the liver, stored in the gall bladder) breaks up large fat droplets into smaller fat droplets for digestive enzymes to act on."
+  },
+
+  {
+    t: "Digestion & Enzymes",
+    q: "Why does breaking food into smaller pieces with the teeth help digestion?",
+    o: [
+      "It increases the surface area of food for the digestive enzymes to act on",
+      "It changes the large food molecules into new, smaller molecules straight away",
+      "It allows the food to be absorbed directly into the blood from the mouth",
+      "It kills bacteria in the food so that the enzymes are not destroyed"
+    ],
+    a: 0,
+    h: "Think about how much of the food's surface the enzymes can reach.",
+    expl: "Teeth break food into smaller pieces, which increases its surface area for digestive enzymes to act on. Chewing does not change the molecules — that is chemical digestion.",
+    insight: "Teeth break up food into smaller pieces, increasing the surface area for digestive enzymes to act on."
+  },
+  {
+    t: "Digestion & Enzymes",
+    q: "Which statement about physical digestion is correct?",
+    o: [
+      "Big pieces of food are broken down, but the molecules do not change",
+      "Large food molecules are broken down into new, smaller molecules by enzymes",
+      "Food molecules are joined together to form larger, insoluble molecules",
+      "Hydrochloric acid reacts with the food to form new smaller molecules"
+    ],
+    a: 0,
+    h: "Ask yourself: is a chemical reaction taking place?",
+    expl: "In physical digestion, big pieces of food are broken into smaller pieces. There is no change in the molecules, so no chemical reaction takes place. Breaking molecules into new ones is chemical digestion.",
+    insight: "Physical digestion: big pieces → smaller pieces, no chemical reaction. Chemical digestion: large molecules → smaller molecules, involves chemical reactions."
+  },
+  {
+    t: "Digestion & Enzymes",
+    q: "In the stomach, proteases digest proteins into what?",
+    o: ["Shorter protein chains", "Individual amino acids", "Simple sugar molecules", "Fatty acid molecules"],
+    a: 0,
+    h: "Protein digestion is completed later, in the small intestine.",
+    expl: "Proteases in gastric juice digest long protein chains into shorter protein chains. Proteases in the small intestine then break these into amino acids.",
+    insight: "Stomach proteases digest long protein chains into shorter protein chains."
+  },
+  {
+    t: "Digestion & Enzymes",
+    q: "Which teeth cut and slice food into small pieces?",
+    o: ["Incisors", "Molars", "Premolars", "Canines"],
+    a: 0,
+    h: "These are the flat, sharp teeth at the front of the mouth.",
+    expl: "Incisors cut and slice food into small pieces. Molars crush small pieces of food. Both are part of physical digestion.",
+    insight: "Incisors cut and slice food; molars crush food (physical digestion)."
+  },
+
+  // ===================== Peristalsis (6) =====================
+  {
+    t: "Peristalsis",
+    q: "What is peristalsis?",
+    o: [
+      "Wave-like muscle contractions that push food along the alimentary canal",
+      "Chemical breakdown of food by enzymes as it passes along the gut",
+      "Movement of digested food through the gut wall into the blood",
+      "Grinding and chewing of food by the teeth into smaller pieces"
+    ],
+    a: 0,
+    h: "It happens in the walls of the gut and does not need you to think about it.",
+    expl: "Peristalsis is a rhythmic, wave-like contraction of the muscles in the gut wall that pushes food along the alimentary canal. Chemical breakdown is digestion; movement into the blood is absorption.",
+    insight: "Peristalsis: muscles in the wall contract and relax, producing wave-like movements that push food along."
+  },
+  {
+    t: "Peristalsis",
+    q: "Which two layers of muscle in the wall of the oesophagus work together to cause peristalsis?",
+    o: ["Circular and longitudinal", "Cardiac and skeletal", "Skeletal and circular", "Cardiac and longitudinal"],
+    a: 0,
+    h: "One layer runs around the tube; the other runs along its length.",
+    expl: "The gut wall has circular muscles (running around the tube) and longitudinal muscles (running along it). They are antagonistic: when one contracts, the other relaxes.",
+    insight: "Circular and longitudinal muscles are antagonistic — when one contracts, the other relaxes."
+  },
+  {
+    t: "Peristalsis",
+    q: "What happens in the wall of the oesophagus just BEHIND the bolus?",
+    o: [
+      "Circular muscles contract and longitudinal muscles relax, so the gut narrows",
+      "Circular muscles relax and longitudinal muscles contract, so the gut widens",
+      "Both muscle layers relax together, so the gut widens behind the food",
+      "Both muscle layers contract together, so the gut shortens and widens"
+    ],
+    a: 0,
+    h: "Behind the food, the tube squeezes like toothpaste being pushed from a tube.",
+    expl: "Behind the bolus, the circular muscles contract and the longitudinal muscles relax. The gut becomes narrower (constricts), squeezing the bolus forward.",
+    insight: "Behind the bolus: circular muscles contract, longitudinal muscles relax → gut constricts, pushing food forward."
+  },
+  {
+    t: "Peristalsis",
+    q: "What happens in the wall of the oesophagus just IN FRONT of the bolus?",
+    o: [
+      "Circular muscles relax and longitudinal muscles contract, so the gut widens",
+      "Circular muscles contract and longitudinal muscles relax, so the gut widens",
+      "Circular muscles contract and longitudinal muscles relax, so the gut narrows",
+      "Both muscle layers relax at the same time, so the gut stays still"
+    ],
+    a: 0,
+    h: "The tube ahead of the food must open up to make room for it.",
+    expl: "In front of the bolus, the circular muscles relax and the longitudinal muscles contract. The gut widens (dilates) so the bolus can move into it.",
+    insight: "In front of the bolus: circular muscles relax, longitudinal muscles contract → gut dilates (widens)."
+  },
+  {
+    t: "Peristalsis",
+    q: "Why can food still reach the stomach even if a person swallows while upside down?",
+    o: [
+      "Muscle contractions push the food along, so gravity is not needed",
+      "Saliva makes the food so slippery that it slides in any direction",
+      "The stomach sucks food downwards by creating low pressure inside it",
+      "The epiglottis squeezes the food and forces it down the oesophagus"
+    ],
+    a: 0,
+    h: "Think about what actually moves the food along the oesophagus.",
+    expl: "Food is moved by peristalsis — waves of muscle contraction in the oesophagus wall — not by gravity. So swallowing works even when upside down.",
+    insight: "Peristalsis moves food by muscular contraction, so it does not depend on gravity."
+  },
+  {
+    t: "Peristalsis",
+    q: "What is the name of the ball of chewed food mixed with saliva that is swallowed?",
+    o: ["Bolus", "Chyme", "Faeces", "Villus"],
+    a: 0,
+    h: "This forms in the mouth, before the food reaches the stomach.",
+    expl: "Chewed food mixed with saliva is rolled into a bolus by the tongue and swallowed. Chyme is the semi-liquid food that leaves the stomach.",
+    insight: "Bolus: a ball of chewed food mixed with saliva, moved down the oesophagus by peristalsis."
+  },
+
+  // ===================== Digestive System (12) =====================
+  {
+    t: "Digestive System",
+    q: "Which is the correct order in which food passes through the alimentary canal?",
+    o: [
+      "Mouth → oesophagus → stomach → small intestine → large intestine",
+      "Mouth → stomach → oesophagus → small intestine → large intestine",
+      "Mouth → oesophagus → stomach → large intestine → small intestine",
+      "Mouth → oesophagus → small intestine → stomach → large intestine"
+    ],
+    a: 0,
+    h: "The tube leaving the throat leads straight into a muscular bag.",
+    expl: "Food passes from the mouth, down the oesophagus, into the stomach, then the small intestine (duodenum and ileum), then the large intestine, and finally leaves through the anus.",
+    insight: "The alimentary canal is a continuous tube: mouth → oesophagus → stomach → small intestine → large intestine → rectum → anus."
+  },
+  {
+    t: "Digestive System",
+    q: "Which organ produces bile?",
+    o: ["Liver", "Pancreas", "Stomach", "Duodenum"],
+    a: 0,
+    h: "This is the largest internal organ, and food does not pass through it.",
+    expl: "Bile is made in the liver, stored in the gall bladder, and released into the duodenum through the bile duct.",
+    insight: "Bile is produced by the liver and stored in the gall bladder."
+  },
+  {
+    t: "Digestive System",
+    q: "Bile is stored in which organ before it is released into the duodenum?",
+    o: ["Gall bladder", "Urinary bladder", "Salivary gland", "Stomach lining"],
+    a: 0,
+    h: "It is a small sac attached underneath the liver.",
+    expl: "The gall bladder stores bile made by the liver and releases it into the duodenum. The urinary bladder stores urine, not bile.",
+    insight: "Gall bladder: stores bile produced by the liver."
+  },
+  {
+    t: "Digestive System",
+    q: "In which part of the alimentary canal are most digested nutrients absorbed into the blood?",
+    o: ["Small intestine", "Large intestine", "Stomach lining", "Rectum wall"],
+    a: 0,
+    h: "This part is lined with millions of finger-like villi.",
+    expl: "Most digested food (glucose, amino acids, fatty acids and glycerol) is absorbed in the small intestine, especially the ileum. The large intestine mainly absorbs water.",
+    insight: "Absorption of digested food takes place mainly in the small intestine (ileum)."
+  },
+  {
+    t: "Digestive System",
+    q: "What is the main function of the large intestine (colon)?",
+    o: [
+      "To absorb excess water and remaining minerals into the blood",
+      "To digest proteins and fats into small soluble molecules",
+      "To produce bile that neutralises acid from the stomach",
+      "To absorb most of the glucose and amino acids into blood"
+    ],
+    a: 0,
+    h: "By the time food reaches here, almost all the nutrients have already been absorbed.",
+    expl: "The large intestine absorbs water and mineral salts from the undigested material, forming solid faeces. Most nutrients were already absorbed in the small intestine.",
+    insight: "Colon absorbs excess water, remaining minerals and vitamins made by bacteria (e.g. vitamin K); rectum stores faeces."
+  },
+  {
+    t: "Digestive System",
+    q: "How is the small intestine adapted for absorbing digested food?",
+    o: [
+      "It has many villi, which give a large surface area for absorption",
+      "It has thick muscular walls that squeeze nutrients into the blood",
+      "It is short and wide, so food passes through it very quickly",
+      "It produces strong acid that dissolves nutrients so they pass through"
+    ],
+    a: 0,
+    h: "More surface means more places for nutrients to pass through.",
+    expl: "The small intestine is long and lined with millions of villi, giving a very large surface area. Villi have thin walls and a good blood supply for fast absorption.",
+    insight: "Villi are tiny finger-like projections on the inner wall of the small intestine that increase the surface area for absorption of digested food."
+  },
+  {
+    t: "Digestive System",
+    q: "Which organ produces a juice containing amylase, proteases and lipase that flows into the small intestine?",
+    o: ["Pancreas", "Liver", "Stomach", "Ileum"],
+    a: 0,
+    h: "This organ lies just below the stomach and also makes insulin.",
+    expl: "The pancreas makes pancreatic juice containing amylase, protease and lipase, and releases it into the duodenum. The liver makes bile, which has no enzymes.",
+    insight: "Pancreatic juice contains lipase, proteases and carbohydrases (including amylase)."
+  },
+  {
+    t: "Digestive System",
+    q: "Which part of the alimentary canal stores undigested food as faeces?",
+    o: ["Rectum", "Colon", "Duodenum", "Stomach"],
+    a: 0,
+    h: "It is the last part of the large intestine, just before the anus.",
+    expl: "The rectum stores undigested contents as faeces. The anus expels faeces when the ring-like muscles between the rectum and anus relax.",
+    insight: "Rectum: stores undigested contents as faeces. Anus: expels faeces."
+  },
+  {
+    t: "Digestive System",
+    q: "What is the semi-liquid mass of food that leaves the stomach called?",
+    o: ["Chyme", "Bolus", "Bile", "Faeces"],
+    a: 0,
+    h: "It forms after the stomach churns food and mixes it with gastric juice.",
+    expl: "Peristalsis in the stomach churns food and mixes it with gastric juice, forming chyme. Chyme is released into the small intestine in small amounts.",
+    insight: "Chyme: semi-liquid mass of food formed in the stomach, released into the small intestine a little at a time."
+  },
+  {
+    t: "Digestive System",
+    q: "What is the difference between physical and chemical digestion?",
+    o: [
+      "Physical breaks food into smaller pieces; chemical uses enzymes to change molecules",
+      "Physical uses enzymes to break food; chemical uses teeth and stomach muscles",
+      "Physical happens only in the stomach; chemical happens only in the mouth",
+      "Physical changes food into new substances; chemical only changes the food's size"
+    ],
+    a: 0,
+    h: "One type involves enzymes; the other involves teeth and churning.",
+    expl: "Physical (mechanical) digestion breaks food into smaller pieces, e.g. chewing and stomach churning, increasing surface area. Chemical digestion uses enzymes to break large molecules into small, soluble ones.",
+    insight: "Physical digestion: breaks food into smaller pieces (teeth, churning). Chemical digestion: enzymes break large molecules into small soluble molecules."
+  },
+  {
+    t: "Digestive System",
+    q: "In which part of the alimentary canal does the digestion of food end?",
+    o: ["Small intestine", "Large intestine", "The stomach", "The rectum"],
+    a: 0,
+    h: "The last digestive enzymes (lipase, proteases, carbohydrases) act here.",
+    expl: "Digestion starts in the mouth and ends in the small intestine. The large intestine absorbs water and minerals but does not digest food.",
+    insight: "Digestion of food starts in the mouth and ends in the small intestine."
+  },
+  {
+    t: "Digestive System",
+    q: "Which statement about the oesophagus is correct?",
+    o: [
+      "It pushes food to the stomach by peristalsis and makes no enzymes",
+      "It produces salivary amylase to continue digesting starch into maltose",
+      "It absorbs water and minerals from food as it passes down to the stomach",
+      "It secretes hydrochloric acid to kill bacteria before food enters the stomach"
+    ],
+    a: 0,
+    h: "Its main job is moving food, not digesting or absorbing it.",
+    expl: "The oesophagus is a narrow tube with strong muscles in its wall. Peristalsis pushes food along it to the stomach. No digestive enzymes are produced in the oesophagus.",
+    insight: "Oesophagus: narrow muscular tube; peristalsis pushes food to the stomach; no digestive enzymes are produced."
+  }
+];
+
+
+(function(){
+  "use strict";
+  // ---------- Config ----------
+  var QUIZ_NAME = "CA1 Science: Nutrition & Digestion Quiz";
+  var VERSION = "ver1.00";
+  var QS_PER_ROUND = 16;
+  var STREAK_TO_MASTER = 2;
+  var FINAL_PASS_SPACING_MS = 5 * 60 * 1000;   // 5 min
+  function slugify(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_+|_+$/g,""); }
+  var LS_KEY = slugify(QUIZ_NAME) + "_v1";
+
+  BANK.forEach(function(q,i){ q.id = i; });
+  var TOPICS = [];
+  BANK.forEach(function(q){ if (TOPICS.indexOf(q.t) === -1) TOPICS.push(q.t); });
+  var PALETTE = ["#1e88e5","#8e24aa","#d81b60","#00897b","#6d4c41","#b7860b","#455a64","#3949ab","#00838f","#ad1457"];
+  function colorOf(t){ return PALETTE[TOPICS.indexOf(t) % PALETTE.length]; }
+
+  // ---------- State / storage ----------
+  var memoryStore = null; // fallback if localStorage is unavailable
+  function freshState(){
+    var ledger = {};
+    BANK.forEach(function(q){ ledger[q.id] = { streak:0, status:"active", lastCorrect:0 }; });
+    return { ledger: ledger };
+  }
+  function loadState(){
+    var raw = null;
+    try { raw = window.localStorage.getItem(LS_KEY); } catch(e){ raw = memoryStore; }
+    var st = null;
+    try { st = raw ? JSON.parse(raw) : null; } catch(e){ st = null; }
+    if (!st || typeof st !== "object" || !st.ledger || typeof st.ledger !== "object") st = freshState();
+    // repair / fill any missing entries (e.g. after bank changes)
+    BANK.forEach(function(q){
+      var e = st.ledger[q.id];
+      if (!e || typeof e !== "object") { st.ledger[q.id] = { streak:0, status:"active", lastCorrect:0 }; return; }
+      if (typeof e.streak !== "number" || e.streak < 0) e.streak = 0;
+      if (e.status !== "active" && e.status !== "mastered") e.status = "active";
+      if (typeof e.lastCorrect !== "number") e.lastCorrect = 0;
+    });
+    return st;
+  }
+  function saveState(){
+    var raw = JSON.stringify(state);
+    try { window.localStorage.setItem(LS_KEY, raw); } catch(e){ memoryStore = raw; }
+  }
+  function clearState(){
+    try { window.localStorage.removeItem(LS_KEY); } catch(e){}
+    memoryStore = null;
+  }
+  var state = loadState();
+
+  // ---------- Helpers ----------
+  function $(id){ return document.getElementById(id); }
+  function shuffle(a){ a = a.slice(); for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+  function show(id){ ["home","quiz","results"].forEach(function(s){ $(s).classList.toggle("hidden", s!==id); }); window.scrollTo(0,0); }
+  function isFinalPass(e){ return e.status === "active" && e.streak === STREAK_TO_MASTER - 1; }
+  function isEligible(e, now){
+    if (e.status !== "active") return false;
+    if (isFinalPass(e) && FINAL_PASS_SPACING_MS > 0) return (now - e.lastCorrect) >= FINAL_PASS_SPACING_MS;
+    return true;
+  }
+  function fmtWait(ms){
+    var m = Math.ceil(ms/60000);
+    if (m < 60) return m + (m===1?" minute":" minutes");
+    var h = Math.ceil(m/60); if (h < 48) return h + " hours";
+    return Math.ceil(h/24) + " days";
+  }
+
+  // ---------- Home ----------
+  var noticeTimer = null;
+  function renderHome(){
+    $("quizTitle").textContent = QUIZ_NAME;
+    $("version").textContent = VERSION;
+    var now = Date.now(), total = BANK.length, mastered = 0, eligible = 0, resting = [], perTopic = {};
+    TOPICS.forEach(function(t){ perTopic[t] = { total:0, mastered:0, half:0 }; });
+    BANK.forEach(function(q){
+      var e = state.ledger[q.id], pt = perTopic[q.t];
+      pt.total++;
+      if (e.status === "mastered"){ mastered++; pt.mastered++; }
+      else {
+        if (e.streak >= 1) pt.half++;
+        if (isEligible(e, now)) eligible++; else resting.push(e);
+      }
+    });
+    var active = total - mastered, pct = total ? Math.round(mastered/total*100) : 0;
+    $("activeNum").textContent = active;
+    $("doneNum").textContent = mastered;
+    $("mainPct").textContent = pct + "% complete";
+    $("howText").textContent = "Answer correctly " + STREAK_TO_MASTER + " times in a row to complete a question. A wrong answer resets your progress on that question. Work through all " + total + " questions to finish.";
+
+    // pills
+    var pills = $("pills"); pills.innerHTML = "";
+    TOPICS.forEach(function(t){ var p = el("span","pill",t); p.style.borderColor = colorOf(t); p.style.color = colorOf(t); pills.appendChild(p); });
+
+    // topic cards
+    var box = $("topics"); box.innerHTML = "";
+    box.classList.toggle("two", TOPICS.length >= 7);
+    TOPICS.forEach(function(t){
+      var pt = perTopic[t], c = colorOf(t);
+      var card = el("div","tcard");
+      var name = el("div","tname",t); name.style.color = c; card.appendChild(name);
+      var row = el("div","trow");
+      var left = el("span");
+      if (pt.half > 0){ var h = el("span","half","▶" + pt.half); h.title = "One more correct answer to complete these"; left.appendChild(h); }
+      row.appendChild(left);
+      row.appendChild(el("span",null, pt.mastered + "/" + pt.total));
+      card.appendChild(row);
+      var bar = el("div","bar"), fill = el("span"); fill.style.background = c; fill.dataset.w = (pt.total ? pt.mastered/pt.total*100 : 0) + "%";
+      bar.appendChild(fill); card.appendChild(bar); box.appendChild(card);
+    });
+
+    // notice / relief valve
+    var notice = $("notice"), cont = $("continueBtn"), anyway = $("anywayBtn");
+    notice.className = "notice hidden"; anyway.classList.add("hidden"); cont.disabled = false;
+    if (noticeTimer){ clearTimeout(noticeTimer); noticeTimer = null; }
+    if (active === 0){
+      notice.textContent = "🎉 Amazing — you have completed all " + total + " questions! Press “Start All Over” if you want to practise again.";
+      notice.className = "notice done"; cont.disabled = true;
+    } else if (eligible === 0){
+      var soonest = Math.min.apply(null, resting.map(function(e){ return FINAL_PASS_SPACING_MS - (now - e.lastCorrect); }));
+      notice.textContent = "The remaining " + resting.length + " question" + (resting.length===1?" is":"s are") + " resting before their final check. Come back in about " + fmtWait(soonest) + ", or practise them now.";
+      notice.classList.remove("hidden"); cont.disabled = true; anyway.classList.remove("hidden");
+      noticeTimer = setTimeout(renderHome, Math.min(Math.max(soonest,1000), 60000));
+    } else if (eligible < QS_PER_ROUND && resting.length > 0){
+      notice.textContent = "The next round will be shorter (" + eligible + " question" + (eligible===1?"":"s") + ") while " + resting.length + " other" + (resting.length===1?" rests":"s rest") + " before a final check.";
+      notice.classList.remove("hidden");
+    }
+
+    // animate bars
+    $("mainBar").style.width = "0";
+    box.querySelectorAll(".bar>span").forEach(function(s){ s.style.width = "0"; });
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      $("mainBar").style.width = pct + "%";
+      box.querySelectorAll(".bar>span").forEach(function(s){ s.style.width = s.dataset.w; });
+    }); });
+    show("home");
+  }
+
+  // ---------- Session ----------
+  var session = null;
+  function startSession(ignoreSpacing){
+    var now = Date.now();
+    var pool = BANK.filter(function(q){
+      var e = state.ledger[q.id];
+      return ignoreSpacing ? e.status === "active" : isEligible(e, now);
+    });
+    if (!pool.length){ renderHome(); return; }
+    var draw = shuffle(pool).slice(0, QS_PER_ROUND);
+    session = { items: draw.map(function(q){ return { q:q, finalPass: isFinalPass(state.ledger[q.id]) }; }), idx:0, correct:0, completed:0, perTopic:{} };
+    renderQuestion();
+    show("quiz");
+  }
+
+  function renderQuestion(){
+    var it = session.items[session.idx], q = it.q, c = colorOf(q.t);
+    $("qBadge").textContent = q.t; $("qBadge").style.borderColor = c; $("qBadge").style.color = c;
+    $("qCount").textContent = "Q " + (session.idx+1) + " of " + session.items.length;
+    $("qText").textContent = q.q;
+    var hb = $("hintBtn"), hbody = $("hintBody");
+    hbody.classList.add("hidden"); hbody.textContent = q.h;
+    if (it.finalPass){ hb.disabled = true; hb.textContent = "💡 Hint not available on the final check"; }
+    else { hb.disabled = false; hb.textContent = "💡 Show hint"; }
+    var opts = $("opts"); opts.innerHTML = "";
+    shuffle(q.o.map(function(text,i){ return { text:text, i:i }; })).forEach(function(o){
+      var b = el("button","opt",o.text); b.dataset.i = o.i;
+      b.addEventListener("click", function(){ answer(o.i, b); });
+      opts.appendChild(b);
+    });
+    $("feedback").classList.add("hidden");
+    $("nextBar").classList.add("hidden");
+    window.scrollTo(0,0);
+  }
+
+  function answer(choice, btn){
+    var it = session.items[session.idx], q = it.q, e = state.ledger[q.id];
+    var ok = choice === q.a;
+    // update ledger & save immediately
+    if (ok){
+      e.streak++; e.lastCorrect = Date.now();
+      if (e.streak >= STREAK_TO_MASTER){ e.status = "mastered"; session.completed++; }
+      session.correct++;
+    } else {
+      e.streak = 0;
+    }
+    saveState();
+    var pt = session.perTopic[q.t] || (session.perTopic[q.t] = { correct:0, drawn:0 });
+    pt.drawn++; if (ok) pt.correct++;
+
+    // UI
+    $("opts").querySelectorAll(".opt").forEach(function(b){
+      b.disabled = true;
+      var i = +b.dataset.i;
+      if (i === q.a) b.classList.add("correct");
+      else if (b === btn) b.classList.add("wrong");
+      else b.classList.add("dim");
+    });
+    $("hintBtn").disabled = true;
+    var v = $("verdict");
+    v.className = "verdict " + (ok ? "ok" : "no");
+    v.textContent = ok ? (e.status === "mastered" ? "✓ Correct — question completed!" : "✓ Correct!") : "✗ Not quite.";
+    $("expl").textContent = q.expl;
+    $("insight").textContent = q.insight;
+    $("feedback").classList.remove("hidden");
+    $("nextBtn").textContent = session.idx === session.items.length - 1 ? "See results →" : "Next →";
+    $("nextBar").classList.remove("hidden");
+  }
+
+  function next(){
+    session.idx++;
+    if (session.idx >= session.items.length) renderResults();
+    else renderQuestion();
+  }
+
+  function renderResults(){
+    $("score").textContent = session.correct + " / " + session.items.length;
+    var db = $("doneBadge");
+    if (session.completed > 0){ db.textContent = "+ " + session.completed + " question" + (session.completed===1?"":"s") + " completed this session"; db.classList.remove("hidden"); }
+    else db.classList.add("hidden");
+    var tb = $("resTable"); tb.innerHTML = "";
+    TOPICS.forEach(function(t){
+      var pt = session.perTopic[t]; if (!pt) return;
+      var tr = el("tr"), td = el("td",null,t); td.style.color = colorOf(t); td.style.fontWeight = "600";
+      tr.appendChild(td); tr.appendChild(el("td","n",String(pt.correct))); tr.appendChild(el("td","n",String(pt.drawn)));
+      tb.appendChild(tr);
+    });
+    $("nextBar").classList.add("hidden");
+    show("results");
+  }
+
+  // ---------- Events ----------
+  $("continueBtn").addEventListener("click", function(){ startSession(false); });
+  $("anywayBtn").addEventListener("click", function(){ startSession(true); });
+  $("nextBtn").addEventListener("click", next);
+  $("backBtn").addEventListener("click", renderHome);
+  $("quitBtn").addEventListener("click", function(){ $("nextBar").classList.add("hidden"); renderHome(); });
+  $("hintBtn").addEventListener("click", function(){
+    if (this.disabled) return;
+    var hb = $("hintBody"), open = hb.classList.toggle("hidden") === false;
+    this.textContent = open ? "💡 Hide hint" : "💡 Show hint";
+  });
+  $("resetBtn").addEventListener("click", function(){ $("modal").classList.remove("hidden"); });
+  $("cancelBtn").addEventListener("click", function(){ $("modal").classList.add("hidden"); });
+  $("confirmBtn").addEventListener("click", function(){
+    clearState(); state = freshState(); saveState();
+    $("modal").classList.add("hidden"); renderHome();
+  });
+
+  renderHome();
+})();
+</script>
+</body>
+</html>
