@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grade 8 History - Introduction and Imperialism</title>
+<style>
+:root{--bg:#f5f6fa;--ink:#1a1a2e;--muted:#5c5f73;--navy:#1a1a2e;--ok:#2e7d32;--bad:#c62828;--half:#f57c00;--card:#fff;--line:#e3e5ee}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+.app{max-width:640px;margin:0 auto;padding:16px 16px 110px}
+.card{background:var(--card);border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:18px;margin-bottom:14px}
+.hidden{display:none!important}
+/* Home */
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:6px 0 10px}
+h1{font-size:1.55rem;font-weight:800;line-height:1.2}
+.ver{font-size:.75rem;color:var(--muted);white-space:nowrap;padding-top:4px}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.pill{background:#fff;border:1.5px solid;border-radius:999px;padding:3px 10px;font-size:.78rem;font-weight:600}
+.stats{display:flex;gap:12px;margin-bottom:12px}
+.stat{flex:1;text-align:center;background:var(--bg);border-radius:10px;padding:10px}
+.stat b{display:block;font-size:2rem;line-height:1.1}
+.stat span{font-size:.82rem;color:var(--muted)}
+.bar{height:10px;background:#e8eaf2;border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:999px;transition:width .8s ease}
+.pct{font-size:.8rem;color:var(--muted);text-align:right;margin-top:4px}
+.how{font-size:.88rem;color:var(--muted);margin-top:10px}
+.notice{font-size:.88rem;background:#fff4e5;border:1px solid #ffd59e;color:#7a4300;border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.btn{display:block;width:100%;border:none;border-radius:10px;padding:14px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:var(--navy);color:#fff}
+.danger{background:#fff;color:var(--bad);border:2px solid var(--bad);margin-top:10px}
+.btns{margin-bottom:16px}
+.topics{display:grid;grid-template-columns:1fr;gap:10px}
+.topics.two{grid-template-columns:1fr 1fr}
+.tcard{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:12px 14px}
+.trow{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.tname{font-weight:700;font-size:.95rem}
+.tmeta{font-size:.82rem;color:var(--muted);white-space:nowrap}
+.half{color:var(--half);font-weight:700;margin-right:6px;cursor:help}
+/* Quiz */
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
+.badge{border:1.5px solid;border-radius:999px;padding:3px 10px;font-size:.78rem;font-weight:700;background:#fff}
+.qcount{font-size:.88rem;color:var(--muted);font-weight:600}
+.home-link{background:none;border:none;color:var(--muted);font-size:.85rem;cursor:pointer;font-family:inherit;text-decoration:underline;margin-bottom:8px}
+.qtext{font-size:1.2rem;font-weight:700;text-align:center;margin:6px 0 14px}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;color:var(--half);border:1px solid var(--half);border-radius:6px;padding:1px 6px;margin-bottom:8px}
+.hintbtn{background:#fff;border:1.5px dashed #9aa0b8;color:var(--ink);border-radius:10px;padding:9px 12px;width:100%;font-size:.9rem;cursor:pointer;font-family:inherit;text-align:left}
+.hintbtn:disabled{background:#eceef3;color:#9a9db0;border-color:#cfd2dc;cursor:not-allowed}
+.hint{margin-top:8px;font-size:.9rem;background:#f3f5ff;border-radius:10px;padding:10px 12px}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.opt{background:#fff;border:2px solid var(--line);border-radius:10px;padding:13px 14px;font-size:.98rem;text-align:left;cursor:pointer;font-family:inherit;color:var(--ink);transition:background .15s,border-color .15s,color .15s}
+.opt:hover:not(:disabled){border-color:#9aa0b8}
+.opt:disabled{cursor:default}
+.opt.correct{background:#e8f5e9;border-color:var(--ok);color:#1b5e20;font-weight:600}
+.opt.wrong{background:#ffebee;border-color:var(--bad);color:#8e1c1c}
+.verdict{font-weight:800;margin-top:14px}
+.verdict.ok{color:var(--ok)} .verdict.no{color:var(--bad)}
+.expl{margin-top:8px;font-size:.93rem}
+.insight{margin-top:10px;border:1.5px solid #c5cae9;background:#f5f6ff;border-radius:10px;padding:10px 12px;font-size:.92rem}
+.insight b{display:block;font-size:.75rem;letter-spacing:.04em;text-transform:uppercase;color:#3949ab;margin-bottom:3px}
+.nextbar{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 70%,rgba(245,246,250,0))}
+.nextbar .btn{max-width:608px;margin:0 auto}
+/* Results */
+.score{font-size:2.6rem;font-weight:800;text-align:center}
+.sub{text-align:center;color:var(--muted);margin-bottom:10px}
+.done{display:block;text-align:center;background:#e8f5e9;color:var(--ok);border-radius:999px;padding:6px 12px;font-weight:700;margin:8px auto 0;width:max-content;max-width:100%}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
+th:not(:first-child),td:not(:first-child){text-align:center}
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(26,26,46,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
+.modal .card{max-width:380px;width:100%;text-align:center}
+.modal p{margin:6px 0 16px;font-weight:600}
+.mbtns{display:flex;gap:10px}
+.mbtns .btn{margin:0}
+.ghost{background:#eceef3;color:var(--ink)}
+.confirm{background:var(--bad);color:#fff}
+@media (max-width:400px){h1{font-size:1.35rem}.qtext{font-size:1.08rem}.topics.two .tcard{padding:10px}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<section id="home">
+  <div class="top"><h1 id="title"></h1><span class="ver" id="ver"></span></div>
+  <div class="pills" id="pills"></div>
+  <div class="card">
+    <div class="stats">
+      <div class="stat"><b id="nActive">0</b><span>Active Questions</span></div>
+      <div class="stat"><b id="nDone">0</b><span>Completed</span></div>
+    </div>
+    <div class="bar"><i id="mainBar" style="background:var(--ok)"></i></div>
+    <div class="pct" id="mainPct"></div>
+    <p class="how" id="how"></p>
+  </div>
+  <div id="notice" class="notice hidden"></div>
+  <div class="btns">
+    <button class="btn primary" id="btnGo">▶ Continue Progress</button>
+    <button class="btn danger" id="btnReset">↺ Start All Over</button>
+  </div>
+  <div class="topics" id="topics"></div>
+</section>
+
+<section id="quiz" class="hidden">
+  <button class="home-link" id="btnQuit">← Home (progress is saved)</button>
+  <div class="card">
+    <div class="qhead"><span class="badge" id="qBadge"></span><span class="qcount" id="qCount"></span></div>
+    <div style="text-align:center"><span class="tag hidden" id="qTag">Practice only</span></div>
+    <div class="qtext" id="qText"></div>
+    <button class="hintbtn" id="hintBtn"></button>
+    <div class="hint hidden" id="hintBox"></div>
+    <div class="opts" id="opts"></div>
+    <div id="feedback" class="hidden">
+      <div class="verdict" id="verdict"></div>
+      <div class="expl" id="expl"></div>
+      <div class="insight"><b>Key insight</b><span id="insight"></span></div>
+    </div>
+  </div>
+  <div class="nextbar hidden" id="nextBar"><button class="btn primary" id="btnNext">Next →</button></div>
+</section>
+
+<section id="results" class="hidden">
+  <div class="card">
+    <div class="sub">Session score</div>
+    <div class="score" id="rScore"></div>
+    <span class="done hidden" id="rDone"></span>
+  </div>
+  <div class="card">
+    <table><thead><tr><th>Topic</th><th>Correct</th><th>Drawn this session</th></tr></thead><tbody id="rTable"></tbody></table>
+  </div>
+  <button class="btn primary" id="btnBack">Continue Studying →</button>
+</section>
+
+</div>
+
+<div class="modal hidden" id="modal">
+  <div class="card">
+    <div style="font-size:1.6rem">⚠️</div>
+    <p>This will erase all your progress. Are you sure?</p>
+    <div class="mbtns"><button class="btn ghost" id="mCancel">Cancel</button><button class="btn confirm" id="mConfirm">Confirm</button></div>
+  </div>
+</div>
+
+<script>
+const VERSION = "ver1.00";
+const QUIZ_NAME = "Grade 8 History - Introduction and Imperialism";
+const QS_PER_ROUND = 16;
+const STREAK_TO_MASTER = 2;
+const FINAL_PASS_SPACING_MS = 5 * 60 * 1000;
+const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+const LS_KEY = slugify(QUIZ_NAME) + "_v1";
+
+const BANK = [
+ {
+  "t": "20th Century Skills",
+  "q": "In History, what is a 'cause'?",
+  "o": [
+   "Something, or the conditions, that make an event happen.",
+   "The result of an event and what happens to people afterwards.",
+   "The reason historians decide an event matters to people years later.",
+   "A way of viewing an event, shaped by a person's background."
+  ],
+  "a": 0,
+  "h": "Think about what comes before an event, not after it.",
+  "expl": "A cause is whatever makes an event happen. What happens afterwards is a consequence; why it matters is significance.",
+  "insight": "A cause is something, or the conditions, which make an event happen; causes can be long-term, medium-term or short-term."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "What do historians call the result of an event, meaning what happens because of it?",
+  "o": [
+   "Consequence",
+   "Cause",
+   "Significance",
+   "Perspective"
+  ],
+  "a": 0,
+  "h": "This key term looks forward in time from the event.",
+  "expl": "A consequence is the result of an event. Causes come before; consequences come after.",
+  "insight": "A consequence is the result of an event; what happens as a result of it."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "Causes can be long-term, medium-term or short-term. Which type is a 'trigger'?",
+  "o": [
+   "Short-term cause",
+   "Long-term cause",
+   "Medium-term cause",
+   "Underlying cause"
+  ],
+  "a": 0,
+  "h": "A trigger is the spark that sets things off right before an event.",
+  "expl": "Triggers are the immediate sparks of an event, so they are short-term causes. Long-term (underlying) causes build up over many years.",
+  "insight": "Causes can be long-term, medium-term and short-term, including triggers, which are the immediate short-term cause."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "A government passes a new law that changes who is allowed to vote. Which PESC factor is this mainly?",
+  "o": [
+   "Political",
+   "Economic",
+   "Social",
+   "Cultural"
+  ],
+  "a": 0,
+  "h": "Which factor is about power, laws and decision-making?",
+  "expl": "Laws and decisions about who holds power are political.",
+  "insight": "Political factors concern power and control, laws, and decision-making in government and communities."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "A country's rubber exports collapse and plantation workers lose their wages. Which PESC factor is this mainly?",
+  "o": [
+   "Economic",
+   "Political",
+   "Social",
+   "Cultural"
+  ],
+  "a": 0,
+  "h": "Which factor is about money and resources?",
+  "expl": "Exports, wages and resources are about money, so this is economic.",
+  "insight": "Economic factors concern money and resources: how people, businesses and governments use limited resources to meet unlimited wants."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "Families move from villages to growing cities, changing how neighbors and communities interact. Which PESC factor is this mainly?",
+  "o": [
+   "Social",
+   "Economic",
+   "Political",
+   "Cultural"
+  ],
+  "a": 0,
+  "h": "Which factor is about how people live together and behave?",
+  "expl": "Changes to community life and how people interact are social.",
+  "insight": "Social factors concern how people behave: human society, community life and interaction between individuals and groups."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "A group's traditional music, festivals and art styles change as new beliefs spread. Which PESC factor is this mainly?",
+  "o": [
+   "Cultural",
+   "Social",
+   "Political",
+   "Economic"
+  ],
+  "a": 0,
+  "h": "Which factor is about how people express themselves?",
+  "expl": "Music, festivals, art and beliefs are forms of expression, so this is cultural.",
+  "insight": "Cultural factors concern how people express themselves: shared habits, beliefs, traditions, arts and way of life."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "Which key term means why an event is important?",
+  "o": [
+   "Significance",
+   "Consequence",
+   "Interpretation",
+   "Perspective"
+  ],
+  "a": 0,
+  "h": "The 5 R's framework helps you measure this.",
+  "expl": "Significance is about why an event matters. Consequences are its results, which can be evidence of significance.",
+  "insight": "Significance means why something, or an event, is important."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "Two students from different countries choose different 'top 10' events of the 20th century because of their backgrounds. Which key term explains this?",
+  "o": [
+   "Perspective",
+   "Significance",
+   "Consequence",
+   "Causation"
+  ],
+  "a": 0,
+  "h": "Think about how culture and background shape the way we see things.",
+  "expl": "Perspective is a way of viewing something shaped by culture, way of thinking or background, so people produce different lists.",
+  "insight": "Perspective is a way of viewing something, shaped by an individual's culture, way of thinking or background."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "What is an 'interpretation' in History?",
+  "o": [
+   "The specific meaning or conclusion a person draws from what they observe.",
+   "A neutral record of events listing dates without any personal judgment.",
+   "The original object or document from the past that historians study.",
+   "The long-term result of an event that can still be seen today."
+  ],
+  "a": 0,
+  "h": "It is something a person creates after looking at evidence.",
+  "expl": "An interpretation is the meaning or conclusion someone draws from what they observe, so different historians can reach different interpretations.",
+  "insight": "An interpretation is the specific meaning, explanation or conclusion you draw from what you observe."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "Which of the 5 R's asks whether an event spread like ripples in a pond, affecting people all over the world?",
+  "o": [
+   "Radiant",
+   "Remarkable",
+   "Relevant",
+   "Revealing"
+  ],
+  "a": 0,
+  "h": "Think of something that shines or spreads outward.",
+  "expl": "Radiant asks how far an event's effects spread: worldwide, or just one small group in one town.",
+  "insight": "Radiant: the event spread out like ripples, affecting people all over the world rather than a small group."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "A historian studies a 1920s event because it shows what people at the time valued, feared and believed. Which of the 5 R's is this?",
+  "o": [
+   "Revealing",
+   "Remarkable",
+   "Radiant",
+   "Relevant"
+  ],
+  "a": 0,
+  "h": "Which R opens a window into the past?",
+  "expl": "Revealing events teach us about the values, fears and beliefs of people in that period.",
+  "insight": "Revealing: the event opens a window into the past, showing what people valued, feared or believed."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "An event's impact can still be seen in our laws and technology today. Which of the 5 R's does this show?",
+  "o": [
+   "Relevant",
+   "Revealing",
+   "Radiant",
+   "Remarkable"
+  ],
+  "a": 0,
+  "h": "Ask: does it still matter to us now?",
+  "expl": "Relevant events still matter today; we can see their impact in modern lives, laws or technology.",
+  "insight": "Relevant: the event still matters today and its impact can be seen in modern lives, laws or technology."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "In the 5 R's framework, what does 'Resulted in Change' ask?",
+  "o": [
+   "Whether the event caused a domino effect, changing lives, borders or later events.",
+   "Whether people at the time found the event striking or shocking when it happened.",
+   "Whether the event still shapes our modern laws, technology and everyday lives.",
+   "Whether the event teaches us what people valued or feared during that period."
+  ],
+  "a": 0,
+  "h": "Picture a row of dominoes falling.",
+  "expl": "'Resulted in Change' asks whether the event set off further changes. The other options describe Remarkable, Relevant and Revealing.",
+  "insight": "Resulted in Change: the event acted like a domino effect, changing how people lived, altering borders or leading to major future events."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "To test whether an event was a turning point, the lesson suggests asking AI for a 'counterfactual'. What does this involve?",
+  "o": [
+   "Imagining how the world might look today if the event had never happened.",
+   "Checking each of the event's dates, names and places against a trusted textbook or encyclopedia.",
+   "Counting how many people and countries were directly affected by the event at the time.",
+   "Sorting the event's effects into political, economic, social and cultural."
+  ],
+  "a": 0,
+  "h": "'Counter' means against; 'factual' means what really happened.",
+  "expl": "A counterfactual asks 'what if this had not happened?' If the world would look very different, the event was a turning point.",
+  "insight": "Turning point: how would the world look today if this event never happened? (a counterfactual scenario)."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "In a PEEL paragraph, what does the 'L' stand for?",
+  "o": [
+   "Link",
+   "Logic",
+   "List",
+   "Lesson"
+  ],
+  "a": 0,
+  "h": "It is how you finish the paragraph by connecting back to something.",
+  "expl": "PEEL is Point, Explanation, Evidence, Link. The Link connects back to the question with a final statement.",
+  "insight": "Link: link back to the question and make a final statement."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "Which part of a PEEL paragraph provides proof, such as facts, figures or examples, to support your argument?",
+  "o": [
+   "Evidence",
+   "Explanation",
+   "Point",
+   "Link"
+  ],
+  "a": 0,
+  "h": "Which part would a detective bring to court?",
+  "expl": "Evidence is the proof supporting your argument. The Explanation says why it matters; the Point states your argument.",
+  "insight": "Evidence: proof of political, economic, social or cultural importance that supports the argument."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "Why does the lesson say you should cross-check AI answers with a textbook or trusted website?",
+  "o": [
+   "AI can 'hallucinate', inventing dates, names or treaties that sound right but are wrong.",
+   "Teachers accept only printed books, so AI answers can never be used as references.",
+   "AI tools only store information up to 1999, so they miss more recent events.",
+   "Textbooks explain the PESC factors properly, while AI tools only give dates."
+  ],
+  "a": 0,
+  "h": "AI can sound confident even when it is mistaken.",
+  "expl": "AI models can produce convincing but false details, so always check claims against a textbook or trusted site like BBC History or Britannica.",
+  "insight": "Fact-check the AI: models can hallucinate dates, names and treaties, so cross-reference with a textbook or trusted website."
+ },
+ {
+  "t": "20th Century Skills",
+  "q": "According to the lesson, what is the best way to use AI for history research?",
+  "o": [
+   "As a debate partner that challenges your choices, not as a search engine.",
+   "As a quick search engine that writes your complete list of events for you.",
+   "As a final checker that confirms your timeline is correct before you submit it.",
+   "As a summary tool that rewrites textbook chapters into short notes to memorize."
+  ],
+  "a": 0,
+  "h": "The 'Critique My List' strategy has you drive the research.",
+  "expl": "Asking AI to write the list leads to passive learning and misinformation. Using it to challenge your choices builds critical thinking.",
+  "insight": "Use AI as an interactive debate partner and structured organizer, rather than a search engine."
+ },
+ {
+  "t": "Empire Building",
+  "q": "During 'old imperialism', what did European empires mainly focus on?",
+  "o": [
+   "Cash crops, raw materials",
+   "Factories and manufactured goods",
+   "Railways and telegraph networks",
+   "Missions and religious schools"
+  ],
+  "a": 0,
+  "h": "Think about what colonies could grow or dig up.",
+  "expl": "Old imperialism (the earlier colonization period) focused on cash crops and raw materials, with Europeans mostly on the coasts.",
+  "insight": "Old imperialism focused on cash crops and raw materials; European empires were limited to coastal power."
+ },
+ {
+  "t": "Empire Building",
+  "q": "Before new technology arrived, where was European power in Africa mostly limited to?",
+  "o": [
+   "Coastal areas",
+   "Inland capitals",
+   "Mountain regions",
+   "Desert oases"
+  ],
+  "a": 0,
+  "h": "Think about where ships could arrive and trade.",
+  "expl": "For most of the 19th century, European control in Africa meant coastal trading ports; the interior was hard to reach.",
+  "insight": "For most of the 19th century, European control over Africa was limited to coastal trading ports."
+ },
+ {
+  "t": "Empire Building",
+  "q": "During 'old imperialism', how did Asian empires compare with European powers?",
+  "o": [
+   "Asian empires were generally more powerful, so Europeans held only coastal footholds.",
+   "European powers already ruled most Asian lands directly through large colonial armies.",
+   "Asian empires had collapsed, leaving Europeans free to divide the continent up.",
+   "European and Asian empires were equally matched and rarely traded with each other."
+  ],
+  "a": 0,
+  "h": "Before the Industrial Revolution, who had the upper hand in Asia?",
+  "expl": "Before the 1800s, Asian empires (like the Mughals and Qing) had more power, and European empires were limited to coastal power.",
+  "insight": "In the period of old imperialism, European empires were limited to coastal power and Asian empires had more power."
+ },
+ {
+  "t": "Empire Building",
+  "q": "What changed the balance of power in Europe's favor during the 1800s?",
+  "o": [
+   "The Industrial Revolution and new weapons, which extended Europe's military and communication reach.",
+   "A long period of peace in Asia, which led its empires to disband their armies.",
+   "Invitations from African and Asian rulers, who asked Europeans to govern them for trade.",
+   "The union of European countries under one government, which combined all their armies."
+  ],
+  "a": 0,
+  "h": "Think about factories, machines and guns.",
+  "expl": "The Industrial Revolution and expanding weaponry gave Europe greater military power and faster communication, and created demand for more resources.",
+  "insight": "Expansion of weaponry and the Industrial Revolution changed European power; technological innovations allowed greater reach of information and military power."
+ },
+ {
+  "t": "Empire Building",
+  "q": "Under the General Act of the Berlin Conference, selling which goods to indigenous peoples was banned?",
+  "o": [
+   "Alcohol and firearms",
+   "Salt and opium",
+   "Ivory and rubber",
+   "Cotton and tea"
+  ],
+  "a": 0,
+  "h": "One could make people drunk; the other could arm them.",
+  "expl": "The General Act banned the sale of alcohol and firearms to indigenous peoples, alongside abolishing slavery.",
+  "insight": "The General Act abolished slavery and banned the sale of alcohol and firearms to indigenous peoples."
+ },
+ {
+  "t": "Empire Building",
+  "q": "What is imperialism?",
+  "o": [
+   "A policy of extending a country's power and influence through diplomacy or military force.",
+   "A system in which workers share ownership of factories and land equally among themselves.",
+   "A policy of avoiding foreign alliances so that a country can focus on itself.",
+   "An agreement between nations to trade freely without taxes on imported goods."
+  ],
+  "a": 0,
+  "h": "Think of a country reaching beyond its own borders.",
+  "expl": "Imperialism is extending a country's power and influence over others, whether by diplomacy or by force.",
+  "insight": "Imperialism is a policy of extending a country's power and influence through diplomacy or military force."
+ },
+ {
+  "t": "Empire Building",
+  "q": "Ferdinand de Lesseps, who made the contract with Egypt to dig the Suez Canal, came from which country?",
+  "o": [
+   "France",
+   "Britain",
+   "Belgium",
+   "Germany"
+  ],
+  "a": 0,
+  "h": "This country later built a large empire in North and West Africa.",
+  "expl": "De Lesseps was French. Britain only took military control of the canal later, in 1882.",
+  "insight": "The Suez Canal was dug under a contract between the Frenchman Ferdinand de Lesseps and Egypt."
+ },
+ {
+  "t": "Empire Building",
+  "q": "During which years was the Suez Canal built?",
+  "o": [
+   "1859–1869",
+   "1839–1849",
+   "1844–1854",
+   "1849–1859"
+  ],
+  "a": 0,
+  "h": "It opened about a decade before Britain seized it in 1882.",
+  "expl": "Construction ran from 1859 to 1869. Britain invaded and took military control of it in 1882.",
+  "insight": "Suez Canal construction ran from 1859 to 1869."
+ },
+ {
+  "t": "Empire Building",
+  "q": "In which year did Great Britain invade and take military control of the Suez Canal?",
+  "o": [
+   "1882",
+   "1870",
+   "1874",
+   "1878"
+  ],
+  "a": 0,
+  "h": "It was a few years before the Berlin Conference began.",
+  "expl": "Britain took military control of the canal in 1882, just before the Berlin Conference of 1884–1885.",
+  "insight": "Great Britain invaded and took military control of the Suez Canal in 1882."
+ },
+ {
+  "t": "Empire Building",
+  "q": "Which new technologies allowed Europeans to transport goods and control Africa's interior?",
+  "o": [
+   "Railroads and telegraphs",
+   "Canals and lighthouses",
+   "Factories and banks",
+   "Airships and radios"
+  ],
+  "a": 0,
+  "h": "One moved people and goods over land; the other moved messages.",
+  "expl": "Railroads moved troops and resources inland; telegraphs let officials send orders quickly over long distances.",
+  "insight": "New technology (railroads, telegraphs) allowed transport and control over interior lands."
+ },
+ {
+  "t": "Empire Building",
+  "q": "What was the 'Scramble for Africa'?",
+  "o": [
+   "A race among European powers to gain political control of Africa's interior for resources.",
+   "A rush by African kingdoms to buy European weapons before the coastal ports closed.",
+   "A campaign by missionaries to spread Christianity along Africa's coastal trading ports.",
+   "A competition among European traders to buy enslaved people before slavery was abolished."
+  ],
+  "a": 0,
+  "h": "Think about who was competing, and for what land.",
+  "expl": "European powers rushed to take political control of Africa's interior to acquire resources, which created a real risk of war between them.",
+  "insight": "European powers scrambled to establish political control over interior lands to acquire resources."
+ },
+ {
+  "t": "Empire Building",
+  "q": "When was the Conference of Berlin held?",
+  "o": [
+   "1884–1885",
+   "1878–1879",
+   "1890–1891",
+   "1898–1899"
+  ],
+  "a": 0,
+  "h": "It came two years after Britain seized the Suez Canal.",
+  "expl": "The Conference of Berlin met in 1884–1885 to set rules for claiming African territory.",
+  "insight": "The Conference of Berlin (1884–1885) dissected the African continent."
+ },
+ {
+  "t": "Empire Building",
+  "q": "At the Berlin Conference, what gave a European country rights to interior African territory?",
+  "o": [
+   "Controlling settlement along the African coast next to that interior land.",
+   "Signing a treaty with the largest African kingdom living in that region.",
+   "Being the first European nation to map the river that ran through it.",
+   "Paying the Ottoman Empire for a permit to trade within the territory."
+  ],
+  "a": 0,
+  "h": "Think about where Europeans were already based before the scramble.",
+  "expl": "The conference decided that controlling settlement on the coast guaranteed rights to the interior behind it.",
+  "insight": "The conference decided that control of settlement along the African coast guaranteed rights to interior territory."
+ },
+ {
+  "t": "Empire Building",
+  "q": "How did the borders drawn at the Berlin Conference affect Africa?",
+  "o": [
+   "They cut across existing cultural and ethnic boundaries, splitting peoples between colonies.",
+   "They closely followed existing kingdom borders, keeping each ethnic group inside one colony.",
+   "They returned most interior land to African rulers while Europe kept only the coasts.",
+   "They divided Africa equally so that each attending country received the same area."
+  ],
+  "a": 0,
+  "h": "Were Africans consulted when the lines were drawn?",
+  "expl": "The conference dissected the continent without regard to the peoples living there, cutting across cultural and ethnic boundaries.",
+  "insight": "The Berlin Conference dissected the continent and cut across African cultural and ethnic boundaries."
+ },
+ {
+  "t": "Empire Building",
+  "q": "What was the Berlin Conference supposed to do, and what actually happened?",
+  "o": [
+   "It was meant to reduce bloodshed, but it increased conquest and violence.",
+   "It was meant to end slavery, but it actually expanded the slave trade instead.",
+   "It was meant to share trade fairly, but it actually gave Britain almost everything.",
+   "It was meant to free African colonies, but it actually delayed their independence."
+  ],
+  "a": 0,
+  "h": "The conference hoped to prevent war between the European powers.",
+  "expl": "By setting rules, the conference was supposed to reduce bloodshed, but it sped up conquest and increased violence in Africa.",
+  "insight": "The Berlin Conference was supposed to reduce bloodshed, but actually increased conquest and violence."
+ },
+ {
+  "t": "Empire Building",
+  "q": "Which territory was created by the General Act of the Berlin Conference?",
+  "o": [
+   "Congo Free State",
+   "Gold Coast Colony",
+   "Orange Free State",
+   "German East Africa"
+  ],
+  "a": 0,
+  "h": "Next week's lesson focuses on this territory.",
+  "expl": "The General Act created the Congo Free State, which was soon run as Leopold II's personal property.",
+  "insight": "The General Act of the Conference of Berlin created the Congo Free State."
+ },
+ {
+  "t": "Empire Building",
+  "q": "Under the General Act, what did a country need in order to keep its rights over a territory?",
+  "o": [
+   "Military presence",
+   "Royal charter",
+   "Local treaty",
+   "Missionary schools"
+  ],
+  "a": 0,
+  "h": "Claims on paper were not enough; you had to be there.",
+  "expl": "To maintain rights over a territory, a country had to have a military presence in the area, which encouraged conquest.",
+  "insight": "To maintain rights over a territory, one must have military presence in the area."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "Leopold II, who won control of the Congo at the Berlin Conference, was king of which country?",
+  "o": [
+   "Belgium",
+   "Netherlands",
+   "France",
+   "Portugal"
+  ],
+  "a": 0,
+  "h": "His country is a small kingdom in western Europe.",
+  "expl": "Leopold II was King of the Belgians. The territory later became the 'Belgian Congo'.",
+  "insight": "Leopold II of Belgium won the bid for the Congo at the Berlin Conference."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "Which of these was one of Leopold II's promises for the Congo?",
+  "o": [
+   "Abolish slavery",
+   "Grant independence",
+   "Ban missionaries",
+   "Restrict trade"
+  ],
+  "a": 0,
+  "h": "His promises also included free trade and preaching Christianity.",
+  "expl": "Leopold promised to abolish slavery, open the Congo Basin to free trade, preach Christianity and improve Congolese lives. He broke these promises.",
+  "insight": "Leopold's promises: abolish slavery, open the Congo Basin for free trade, preach Christianity, improve the lives of the Congolese."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "What was the Congo Free State, legally, under Leopold II?",
+  "o": [
+   "His personal property",
+   "A Belgian colony",
+   "A French protectorate",
+   "A shared territory"
+  ],
+  "a": 0,
+  "h": "It belonged to one man, not a government.",
+  "expl": "Leopold founded the Congo Free State as his personal property. It only became a Belgian colony in 1908.",
+  "insight": "Leopold II founded the Congo Free State as his personal property."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "Which statement about how Leopold II ruled the Congo is accurate?",
+  "o": [
+   "He reigned as king from Europe and never visited the territory himself.",
+   "He moved to the Congo and governed it in person from a new capital.",
+   "He handed daily control to local chiefs and visited the territory every year.",
+   "He shared power with the Belgian Parliament from the very start of his rule."
+  ],
+  "a": 0,
+  "h": "Think about how far Brussels is from the Congo.",
+  "expl": "Leopold reigned as king of the Congo Free State but never visited it, ruling through agents and the Force Publique.",
+  "insight": "Leopold II reigned as king of the Congo Free State and never visited."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "Leopold II passed laws that turned the Congolese people into what?",
+  "o": [
+   "Serfs",
+   "Citizens",
+   "Soldiers",
+   "Merchants"
+  ],
+  "a": 0,
+  "h": "This word describes people forced to work land for a master.",
+  "expl": "Leopold's laws made all Congolese serfs, forced to work without freedom or fair pay.",
+  "insight": "Leopold II passed laws to make all of the Congolese serfs."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "What was the Force Publique?",
+  "o": [
+   "Leopold's army of non-Congolese men, which enforced rubber quotas and tortured those who failed.",
+   "A Belgian charity that built schools and hospitals to improve life for the Congolese.",
+   "An African resistance army that fought to drive Leopold's agents out of the Congo.",
+   "A trading company that bought rubber from Congolese villages at fair market prices."
+  ],
+  "a": 0,
+  "h": "Leopold ordered a military force to be built.",
+  "expl": "The Force Publique was Leopold's military force made up of non-Congolese men. It carried out quota collection and tortured those who did not comply.",
+  "insight": "The Force Publique (non-Congolese men) carried out the quota collection and tortured those who did not comply."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "In the Congo Free State, the main resource collected shifted from what to what?",
+  "o": [
+   "Ivory to rubber",
+   "Rubber to ivory",
+   "Gold to copper",
+   "Cotton to rubber"
+  ],
+  "a": 0,
+  "h": "The first came from elephants; the second from trees.",
+  "expl": "Collection began with ivory, then shifted to rubber, which was in high demand for tires and industry.",
+  "insight": "Initial collection of ivory, but then shifted to rubber; all resources belonged to the state (Leopold)."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "How was rubber collected in the Congo Free State?",
+  "o": [
+   "Congolese people were forced to meet quotas and were punished if they fell short.",
+   "Belgian workers ran steam-powered machines on large plantations and were paid for every kilogram collected.",
+   "Villages sold rubber freely to visiting European merchants, who competed to offer the highest prices.",
+   "Prisoners from Europe were shipped to the Congo to work on state-owned plantations."
+  ],
+  "a": 0,
+  "h": "Remember that the Congolese had been made serfs.",
+  "expl": "The Congolese were forced to collect rubber to a quota, with brutal punishments, including the loss of limbs, for falling short.",
+  "insight": "Congolese people were forced to collect rubber; there was a quota and punishments if it was not collected."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "Roughly how many people were killed in the Congo under Leopold II's rule?",
+  "o": [
+   "10 million",
+   "6 million",
+   "8 million",
+   "12 million"
+  ],
+  "a": 0,
+  "h": "It was around half of the population.",
+  "expl": "Around 10 million people were killed, about half of the population. Historians' estimates vary, but the slides use about 10 million.",
+  "insight": "Around 10 million people were killed in the Congo, around half of the population."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "In which year was Leopold II forced to hand the Congo over to the Belgian Parliament?",
+  "o": [
+   "1908",
+   "1912",
+   "1916",
+   "1920"
+  ],
+  "a": 0,
+  "h": "It happened in the decade before World War One began.",
+  "expl": "In 1908, after intense international pressure, Leopold handed the colony to the Belgian Parliament. Belgium controlled it until 1960.",
+  "insight": "Leopold had to turn the colony over to the Belgian Parliament in 1908 due to intense international pressure; Belgium controlled it until 1960."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "What did the King of Belgium do in 2022 in relation to the Congo?",
+  "o": [
+   "He returned a mask looted during colonial rule and expressed regret for the past.",
+   "He paid billions of euros in compensation and returned all Congolese land to its people.",
+   "He banned the sale of hand-shaped chocolates and opened a museum in Kinshasa.",
+   "He refused to discuss the colonial past and closed Belgium's colonial archives."
+  ],
+  "a": 0,
+  "h": "It involved an object taken during colonial times.",
+  "expl": "In 2022 King Philippe returned a looted mask and expressed his deepest regrets for colonial abuses. The slides describe this as an apology.",
+  "insight": "In 2022 the King of Belgium returned a looted mask and apologized to the Congo."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "In which year did France invade Algeria after the 'Fan Incident'?",
+  "o": [
+   "1830",
+   "1820",
+   "1840",
+   "1850"
+  ],
+  "a": 0,
+  "h": "It was more than 50 years before the Berlin Conference.",
+  "expl": "France invaded Algeria in 1830 and took over most of the coastline.",
+  "insight": "France invaded Algeria after the 'Fan Incident' in 1830."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "Why did France push to gain more African territory after the Berlin Conference?",
+  "o": [
+   "It wanted more land so it would look bigger and more powerful on the map.",
+   "It needed new land to resettle Algerian families who had been forced off the northern coast.",
+   "It had promised the Ottoman Empire that it would protect North Africa from any British attack.",
+   "It aimed to end the slave trade that still operated across the Sahara Desert."
+  ],
+  "a": 0,
+  "h": "Think about prestige and how a country appears to its rivals.",
+  "expl": "France used its Algerian colony as a base to expand, partly to look bigger on the map, linking to political rivalry as a cause of imperialism.",
+  "insight": "France used Algeria to gain more territory after the Berlin Conference because they wanted to look bigger on the map."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "Roughly how many Algerians were killed by the French over three decades, out of a population of about 3 million?",
+  "o": [
+   "1,000,000",
+   "500,000",
+   "1,500,000",
+   "2,000,000"
+  ],
+  "a": 0,
+  "h": "It was about one in three people.",
+  "expl": "The French killed around 1 million Algerians out of about 3 million in three decades, roughly a third of the population.",
+  "insight": "The French killed around 1 million Algerians out of a population of 3 million in 3 decades."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "What does 'political rivalries' mean as a cause of imperialism?",
+  "o": [
+   "Nations sought colonies for wealth and prestige so that rivals would not upstage them.",
+   "Political parties at home argued in parliament over whether colonies were worth their high cost.",
+   "Colonized peoples formed rival political groups that invited Europeans to intervene.",
+   "Rulers in Africa and Asia competed to sign trade deals with European kings."
+  ],
+  "a": 0,
+  "h": "Think about European countries competing with each other.",
+  "expl": "European nations competed for colonies to gain wealth and prestige and avoid being outdone by rival countries.",
+  "insight": "Political rivalries: nations sought colonies for wealth and prestige and therefore would not be upstaged by a rival country."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "How did the Industrial Revolution create a 'desire for new markets'?",
+  "o": [
+   "Factories made a surplus of goods, and colonies provided new customers to buy them.",
+   "Factories ran short of workers, so colonies supplied cheap labor to staff the European textile mills.",
+   "Machines replaced farm workers, so Europe needed colonies to grow almost all of its food supply.",
+   "Factories produced too little, so colonies sent finished goods back to Europe."
+  ],
+  "a": 0,
+  "h": "A market is a place where goods are sold.",
+  "expl": "Industrial factories produced more goods than Europe could buy, so colonies provided new consumers for that surplus.",
+  "insight": "Desire for new markets: the Industrial Revolution created a huge surplus of goods; colonies provided new consumers for those goods."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "What was the 'civilizing mission', also known as the 'White Man's Burden'?",
+  "o": [
+   "The belief, driven by Social Darwinism, that Europeans should Christianize Africa and Asia.",
+   "A promise by European governments to give their colonies full independence within a single generation.",
+   "A plan to recruit and train African and Asian soldiers to defend the European homelands.",
+   "The view that colonies should be left alone to keep their religions and customs."
+  ],
+  "a": 0,
+  "h": "Think about missionaries and racist ideas about 'superior' peoples.",
+  "expl": "Driven by Social Darwinism, Europeans claimed a duty to 'civilize' and Christianize Africa and Asia, which was used to justify conquest.",
+  "insight": "Civilizing Mission (White Man's Burden): Christian missionaries sought to Christianize Africa and Asia, driven by Social Darwinism."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "A territory that an imperialist power rules directly, such as British India, is called a…",
+  "o": [
+   "Colony",
+   "Protectorate",
+   "Dominion",
+   "Concession"
+  ],
+  "a": 0,
+  "h": "This is the most direct form of control.",
+  "expl": "A colony is ruled directly by the imperialist power. A protectorate keeps its own local government.",
+  "insight": "Colony: a territory that an imperialist power ruled directly, e.g. British India."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "What is a protectorate?",
+  "o": [
+   "A place with its own local government whose policies are guided by foreign officials.",
+   "A territory ruled directly by officials sent from the imperial power's capital city.",
+   "A region in which one foreign power holds exclusive rights to invest and trade.",
+   "An independent nation controlled mainly by foreign private businesses, not governments."
+  ],
+  "a": 0,
+  "h": "Local rulers stay, but someone is advising them.",
+  "expl": "In a protectorate, the local government remains, but officials of a foreign power guide its policies.",
+  "insight": "Protectorate: local government, but officials of a foreign power guided its policies."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "A region in which one imperialist power holds exclusive investment or trading rights is called a…",
+  "o": [
+   "Sphere of influence",
+   "Zone of occupation",
+   "Area of settlement",
+   "Line of demarcation"
+  ],
+  "a": 0,
+  "h": "The power's reach extends around the region like a ball.",
+  "expl": "A sphere of influence gives one imperialist power exclusive investment or trading rights, without ruling directly.",
+  "insight": "Sphere of influence: region in which an imperialist power held exclusive investment or trading rights."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "Which description fits 'economic imperialism'?",
+  "o": [
+   "Independent but less developed nations controlled by private businesses rather than governments.",
+   "Territories governed directly by a foreign government using its own appointed officials.",
+   "Local governments whose policies are quietly guided by officials of a foreign power.",
+   "Regions where one foreign power holds exclusive rights over trade and investment."
+  ],
+  "a": 0,
+  "h": "Here, companies hold the power, not a foreign state.",
+  "expl": "Economic imperialism is control of independent but less developed nations by private businesses rather than other governments.",
+  "insight": "Economic imperialism: independent but less developed nations controlled by private businesses rather than other governments."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "In imperialist philosophy, what is 'assimilation'?",
+  "o": [
+   "A policy pushing colonized people to adopt the ruling country's language and culture.",
+   "A policy allowing colonized people to keep their own customs and local institutions.",
+   "A policy where colonized people elect their own rulers without outside interference.",
+   "A policy where colonies are left alone as long as they keep paying taxes."
+  ],
+  "a": 0,
+  "h": "To assimilate means to absorb or make similar.",
+  "expl": "Assimilation aimed to make colonized people adopt the colonizer's culture. Association, its opposite, allowed more local customs to remain.",
+  "insight": "Imperialist philosophies: assimilation vs. association; direct rule vs. indirect rule."
+ },
+ {
+  "t": "British India",
+  "q": "Which strong Muslim empire ruled directly over most of northern India before the British takeover?",
+  "o": [
+   "Mughal",
+   "Ottoman",
+   "Safavid",
+   "Maurya"
+  ],
+  "a": 0,
+  "h": "One of its famous rulers was Aurangzeb.",
+  "expl": "The Mughal Empire ruled most of northern India. British companies gradually took over its tax collection.",
+  "insight": "Pre-British India: the Mughal Empire, a strong Muslim empire that ruled directly over most of the north."
+ },
+ {
+  "t": "British India",
+  "q": "How did British companies first begin taking power from Mughal leaders?",
+  "o": [
+   "They took over tax collection from Mughal rulers and used their own troops.",
+   "They bought the Mughal throne at auction after the emperor fell into debt.",
+   "They married into the Mughal royal family to gain the right to rule.",
+   "They won a single war that ended the Mughal Empire in one year."
+  ],
+  "a": 0,
+  "h": "Think about who controlled the money.",
+  "expl": "British companies took over tax collection from Mughal leaders and used their own military troops (sepoys) to enforce control.",
+  "insight": "British companies started to take over tax collection from Mughal leaders and used their own military troops (sepoys)."
+ },
+ {
+  "t": "British India",
+  "q": "Who were the sepoys?",
+  "o": [
+   "Indian soldiers",
+   "British officers",
+   "Company merchants",
+   "Mughal governors"
+  ],
+  "a": 0,
+  "h": "Many were former Mughal soldiers.",
+  "expl": "Sepoys were Indian soldiers, many formerly in Mughal service, employed by the East India Company.",
+  "insight": "Sepoys were the company's own military troops, often former Mughal soldiers."
+ },
+ {
+  "t": "British India",
+  "q": "In which year did the Sepoy Rebellion begin?",
+  "o": [
+   "1857",
+   "1862",
+   "1867",
+   "1872"
+  ],
+  "a": 0,
+  "h": "It happened in the mid-1800s, before the American Civil War.",
+  "expl": "The Sepoy Rebellion began in 1857. Afterwards, the British government replaced Company control with direct rule.",
+  "insight": "1857: sepoys rebel due to religious and social tensions, especially new Enfield Rifle cartridges."
+ },
+ {
+  "t": "British India",
+  "q": "Which new item worsened religious tensions and helped spark the Sepoy Rebellion?",
+  "o": [
+   "Enfield rifle cartridges",
+   "Railway ticket taxes",
+   "Salt tax laws",
+   "Opium export licences"
+  ],
+  "a": 0,
+  "h": "Soldiers had to bite it open before use.",
+  "expl": "Rumors that the new Enfield cartridges were greased with cow and pig fat offended Hindu and Muslim sepoys, worsening existing tensions.",
+  "insight": "The Sepoy Rebellion (1857) was caused by religious and social tensions, especially because of new Enfield Rifle cartridges."
+ },
+ {
+  "t": "British India",
+  "q": "After 1857, the British government replaced Company control with direct rule over India. Which form of imperialism is this?",
+  "o": [
+   "Colony",
+   "Protectorate",
+   "Concession",
+   "Mandate"
+  ],
+  "a": 0,
+  "h": "Direct government rule is the key clue.",
+  "expl": "Direct rule by the British government made India a colony, often called the British Raj.",
+  "insight": "The British government replaced Company control with direct government rule over India, making it a colony."
+ },
+ {
+  "t": "British India",
+  "q": "What did the British government build or introduce in India under direct rule?",
+  "o": [
+   "Railroads, a postal service, schools and civil service examinations.",
+   "Steel mills, car factories, a national bank and a stock exchange.",
+   "Elected parliaments, a free press, universal voting and trade unions.",
+   "Canals to China, tea auctions, naval shipyards and opium factories."
+  ],
+  "a": 0,
+  "h": "Think of infrastructure that helped Britain govern and move goods.",
+  "expl": "Britain built railroads, a postal service and schools, and introduced civil service examinations, which mostly helped Britain run India.",
+  "insight": "Direct British rule increased infrastructure: railroads, postal service, schools and civil service examinations."
+ },
+ {
+  "t": "British India",
+  "q": "How did British rule affect India's economy?",
+  "o": [
+   "It suppressed growth by forcing cash crops and forbidding Indian factories.",
+   "It boosted growth by building Indian factories that competed with British ones.",
+   "It left the economy unchanged because Britain only controlled India's army.",
+   "It ended cash crops so that Indian farmers could grow food for themselves."
+  ],
+  "a": 0,
+  "h": "Britain wanted India to supply raw materials, not compete with British industry.",
+  "expl": "Britain suppressed India's growth: regions were converted to cash crops (cotton, tea), factories were forbidden, and the government held a monopoly on salt.",
+  "insight": "Impact of British rule: suppressed economic growth, converted regions to cash crops, forbade factories, enforced a monopoly over salt."
+ },
+ {
+  "t": "China & Opium",
+  "q": "Why did the British force farmers in large areas of India to grow opium?",
+  "o": [
+   "To reverse trade with China, so Britain sold to the Qing rather than bought.",
+   "To supply hospitals in Britain, which needed large amounts of opium as a cheap medical painkiller.",
+   "To replace cotton, which had become too cheap to sell profitably in Europe.",
+   "To pay Indian soldiers, who received opium instead of wages after 1857."
+  ],
+  "a": 0,
+  "h": "Britain was buying a lot of tea and silk from China.",
+  "expl": "Britain bought more from China than it sold. Smuggling Indian-grown opium into China reversed that trade, causing widespread addiction.",
+  "insight": "The British forced India to grow opium to reverse trade with China; they wanted to sell to the Qing Empire rather than buy."
+ },
+ {
+  "t": "China & Opium",
+  "q": "To grow opium in India, what did the British get rid of?",
+  "o": [
+   "Edible crops",
+   "Cotton fields",
+   "Tea plantations",
+   "Rubber trees"
+  ],
+  "a": 0,
+  "h": "This loss would have affected what people could eat.",
+  "expl": "Large areas of India stopped growing food (edible crops) so that opium could be grown instead.",
+  "insight": "The British forced large areas of India to grow opium and got rid of edible crops for this."
+ },
+ {
+  "t": "China & Opium",
+  "q": "How did the Qing government respond to the British opium trade?",
+  "o": [
+   "It banned opium, wrote to Queen Victoria, and seized and destroyed British opium.",
+   "It legalized opium and taxed it heavily to raise money for its army.",
+   "It asked Britain to send more opium in exchange for extra Chinese tea and silk.",
+   "It ignored opium at first, since few Chinese people were using the drug."
+  ],
+  "a": 0,
+  "h": "The Qing tried both laws and direct action.",
+  "expl": "The Qing banned opium, appealed to the British Queen, and had officials seize and destroy British opium, which led to the Opium Wars.",
+  "insight": "The Qing Empire banned opium, passed laws, reached out to the Queen of England, and seized and destroyed British opium."
+ },
+ {
+  "t": "China & Opium",
+  "q": "Britain gained Hong Kong under the Treaty of Nanking. In which year was it restored to China?",
+  "o": [
+   "1997",
+   "1985",
+   "1989",
+   "1993"
+  ],
+  "a": 0,
+  "h": "It happened near the end of the 20th century.",
+  "expl": "Hong Kong was restored to China in 1997, more than 150 years after the Treaty of Nanking (1842).",
+  "insight": "Under the Treaty of Nanking, Britain gained control of Hong Kong (restored to China in 1997)."
+ },
+ {
+  "t": "China & Opium",
+  "q": "What did 'extraterritoriality' mean under the Treaty of Nanking?",
+  "o": [
+   "British and other foreigners in five major Chinese port cities were not subject to Chinese law.",
+   "Chinese citizens living or trading abroad in Britain could only be judged by Chinese courts in Beijing.",
+   "Britain could collect taxes on all goods passing through the five treaty ports for its own profit.",
+   "China had to give up any territory that lay outside its traditional borders."
+  ],
+  "a": 0,
+  "h": "'Extra' means outside; 'territoriality' refers to a country's laws over its land.",
+  "expl": "Extraterritoriality meant foreigners in five major port cities were outside Chinese law, a serious loss of Chinese sovereignty.",
+  "insight": "Extraterritoriality: British and other foreigners were not subject to Chinese law in 5 major port cities."
+ },
+ {
+  "t": "China & Opium",
+  "q": "Why is the Treaty of Nanking historically significant?",
+  "o": [
+   "It was the first of many treaties that steadily reduced China's power.",
+   "It was the final treaty that ended foreign interference in China for good.",
+   "It was the first treaty through which China gained new land from Britain.",
+   "It was a trade deal that made China and Britain equal trading partners."
+  ],
+  "a": 0,
+  "h": "These are often called 'unequal treaties'.",
+  "expl": "The Treaty of Nanking began a series of treaties forcing reparations, open ports, loss of Hong Kong and extraterritoriality on China.",
+  "insight": "The Treaty of Nanking was the first of many treaties which led to decreased Chinese power."
+ },
+ {
+  "t": "China & Opium",
+  "q": "What was the Boxers' organization called?",
+  "o": [
+   "Order of the Patriotic Harmonious Fists",
+   "Society of the Sacred Heavenly Swords",
+   "League of the Loyal Imperial Guards",
+   "Brotherhood of the Golden Dragon Banner"
+  ],
+  "a": 0,
+  "h": "Westerners named them after a martial art.",
+  "expl": "Westerners called them 'Boxers' because of the martial-arts style of the Order of the Patriotic Harmonious Fists.",
+  "insight": "The Order of the Patriotic Harmonious Fists was called 'Boxers' by Westerners."
+ },
+ {
+  "t": "China & Opium",
+  "q": "What did the Boxers want?",
+  "o": [
+   "For foreigners to leave China, because they resented growing foreign influence.",
+   "For Western powers to stay and modernize China's army and new railways.",
+   "For the Qing emperor to step down so China could become a republic.",
+   "For China to sell more opium so it could repay its war debts quickly."
+  ],
+  "a": 0,
+  "h": "Think about how many Chinese people felt about the unequal treaties.",
+  "expl": "The Boxers resented foreign influence and demanded that foreigners leave China, attacking western religious figures and foreign property.",
+  "insight": "The Boxers resented foreign influence and demanded that foreigners leave China."
+ },
+ {
+  "t": "China & Opium",
+  "q": "What were the results of the Boxer Rebellion?",
+  "o": [
+   "Foreign armies invaded, China paid huge damages and accepted foreign troops in Beijing.",
+   "The Boxers won, foreigners left China and the Qing cancelled the Treaty of Nanking.",
+   "Britain alone invaded, took over Beijing and made China a direct British colony.",
+   "The Qing and foreign powers signed a peace deal that returned Hong Kong to China."
+  ],
+  "a": 0,
+  "h": "The foreign powers responded together, and with force.",
+  "expl": "European, American and Japanese forces invaded. China paid hundreds of millions in damages and had to allow foreign troops in Beijing and other cities.",
+  "insight": "Results: European imperialists, Americans and Japanese invaded China; China paid hundreds of millions in damages and was forced to allow foreign military forces in Beijing."
+ }
+];
+BANK.forEach((q, i) => q.id = i);
+
+const TOPICS = [...new Set(BANK.map(q => q.t))];
+const COLORS = ["#3949ab", "#00897b", "#8e24aa", "#d81b60", "#6d4c41", "#0277bd", "#558b2f", "#ef6c00"];
+const colorOf = t => COLORS[TOPICS.indexOf(t) % COLORS.length];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- Storage (safe) ---------- */
+function freshState() { return { ledger: {} }; }
+function loadState() {
+  try {
+    if (typeof localStorage === "undefined" || !localStorage) return freshState();
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return freshState();
+    const s = JSON.parse(raw);
+    if (!s || typeof s !== "object" || !s.ledger || typeof s.ledger !== "object") return freshState();
+    return s;
+  } catch (e) { return freshState(); }
+}
+function saveState() {
+  try { if (typeof localStorage !== "undefined" && localStorage) localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
+}
+let state = loadState();
+function L(id) {
+  let e = state.ledger[id];
+  if (!e || typeof e !== "object") e = state.ledger[id] = { streak: 0, status: "active", lastCorrect: 0 };
+  if (typeof e.streak !== "number") e.streak = 0;
+  if (e.status !== "mastered") e.status = "active";
+  return e;
+}
+
+/* ---------- Eligibility ---------- */
+const isFinalPass = q => L(q.id).streak === STREAK_TO_MASTER - 1;
+function readyAt(q) {
+  const e = L(q.id);
+  if (FINAL_PASS_SPACING_MS > 0 && e.streak === STREAK_TO_MASTER - 1) return (e.lastCorrect || 0) + FINAL_PASS_SPACING_MS;
+  return 0;
+}
+const isEligible = (q, now) => L(q.id).status === "active" && readyAt(q) <= now;
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+/* ---------- Home ---------- */
+function fmtWait(ms) { const m = Math.ceil(ms / 60000); return m <= 1 ? "about 1 minute" : m + " minutes"; }
+let noticeTimer = null;
+function renderHome() {
+  show("home");
+  $("title").textContent = QUIZ_NAME;
+  $("ver").textContent = VERSION;
+  document.title = QUIZ_NAME;
+  $("pills").innerHTML = TOPICS.map(t => `<span class="pill" style="border-color:${colorOf(t)};color:${colorOf(t)}">${esc(t)}</span>`).join("");
+  const total = BANK.length;
+  const done = BANK.filter(q => L(q.id).status === "mastered").length;
+  $("nActive").textContent = total - done;
+  $("nDone").textContent = done;
+  const pct = Math.round(100 * done / total);
+  $("mainPct").textContent = pct + "% complete";
+  $("how").textContent = `Answer correctly ${STREAK_TO_MASTER} times in a row to complete a question. A wrong answer resets your progress on that question. Work through all ${total} questions to finish.`;
+  const tw = $("topics");
+  tw.className = "topics" + (TOPICS.length >= 7 ? " two" : "");
+  tw.innerHTML = TOPICS.map(t => {
+    const qs = BANK.filter(q => q.t === t);
+    const m = qs.filter(q => L(q.id).status === "mastered").length;
+    const halfN = qs.filter(q => L(q.id).status === "active" && L(q.id).streak > 0).length;
+    const half = halfN > 0 ? `<span class="half" title="One more correct answer to complete these">▶${halfN}</span>` : "";
+    return `<div class="tcard"><div class="trow"><span class="tname" style="color:${colorOf(t)}">${esc(t)}</span><span class="tmeta">${half}${m}/${qs.length}</span></div><div class="bar"><i data-w="${Math.round(100 * m / qs.length)}" style="background:${colorOf(t)}"></i></div></div>`;
+  }).join("");
+  const main = $("mainBar"); main.style.width = "0";
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    main.style.width = pct + "%";
+    tw.querySelectorAll(".bar i").forEach(b => b.style.width = b.dataset.w + "%");
+  }));
+  updateNotice();
+  clearInterval(noticeTimer);
+  noticeTimer = setInterval(updateNotice, 15000);
+}
+function updateNotice() {
+  const now = Date.now();
+  const active = BANK.filter(q => L(q.id).status === "active");
+  const eligible = active.filter(q => isEligible(q, now));
+  const resting = active.filter(q => !isEligible(q, now));
+  const n = $("notice"), go = $("btnGo");
+  go.disabled = false;
+  go.textContent = "▶ Continue Progress";
+  if (active.length === 0) {
+    n.textContent = "🎉 You've completed every question! Use \"Start All Over\" if you'd like to practice again.";
+    n.classList.remove("hidden"); go.disabled = true; return;
+  }
+  if (resting.length && eligible.length < QS_PER_ROUND) {
+    const soon = Math.min(...resting.map(readyAt)) - now;
+    const restMsg = `${resting.length} question${resting.length > 1 ? "s are" : " is"} resting before a final check (next ready in ${fmtWait(soon)}).`;
+    n.textContent = eligible.length === 0
+      ? restMsg + " You can practice them now, but practice answers won't count toward completing them."
+      : restMsg + ` This round will include ${eligible.length} counted question${eligible.length > 1 ? "s" : ""}` + (eligible.length + resting.length > eligible.length ? ", topped up with practice questions." : ".");
+    n.classList.remove("hidden");
+    if (eligible.length === 0) go.textContent = "▶ Practice Now";
+  } else n.classList.add("hidden");
+}
+
+/* ---------- Session ---------- */
+let session = null;
+function startSession() {
+  const now = Date.now();
+  const active = BANK.filter(q => L(q.id).status === "active");
+  const eligible = shuffle(active.filter(q => isEligible(q, now)));
+  let items = eligible.slice(0, QS_PER_ROUND).map(q => ({ q, practice: false }));
+  if (items.length < QS_PER_ROUND) {
+    // Relief valve: top up with resting questions as practice-only (they don't affect progress)
+    const resting = active.filter(q => !isEligible(q, now)).sort((a, b) => readyAt(a) - readyAt(b));
+    items = items.concat(resting.slice(0, QS_PER_ROUND - items.length).map(q => ({ q, practice: true })));
+    items = shuffle(items);
+  }
+  if (!items.length) return;
+  session = { items, i: 0, results: [], completed: 0 };
+  clearInterval(noticeTimer);
+  renderQuestion();
+}
+function renderQuestion() {
+  show("quiz");
+  window.scrollTo(0, 0);
+  const it = session.items[session.i], q = it.q, c = colorOf(q.t);
+  const b = $("qBadge"); b.textContent = q.t; b.style.borderColor = c; b.style.color = c;
+  $("qCount").textContent = `Q ${session.i + 1} of ${session.items.length}`;
+  $("qTag").classList.toggle("hidden", !it.practice);
+  $("qText").textContent = q.q;
+  const hb = $("hintBtn"), hx = $("hintBox");
+  hx.classList.add("hidden"); hx.textContent = q.h;
+  const finalPass = !it.practice && isFinalPass(q);
+  hb.disabled = finalPass;
+  hb.textContent = finalPass ? "💡 Hint unavailable on the final check" : "💡 Show hint";
+  hb.onclick = () => { const open = hx.classList.toggle("hidden") === false; hb.textContent = open ? "💡 Hide hint" : "💡 Show hint"; };
+  const order = shuffle(q.o.map((text, idx) => ({ text, idx })));
+  const box = $("opts"); box.innerHTML = "";
+  order.forEach(o => {
+    const btn = document.createElement("button");
+    btn.className = "opt"; btn.textContent = o.text; btn.dataset.idx = o.idx;
+    btn.onclick = () => answer(o.idx);
+    box.appendChild(btn);
+  });
+  $("feedback").classList.add("hidden");
+  $("nextBar").classList.add("hidden");
+}
+function answer(idx) {
+  const it = session.items[session.i], q = it.q, ok = idx === q.a;
+  $("opts").querySelectorAll(".opt").forEach(b => {
+    b.disabled = true;
+    const bi = +b.dataset.idx;
+    if (bi === q.a) b.classList.add("correct");
+    else if (bi === idx) b.classList.add("wrong");
+  });
+  $("hintBtn").disabled = true;
+  let completedNow = false;
+  if (!it.practice) {
+    const e = L(q.id);
+    if (ok) {
+      e.streak++; e.lastCorrect = Date.now();
+      if (e.streak >= STREAK_TO_MASTER) { e.status = "mastered"; completedNow = true; session.completed++; }
+    } else e.streak = 0;
+    saveState(); // save immediately after every answer
+  }
+  session.results.push({ t: q.t, ok });
+  const v = $("verdict");
+  v.className = "verdict " + (ok ? "ok" : "no");
+  v.textContent = ok ? (completedNow ? "✓ Correct! Question completed 🎉" : "✓ Correct!") : "✗ Not quite.";
+  $("expl").textContent = q.expl;
+  $("insight").textContent = q.insight;
+  $("feedback").classList.remove("hidden");
+  $("btnNext").textContent = session.i + 1 < session.items.length ? "Next →" : "See Results →";
+  $("nextBar").classList.remove("hidden");
+}
+function next() {
+  session.i++;
+  if (session.i < session.items.length) renderQuestion(); else renderResults();
+}
+function renderResults() {
+  show("results");
+  window.scrollTo(0, 0);
+  const r = session.results, right = r.filter(x => x.ok).length;
+  $("rScore").textContent = `${right} / ${r.length} correct`;
+  const d = $("rDone");
+  if (session.completed > 0) { d.textContent = `+ ${session.completed} question${session.completed > 1 ? "s" : ""} completed this session`; d.classList.remove("hidden"); }
+  else d.classList.add("hidden");
+  $("rTable").innerHTML = TOPICS.filter(t => r.some(x => x.t === t)).map(t => {
+    const rows = r.filter(x => x.t === t);
+    return `<tr><td style="color:${colorOf(t)};font-weight:700">${esc(t)}</td><td>${rows.filter(x => x.ok).length}</td><td>${rows.length}</td></tr>`;
+  }).join("");
+}
+
+/* ---------- UI plumbing ---------- */
+function show(id) { ["home", "quiz", "results"].forEach(s => $(s).classList.toggle("hidden", s !== id)); }
+$("btnGo").onclick = startSession;
+$("btnNext").onclick = next;
+$("btnBack").onclick = renderHome;
+$("btnQuit").onclick = () => { session = null; renderHome(); };
+$("btnReset").onclick = () => $("modal").classList.remove("hidden");
+$("mCancel").onclick = () => $("modal").classList.add("hidden");
+$("mConfirm").onclick = () => {
+  try { if (typeof localStorage !== "undefined" && localStorage) localStorage.removeItem(LS_KEY); } catch (e) {}
+  state = freshState();
+  $("modal").classList.add("hidden");
+  renderHome();
+};
+renderHome();
+</script>
+</body>
+</html>
