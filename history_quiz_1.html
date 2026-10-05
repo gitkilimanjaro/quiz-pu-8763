@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Grade 8 History - Introduction and Imperialism</title>
+<title>Grade 8 History - Imperialism</title>
 <style>
 :root{--bg:#f5f6fa;--ink:#1a1a2e;--muted:#5c5f73;--navy:#1a1a2e;--ok:#2e7d32;--bad:#c62828;--half:#f57c00;--card:#fff;--line:#e3e5ee}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -143,8 +143,8 @@ th:not(:first-child),td:not(:first-child){text-align:center}
 </div>
 
 <script>
-const VERSION = "ver1.00";
-const QUIZ_NAME = "Grade 8 History - Introduction and Imperialism";
+const VERSION = "ver1.01";
+const QUIZ_NAME = "Grade 8 History - Imperialism";
 const QS_PER_ROUND = 16;
 const STREAK_TO_MASTER = 2;
 const FINAL_PASS_SPACING_MS = 5 * 60 * 1000;
@@ -152,272 +152,6 @@ const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/
 const LS_KEY = slugify(QUIZ_NAME) + "_v1";
 
 const BANK = [
- {
-  "t": "20th Century Skills",
-  "q": "In History, what is a 'cause'?",
-  "o": [
-   "Something, or the conditions, that make an event happen.",
-   "The result of an event and what happens to people afterwards.",
-   "The reason historians decide an event matters to people years later.",
-   "A way of viewing an event, shaped by a person's background."
-  ],
-  "a": 0,
-  "h": "Think about what comes before an event, not after it.",
-  "expl": "A cause is whatever makes an event happen. What happens afterwards is a consequence; why it matters is significance.",
-  "insight": "A cause is something, or the conditions, which make an event happen; causes can be long-term, medium-term or short-term."
- },
- {
-  "t": "20th Century Skills",
-  "q": "What do historians call the result of an event, meaning what happens because of it?",
-  "o": [
-   "Consequence",
-   "Cause",
-   "Significance",
-   "Perspective"
-  ],
-  "a": 0,
-  "h": "This key term looks forward in time from the event.",
-  "expl": "A consequence is the result of an event. Causes come before; consequences come after.",
-  "insight": "A consequence is the result of an event; what happens as a result of it."
- },
- {
-  "t": "20th Century Skills",
-  "q": "Causes can be long-term, medium-term or short-term. Which type is a 'trigger'?",
-  "o": [
-   "Short-term cause",
-   "Long-term cause",
-   "Medium-term cause",
-   "Underlying cause"
-  ],
-  "a": 0,
-  "h": "A trigger is the spark that sets things off right before an event.",
-  "expl": "Triggers are the immediate sparks of an event, so they are short-term causes. Long-term (underlying) causes build up over many years.",
-  "insight": "Causes can be long-term, medium-term and short-term, including triggers, which are the immediate short-term cause."
- },
- {
-  "t": "20th Century Skills",
-  "q": "A government passes a new law that changes who is allowed to vote. Which PESC factor is this mainly?",
-  "o": [
-   "Political",
-   "Economic",
-   "Social",
-   "Cultural"
-  ],
-  "a": 0,
-  "h": "Which factor is about power, laws and decision-making?",
-  "expl": "Laws and decisions about who holds power are political.",
-  "insight": "Political factors concern power and control, laws, and decision-making in government and communities."
- },
- {
-  "t": "20th Century Skills",
-  "q": "A country's rubber exports collapse and plantation workers lose their wages. Which PESC factor is this mainly?",
-  "o": [
-   "Economic",
-   "Political",
-   "Social",
-   "Cultural"
-  ],
-  "a": 0,
-  "h": "Which factor is about money and resources?",
-  "expl": "Exports, wages and resources are about money, so this is economic.",
-  "insight": "Economic factors concern money and resources: how people, businesses and governments use limited resources to meet unlimited wants."
- },
- {
-  "t": "20th Century Skills",
-  "q": "Families move from villages to growing cities, changing how neighbors and communities interact. Which PESC factor is this mainly?",
-  "o": [
-   "Social",
-   "Economic",
-   "Political",
-   "Cultural"
-  ],
-  "a": 0,
-  "h": "Which factor is about how people live together and behave?",
-  "expl": "Changes to community life and how people interact are social.",
-  "insight": "Social factors concern how people behave: human society, community life and interaction between individuals and groups."
- },
- {
-  "t": "20th Century Skills",
-  "q": "A group's traditional music, festivals and art styles change as new beliefs spread. Which PESC factor is this mainly?",
-  "o": [
-   "Cultural",
-   "Social",
-   "Political",
-   "Economic"
-  ],
-  "a": 0,
-  "h": "Which factor is about how people express themselves?",
-  "expl": "Music, festivals, art and beliefs are forms of expression, so this is cultural.",
-  "insight": "Cultural factors concern how people express themselves: shared habits, beliefs, traditions, arts and way of life."
- },
- {
-  "t": "20th Century Skills",
-  "q": "Which key term means why an event is important?",
-  "o": [
-   "Significance",
-   "Consequence",
-   "Interpretation",
-   "Perspective"
-  ],
-  "a": 0,
-  "h": "The 5 R's framework helps you measure this.",
-  "expl": "Significance is about why an event matters. Consequences are its results, which can be evidence of significance.",
-  "insight": "Significance means why something, or an event, is important."
- },
- {
-  "t": "20th Century Skills",
-  "q": "Two students from different countries choose different 'top 10' events of the 20th century because of their backgrounds. Which key term explains this?",
-  "o": [
-   "Perspective",
-   "Significance",
-   "Consequence",
-   "Causation"
-  ],
-  "a": 0,
-  "h": "Think about how culture and background shape the way we see things.",
-  "expl": "Perspective is a way of viewing something shaped by culture, way of thinking or background, so people produce different lists.",
-  "insight": "Perspective is a way of viewing something, shaped by an individual's culture, way of thinking or background."
- },
- {
-  "t": "20th Century Skills",
-  "q": "What is an 'interpretation' in History?",
-  "o": [
-   "The specific meaning or conclusion a person draws from what they observe.",
-   "A neutral record of events listing dates without any personal judgment.",
-   "The original object or document from the past that historians study.",
-   "The long-term result of an event that can still be seen today."
-  ],
-  "a": 0,
-  "h": "It is something a person creates after looking at evidence.",
-  "expl": "An interpretation is the meaning or conclusion someone draws from what they observe, so different historians can reach different interpretations.",
-  "insight": "An interpretation is the specific meaning, explanation or conclusion you draw from what you observe."
- },
- {
-  "t": "20th Century Skills",
-  "q": "Which of the 5 R's asks whether an event spread like ripples in a pond, affecting people all over the world?",
-  "o": [
-   "Radiant",
-   "Remarkable",
-   "Relevant",
-   "Revealing"
-  ],
-  "a": 0,
-  "h": "Think of something that shines or spreads outward.",
-  "expl": "Radiant asks how far an event's effects spread: worldwide, or just one small group in one town.",
-  "insight": "Radiant: the event spread out like ripples, affecting people all over the world rather than a small group."
- },
- {
-  "t": "20th Century Skills",
-  "q": "A historian studies a 1920s event because it shows what people at the time valued, feared and believed. Which of the 5 R's is this?",
-  "o": [
-   "Revealing",
-   "Remarkable",
-   "Radiant",
-   "Relevant"
-  ],
-  "a": 0,
-  "h": "Which R opens a window into the past?",
-  "expl": "Revealing events teach us about the values, fears and beliefs of people in that period.",
-  "insight": "Revealing: the event opens a window into the past, showing what people valued, feared or believed."
- },
- {
-  "t": "20th Century Skills",
-  "q": "An event's impact can still be seen in our laws and technology today. Which of the 5 R's does this show?",
-  "o": [
-   "Relevant",
-   "Revealing",
-   "Radiant",
-   "Remarkable"
-  ],
-  "a": 0,
-  "h": "Ask: does it still matter to us now?",
-  "expl": "Relevant events still matter today; we can see their impact in modern lives, laws or technology.",
-  "insight": "Relevant: the event still matters today and its impact can be seen in modern lives, laws or technology."
- },
- {
-  "t": "20th Century Skills",
-  "q": "In the 5 R's framework, what does 'Resulted in Change' ask?",
-  "o": [
-   "Whether the event caused a domino effect, changing lives, borders or later events.",
-   "Whether people at the time found the event striking or shocking when it happened.",
-   "Whether the event still shapes our modern laws, technology and everyday lives.",
-   "Whether the event teaches us what people valued or feared during that period."
-  ],
-  "a": 0,
-  "h": "Picture a row of dominoes falling.",
-  "expl": "'Resulted in Change' asks whether the event set off further changes. The other options describe Remarkable, Relevant and Revealing.",
-  "insight": "Resulted in Change: the event acted like a domino effect, changing how people lived, altering borders or leading to major future events."
- },
- {
-  "t": "20th Century Skills",
-  "q": "To test whether an event was a turning point, the lesson suggests asking AI for a 'counterfactual'. What does this involve?",
-  "o": [
-   "Imagining how the world might look today if the event had never happened.",
-   "Checking each of the event's dates, names and places against a trusted textbook or encyclopedia.",
-   "Counting how many people and countries were directly affected by the event at the time.",
-   "Sorting the event's effects into political, economic, social and cultural."
-  ],
-  "a": 0,
-  "h": "'Counter' means against; 'factual' means what really happened.",
-  "expl": "A counterfactual asks 'what if this had not happened?' If the world would look very different, the event was a turning point.",
-  "insight": "Turning point: how would the world look today if this event never happened? (a counterfactual scenario)."
- },
- {
-  "t": "20th Century Skills",
-  "q": "In a PEEL paragraph, what does the 'L' stand for?",
-  "o": [
-   "Link",
-   "Logic",
-   "List",
-   "Lesson"
-  ],
-  "a": 0,
-  "h": "It is how you finish the paragraph by connecting back to something.",
-  "expl": "PEEL is Point, Explanation, Evidence, Link. The Link connects back to the question with a final statement.",
-  "insight": "Link: link back to the question and make a final statement."
- },
- {
-  "t": "20th Century Skills",
-  "q": "Which part of a PEEL paragraph provides proof, such as facts, figures or examples, to support your argument?",
-  "o": [
-   "Evidence",
-   "Explanation",
-   "Point",
-   "Link"
-  ],
-  "a": 0,
-  "h": "Which part would a detective bring to court?",
-  "expl": "Evidence is the proof supporting your argument. The Explanation says why it matters; the Point states your argument.",
-  "insight": "Evidence: proof of political, economic, social or cultural importance that supports the argument."
- },
- {
-  "t": "20th Century Skills",
-  "q": "Why does the lesson say you should cross-check AI answers with a textbook or trusted website?",
-  "o": [
-   "AI can 'hallucinate', inventing dates, names or treaties that sound right but are wrong.",
-   "Teachers accept only printed books, so AI answers can never be used as references.",
-   "AI tools only store information up to 1999, so they miss more recent events.",
-   "Textbooks explain the PESC factors properly, while AI tools only give dates."
-  ],
-  "a": 0,
-  "h": "AI can sound confident even when it is mistaken.",
-  "expl": "AI models can produce convincing but false details, so always check claims against a textbook or trusted site like BBC History or Britannica.",
-  "insight": "Fact-check the AI: models can hallucinate dates, names and treaties, so cross-reference with a textbook or trusted website."
- },
- {
-  "t": "20th Century Skills",
-  "q": "According to the lesson, what is the best way to use AI for history research?",
-  "o": [
-   "As a debate partner that challenges your choices, not as a search engine.",
-   "As a quick search engine that writes your complete list of events for you.",
-   "As a final checker that confirms your timeline is correct before you submit it.",
-   "As a summary tool that rewrites textbook chapters into short notes to memorize."
-  ],
-  "a": 0,
-  "h": "The 'Critique My List' strategy has you drive the research.",
-  "expl": "Asking AI to write the list leads to passive learning and misinformation. Using it to challenge your choices builds critical thinking.",
-  "insight": "Use AI as an interactive debate partner and structured organizer, rather than a search engine."
- },
  {
   "t": "Empire Building",
   "q": "During 'old imperialism', what did European empires mainly focus on?",
@@ -657,6 +391,62 @@ const BANK = [
   "insight": "To maintain rights over a territory, one must have military presence in the area."
  },
  {
+  "t": "Empire Building",
+  "q": "Why did the Scramble for Africa create a real risk of war in Europe?",
+  "o": [
+   "Rival European powers were competing to claim the same interior lands and resources.",
+   "African kingdoms had formed alliances to invade the European coastal trading ports.",
+   "The Ottoman Empire threatened to attack any country that sent troops into Africa.",
+   "European workers went on strike to protest against the high cost of new colonies."
+  ],
+  "a": 0,
+  "h": "Think about what happens when several countries want the same land.",
+  "expl": "Several powers wanted the same African territory at once, so clashes between them were likely. The Berlin Conference tried to set rules to avoid this.",
+  "insight": "European powers scrambled to establish political control over interior lands to acquire resources, creating potential for war."
+ },
+ {
+  "t": "Empire Building",
+  "q": "Which country from the Americas attended the Conference of Berlin?",
+  "o": [
+   "USA",
+   "Brazil",
+   "Mexico",
+   "Canada"
+  ],
+  "a": 0,
+  "h": "This country later became a major power in the 20th century.",
+  "expl": "Attendees included Austria, Belgium, France, Germany, Great Britain, Russia, the Ottomans and the USA.",
+  "insight": "The Conference of Berlin included Austria, Belgium, France, Germany, Great Britain, Russia, the Ottomans and the USA."
+ },
+ {
+  "t": "Empire Building",
+  "q": "The General Act gave all member countries free trade in which area?",
+  "o": [
+   "Congo Basin",
+   "Nile Delta",
+   "Sahara Desert",
+   "Cape Colony"
+  ],
+  "a": 0,
+  "h": "Free trade also covered the Niger and Congo rivers.",
+  "expl": "All member countries received free trade in the Congo Basin and along the Niger and Congo rivers.",
+  "insight": "All member countries of the conference received free trade in the Congo Basin and on the Niger and Congo rivers."
+ },
+ {
+  "t": "Empire Building",
+  "q": "Which practice did the General Act of the Berlin Conference abolish in Africa?",
+  "o": [
+   "Slavery",
+   "Taxation",
+   "Mining",
+   "Missionaries"
+  ],
+  "a": 0,
+  "h": "Leopold II also promised to end this practice in the Congo.",
+  "expl": "The General Act abolished slavery in Africa, although forced labor continued under rulers such as Leopold II.",
+  "insight": "The General Act of the Conference of Berlin abolished slavery in Africa."
+ },
+ {
   "t": "Belgian Congo",
   "q": "Leopold II, who won control of the Congo at the Berlin Conference, was king of which country?",
   "o": [
@@ -809,6 +599,48 @@ const BANK = [
   "h": "It involved an object taken during colonial times.",
   "expl": "In 2022 King Philippe returned a looted mask and expressed his deepest regrets for colonial abuses. The slides describe this as an apology.",
   "insight": "In 2022 the King of Belgium returned a looted mask and apologized to the Congo."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "What did Leopold II order to be built in the Congo?",
+  "o": [
+   "Port cities, railroads, a military force and rubber plantations.",
+   "Schools, hospitals, churches and homes for Congolese families.",
+   "Factories, banks, a new parliament building and a national university.",
+   "Canals, lighthouses, a royal palace and tea plantations."
+  ],
+  "a": 0,
+  "h": "Think about what he needed to extract and ship resources.",
+  "expl": "Leopold built port cities, railroads, the Force Publique and rubber plantations, all designed to extract and export resources.",
+  "insight": "Leopold ordered the building of port cities, railroads, a military force (Force Publique) and rubber plantations."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "Until which year did Belgium control the Congo?",
+  "o": [
+   "1960",
+   "1945",
+   "1950",
+   "1955"
+  ],
+  "a": 0,
+  "h": "Many African colonies won independence in this decade.",
+  "expl": "Belgium took over from Leopold in 1908 and controlled the Congo until independence in 1960.",
+  "insight": "Belgium took over due to intense international pressure and controlled the territory until 1960."
+ },
+ {
+  "t": "Belgian Congo",
+  "q": "Why did Leopold II hand the Congo over to the Belgian Parliament in 1908?",
+  "o": [
+   "Intense international pressure over the abuses forced him to give it up.",
+   "He had run out of money after the rubber trade collapsed completely in Europe.",
+   "Congolese rebels defeated the Force Publique and drove his agents from the colony.",
+   "He wanted to retire and chose to leave the colony to his family members."
+  ],
+  "a": 0,
+  "h": "Consider how the rest of the world reacted to reports and cartoons about the Congo.",
+  "expl": "After amassing immense personal wealth, Leopold gave up the colony because of intense international pressure over the atrocities.",
+  "insight": "After amassing immense personal wealth, Leopold had to turn the colony over to the Belgian Parliament in 1908 due to intense international pressure."
  },
  {
   "t": "French Africa & Forms",
@@ -965,6 +797,48 @@ const BANK = [
   "insight": "Imperialist philosophies: assimilation vs. association; direct rule vs. indirect rule."
  },
  {
+  "t": "French Africa & Forms",
+  "q": "Which tactic did France try in the Sahara, mostly without success?",
+  "o": [
+   "Divide and rule",
+   "Scorched earth policy",
+   "Indirect trade agreements",
+   "Forced mass migration"
+  ],
+  "a": 0,
+  "h": "It means turning local groups against each other.",
+  "expl": "France tried divide and rule in the Sahara, setting groups against one another, but this mostly failed.",
+  "insight": "France tried to use divide and rule tactics in the Sahara but mostly failed."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "In imperialist philosophy, what is 'indirect rule'?",
+  "o": [
+   "Governing a colony through its existing local rulers, who follow the imperial power's orders.",
+   "Governing a colony entirely through officials and soldiers sent out from the imperial power's capital.",
+   "Governing a colony through private trading companies and their agents instead of any government officials.",
+   "Governing a colony through elected local assemblies with no outside officials involved."
+  ],
+  "a": 0,
+  "h": "'Indirect' means the imperial power is not the one ruling face to face.",
+  "expl": "Indirect rule uses local rulers to govern on the imperial power's behalf. Direct rule replaces them with the imperial power's own officials.",
+  "insight": "Imperialist philosophies: direct rule vs. indirect rule; indirect rule governs through local rulers."
+ },
+ {
+  "t": "French Africa & Forms",
+  "q": "Which idea about 'superior' and 'inferior' peoples drove the civilizing mission?",
+  "o": [
+   "Social Darwinism",
+   "Economic liberalism",
+   "Religious tolerance",
+   "Popular sovereignty"
+  ],
+  "a": 0,
+  "h": "It wrongly applied a theory about evolution to human societies.",
+  "expl": "Social Darwinism falsely claimed some races were superior, which Europeans used to justify the 'White Man's Burden'.",
+  "insight": "Civilizing Mission (White Man's Burden) was driven by Social Darwinism."
+ },
+ {
   "t": "British India",
   "q": "Which strong Muslim empire ruled directly over most of northern India before the British takeover?",
   "o": [
@@ -1075,6 +949,34 @@ const BANK = [
   "h": "Britain wanted India to supply raw materials, not compete with British industry.",
   "expl": "Britain suppressed India's growth: regions were converted to cash crops (cotton, tea), factories were forbidden, and the government held a monopoly on salt.",
   "insight": "Impact of British rule: suppressed economic growth, converted regions to cash crops, forbade factories, enforced a monopoly over salt."
+ },
+ {
+  "t": "British India",
+  "q": "The British government in India enforced a monopoly over which good?",
+  "o": [
+   "Salt",
+   "Tea",
+   "Cotton",
+   "Silk"
+  ],
+  "a": 0,
+  "h": "Every household needs it to cook and preserve food.",
+  "expl": "Britain enforced a government monopoly over salt, so Indians had to buy it from the British.",
+  "insight": "Impact of British rule: enforced government monopoly over certain goods (salt)."
+ },
+ {
+  "t": "British India",
+  "q": "By the mid-1800s, which parts of India did the East India Company control?",
+  "o": [
+   "Southern India and most of the Ganges region.",
+   "Only the port cities of Bombay and Calcutta.",
+   "All of India except the city of Delhi and its surroundings.",
+   "Northern India, but none of the southern coast or the Ganges."
+  ],
+  "a": 0,
+  "h": "Look at the south and the great river valley in the north.",
+  "expl": "By the mid-1800s the East India Company controlled southern India and most of the Ganges, before the 1857 rebellion.",
+  "insight": "By the mid-1800s, the East India Company controlled Southern India and most of the Ganges."
  },
  {
   "t": "China & Opium",
@@ -1201,6 +1103,34 @@ const BANK = [
   "h": "The foreign powers responded together, and with force.",
   "expl": "European, American and Japanese forces invaded. China paid hundreds of millions in damages and had to allow foreign troops in Beijing and other cities.",
   "insight": "Results: European imperialists, Americans and Japanese invaded China; China paid hundreds of millions in damages and was forced to allow foreign military forces in Beijing."
+ },
+ {
+  "t": "China & Opium",
+  "q": "Which of these was a term of the Treaty of Nanking?",
+  "o": [
+   "China paid reparations and opened its ports to the British.",
+   "Britain paid China for the opium its officials had destroyed.",
+   "China gained control of Britain's trading posts in India.",
+   "Britain agreed to stop all opium trade with China permanently."
+  ],
+  "a": 0,
+  "h": "Remember that China lost the Opium War.",
+  "expl": "China had to pay reparations, open its ports to the British, give up Hong Kong and accept extraterritoriality.",
+  "insight": "Treaty of Nanking: China had to pay reparations; all Chinese ports were opened to the British; Britain gained Hong Kong."
+ },
+ {
+  "t": "China & Opium",
+  "q": "Roughly how many Western religious figures did the Boxers kill?",
+  "o": [
+   "300",
+   "500",
+   "700",
+   "900"
+  ],
+  "a": 0,
+  "h": "It was a few hundred people.",
+  "expl": "The Boxers killed around 300 Western religious figures and vandalized foreign property, prompting a foreign invasion.",
+  "insight": "The Boxers killed circa 300 Western religious figures and vandalized foreign property."
  }
 ];
 BANK.forEach((q, i) => q.id = i);
