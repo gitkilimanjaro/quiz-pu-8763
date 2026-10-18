@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grade 8 PhysicalSci Prep Quiz</title>
+<style>
+  :root{
+    --navy:#1a1a2e; --text:#1a1a2e; --muted:#5b6070; --bg:#f5f6fa; --card:#ffffff;
+    --correct:#2e7d32; --correct-bg:#e8f5e9; --wrong:#c62828; --wrong-bg:#ffebee;
+    --orange:#f57c00; --line:#e3e5ec; --shadow:0 2px 8px rgba(0,0,0,.08);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:16px;line-height:1.45;-webkit-text-size-adjust:100%}
+  button{font-family:inherit}
+  .app{max-width:560px;margin:0 auto;padding:16px 16px 110px}
+  .screen{display:none}
+  .screen.active{display:block}
+
+  /* Home header */
+  .topbar{display:flex;justify-content:flex-end}
+  .version{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.02em}
+  h1{font-size:26px;line-height:1.2;margin:6px 0 12px;font-weight:800;color:var(--text)}
+  .pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+  .pill{background:#fff;border:1.5px solid currentColor;border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:600;white-space:nowrap}
+
+  .card{background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:16px}
+  .stats{display:flex;gap:12px;margin-bottom:12px}
+  .stat{flex:1;text-align:center}
+  .stat .num{font-size:34px;font-weight:800;line-height:1.1}
+  .stat .lbl{font-size:13px;color:var(--muted);font-weight:600}
+  .bar{height:10px;background:#eceef4;border-radius:999px;overflow:hidden}
+  .bar > span{display:block;height:100%;width:0;background:var(--navy);border-radius:999px;transition:width .9s ease}
+  .pct{font-size:13px;color:var(--muted);margin-top:6px;text-align:right}
+  .how{font-size:14px;color:var(--text);margin:12px 0 0;padding-top:12px;border-top:1px solid var(--line)}
+  .how b{font-weight:700}
+  .notice{font-size:13.5px;background:#fff8e1;border:1px solid #ffe0a3;color:#6b4e00;border-radius:10px;padding:10px 12px;margin-top:12px;display:none}
+  .done-msg{font-size:15px;background:var(--correct-bg);border:1px solid #b9dfbb;color:#1b5e20;border-radius:10px;padding:12px;margin-top:12px;display:none;font-weight:600;text-align:center}
+
+  .btn{display:block;width:100%;border:none;border-radius:10px;padding:14px 16px;font-size:16px;font-weight:700;cursor:pointer;transition:transform .1s ease,opacity .15s ease}
+  .btn:active{transform:scale(.99)}
+  .btn-primary{background:var(--navy);color:#fff}
+  .btn-primary:disabled{opacity:.45;cursor:not-allowed}
+  .btn-outline{background:#fff;color:var(--wrong);border:1.5px solid var(--wrong)}
+  .btns{display:flex;flex-direction:column;gap:10px;margin:16px 0}
+
+  .topics{display:grid;grid-template-columns:1fr;gap:10px}
+  .topics.two{grid-template-columns:1fr 1fr}
+  .tcard{background:#fff;border-radius:10px;box-shadow:var(--shadow);padding:10px 11px;min-width:0}
+  .tname{font-weight:700;font-size:13.5px;line-height:1.25;margin-bottom:6px;word-break:break-word}
+  .tmeta{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--muted);margin-bottom:6px;gap:6px}
+  .half{color:var(--orange);font-weight:700;cursor:help}
+  .tcard .bar{height:7px}
+
+  /* Quiz */
+  .qhead{display:flex;justify-content:space-between;align-items:center;margin:4px 0 14px;gap:10px}
+  .badge{background:#fff;border:1.5px solid currentColor;border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70%}
+  .qcount{font-size:14px;font-weight:700;color:var(--muted);white-space:nowrap}
+  .qtext{font-size:19px;font-weight:700;text-align:center;margin:8px 4px 16px;line-height:1.4}
+  .hintwrap{margin-bottom:14px}
+  .hintbtn{background:#fff;border:1.5px solid #c9cdd8;color:var(--text);border-radius:10px;padding:9px 12px;width:100%;font-size:14.5px;font-weight:600;cursor:pointer;text-align:left}
+  .hintbtn:disabled{background:#eef0f4;color:#9aa0ad;border-color:#dde0e7;cursor:not-allowed}
+  .hintbox{display:none;margin-top:8px;background:#f3f6ff;border:1px solid #d6def7;border-radius:10px;padding:10px 12px;font-size:14.5px}
+  .hintbox.open{display:block}
+  .options{display:flex;flex-direction:column;gap:10px}
+  .opt{background:#fff;border:1.5px solid #d6d9e2;border-radius:10px;padding:13px 14px;text-align:left;font-size:15.5px;color:var(--text);cursor:pointer;box-shadow:var(--shadow);transition:background-color .15s ease,border-color .15s ease,color .15s ease}
+  .opt:hover:not(:disabled){border-color:var(--navy)}
+  .opt:disabled{cursor:default}
+  .opt.correct{background:var(--correct-bg);border-color:var(--correct);color:#1b5e20;font-weight:600}
+  .opt.wrong{background:var(--wrong-bg);border-color:var(--wrong);color:#8e1b1b}
+  .opt.dim{opacity:.7}
+  .feedback{display:none;margin-top:16px}
+  .feedback.show{display:block}
+  .verdict{font-weight:800;font-size:16px;margin-bottom:8px}
+  .verdict.ok{color:var(--correct)} .verdict.no{color:var(--wrong)}
+  .expl{background:#fff;border-radius:10px;box-shadow:var(--shadow);padding:12px 14px;font-size:15px;margin-bottom:10px}
+  .insight{background:#f6f3ff;border:1.5px solid #c7b9f0;border-radius:10px;padding:12px 14px;font-size:15px}
+  .insight .ilbl,.expl .ilbl{display:block;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;color:#4b3b8f}
+  .expl .ilbl{color:var(--muted)}
+  .nextbar{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 70%,rgba(245,246,250,0));display:none}
+  .nextbar.show{display:block}
+  .nextbar .btn{max-width:528px;margin:0 auto}
+
+  /* Results */
+  .rtitle{font-size:22px;font-weight:800;margin:6px 0 12px;text-align:center}
+  .score{font-size:46px;font-weight:800;text-align:center;line-height:1.1}
+  .scorelbl{text-align:center;color:var(--muted);font-weight:600;margin-bottom:12px}
+  .cbadge{display:none;text-align:center;background:var(--correct-bg);color:#1b5e20;border:1px solid #b9dfbb;border-radius:999px;padding:8px 14px;font-weight:700;margin:0 auto 4px;width:max-content;max-width:100%}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:9px 6px;text-align:left;border-bottom:1px solid var(--line)}
+  th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+  td.n,th.n{text-align:center;width:22%}
+
+  /* Modal */
+  .modal{position:fixed;inset:0;background:rgba(26,26,46,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+  .modal.show{display:flex}
+  .mbox{background:#fff;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.25);padding:20px;max-width:380px;width:100%}
+  .mbox h2{margin:0 0 8px;font-size:19px}
+  .mbox p{margin:0 0 16px;color:var(--text)}
+  .mrow{display:flex;gap:10px}
+  .mrow .btn{flex:1}
+  .btn-ghost{background:#eef0f4;color:var(--text)}
+  .btn-danger{background:var(--wrong);color:#fff}
+
+  @media (min-width:600px){ .app{padding-top:28px} h1{font-size:30px} }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HOME -->
+  <section id="home" class="screen active">
+    <div class="topbar"><span class="version" id="version">ver1.00</span></div>
+    <h1 id="title">Grade 8 PhysicalSci Prep Quiz</h1>
+    <div class="pills" id="pills"></div>
+
+    <div class="card">
+      <div class="stats">
+        <div class="stat"><div class="num" id="activeNum">0</div><div class="lbl">Active Questions</div></div>
+        <div class="stat"><div class="num" id="doneNum">0</div><div class="lbl">Completed</div></div>
+      </div>
+      <div class="bar"><span id="mainBar"></span></div>
+      <div class="pct" id="mainPct">0% completed</div>
+      <p class="how" id="how"></p>
+      <div class="notice" id="notice"></div>
+      <div class="done-msg" id="doneMsg">🎉 You've completed every question. Great work!</div>
+    </div>
+
+    <div class="btns">
+      <button class="btn btn-primary" id="continueBtn">▶ Continue Progress</button>
+      <button class="btn btn-outline" id="resetBtn">↺ Start All Over</button>
+    </div>
+
+    <div class="topics" id="topics"></div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="screen">
+    <div class="qhead">
+      <span class="badge" id="qBadge">Topic</span>
+      <span class="qcount" id="qCount">Q 1 of 16</span>
+    </div>
+    <div class="qtext" id="qText"></div>
+    <div class="hintwrap">
+      <button class="hintbtn" id="hintBtn">💡 Show hint</button>
+      <div class="hintbox" id="hintBox"></div>
+    </div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback">
+      <div class="verdict" id="verdict"></div>
+      <div class="expl"><span class="ilbl">Explanation</span><span id="explText"></span></div>
+      <div class="insight"><span class="ilbl">Key insight</span><span id="insightText"></span></div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" class="screen">
+    <div class="rtitle">Round complete</div>
+    <div class="card">
+      <div class="score" id="score">0 / 0</div>
+      <div class="scorelbl">correct this round</div>
+      <div class="cbadge" id="cbadge"></div>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <table>
+        <thead><tr><th>Topic</th><th class="n">Correct</th><th class="n">Drawn this session</th></tr></thead>
+        <tbody id="rtable"></tbody>
+      </table>
+    </div>
+    <div class="btns"><button class="btn btn-primary" id="backBtn">Continue Studying →</button></div>
+  </section>
+</div>
+
+<div class="nextbar" id="nextBar"><button class="btn btn-primary" id="nextBtn">Next →</button></div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="mbox">
+    <h2 id="mTitle">Start all over?</h2>
+    <p>This will erase all your progress. Are you sure?</p>
+    <div class="mrow">
+      <button class="btn btn-ghost" id="mCancel">Cancel</button>
+      <button class="btn btn-danger" id="mConfirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===================== CONFIG ===================== */
+const QUIZ_NAME = "Grade 8 PhysicalSci Prep Quiz";
+const VERSION = "ver1.00";
+const QS_PER_ROUND = 16;
+const STREAK_TO_MASTER = 2;
+const FINAL_PASS_SPACING_MS = 5 * 60 * 1000; // 5 minutes
+const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+const LS_KEY = slugify(QUIZ_NAME) + "_v1";
+
+const TOPIC_COLORS = {
+  "Mixtures": "#1565c0",
+  "Elements & Compounds": "#6a1b9a",
+  "Separating Mixtures": "#00838f",
+  "Solutions": "#ad1457",
+  "Solubility": "#5d4037",
+  "Nature of Light": "#8a6a00",
+  "Shadows": "#455a64"
+};
+
+/* ===================== QUESTION BANK ===================== */
+const BANK = [
+  // ───────────── MIXTURES (6.1) ─────────────
+  {
+    t: "Mixtures",
+    q: "When salt is stirred into water, a salt solution forms. Why is a salt solution classified as a mixture and not a compound?",
+    o: [
+      "The salt can be separated from the water again by evaporation, which is a physical process.",
+      "The salt and the water react chemically to form a brand new substance with new properties.",
+      "The salt and the water are joined together in a fixed ratio that can never be changed.",
+      "The salt breaks down into its separate elements as soon as it dissolves in the water."
+    ],
+    a: 0,
+    h: "Think about how you could get the salt back, and whether that needs a chemical reaction.",
+    expl: "No chemical reaction takes place when salt dissolves. The salt can be recovered by evaporation, a physical process, so the salt solution is a mixture.",
+    insight: "A mixture is made up of two or more elements and/or compounds that are not chemically combined and can be separated by physical processes."
+  },
+  {
+    t: "Mixtures",
+    q: "Which gas makes up the largest part of clean, dry air?",
+    o: ["Oxygen", "Nitrogen", "Argon", "Hydrogen"],
+    a: 1,
+    h: "Look at the biggest slice of the air pie chart.",
+    expl: "Clean, dry air is about 78% nitrogen, 21% oxygen, and small amounts of argon, carbon dioxide and other gases.",
+    insight: "Clean, dry air contains about 78% nitrogen, 21% oxygen and small amounts of carbon dioxide and other gases."
+  },
+  {
+    t: "Mixtures",
+    q: "Approximately what percentage of clean, dry air (by volume) is oxygen?",
+    o: ["78%", "12%", "21%", "30%"],
+    a: 2,
+    h: "Oxygen is the second-largest slice of the air pie chart.",
+    expl: "Oxygen makes up about 21% of clean, dry air. Nitrogen is about 78%.",
+    insight: "Air composition by volume: nitrogen 78%, oxygen 21%, argon about 0.9%, carbon dioxide about 0.04%."
+  },
+  {
+    t: "Mixtures",
+    q: "Which statement best explains why air is a mixture and not a compound?",
+    o: [
+      "Its gases are chemically bonded to each other in one fixed ratio by volume.",
+      "Its gases react together in the sky to form brand new gaseous substances.",
+      "Its gases are not chemically bonded, and their proportions vary with place.",
+      "Its gases can only be separated from each other by chemical reactions."
+    ],
+    a: 2,
+    h: "Does the composition of air stay exactly the same at every altitude and place?",
+    expl: "The gases in air are only physically blended. They keep their own properties, and the proportions change with altitude, pollution and humidity.",
+    insight: "In a mixture, the constituents are not chemically combined and can be mixed in any proportion; in a compound, the elements combine in a fixed ratio."
+  },
+  {
+    t: "Mixtures",
+    q: "Brass, used to make trumpets and horns, is an alloy of which two metals?",
+    o: ["copper and tin", "iron and carbon", "copper and zinc", "nickel and chromium"],
+    a: 2,
+    h: "Bronze uses copper and tin. Brass uses copper and a different metal.",
+    expl: "Brass is an alloy of copper and zinc. Bronze is copper and tin, steel is iron and carbon, and nichrome is nickel and chromium.",
+    insight: "Alloys are mixtures formed by mixing metals with small amounts of other metals or non-metals, e.g. brass = copper + zinc."
+  },
+  {
+    t: "Mixtures",
+    q: "Which statement about alloys such as steel, brass and bronze is correct?",
+    o: [
+      "They are compounds formed when metals react chemically with non-metals.",
+      "They are pure elements that can be found on the Periodic Table.",
+      "They are mixtures that are usually stronger and harder than pure metals.",
+      "They are mixtures that are always softer and weaker than pure metals."
+    ],
+    a: 2,
+    h: "Why would coins and tools be made from alloys rather than pure metals?",
+    expl: "Alloys are mixtures of a metal with other metals or non-metals. They are stronger and harder than the pure metals they are made from.",
+    insight: "Alloys are mixtures that are stronger and harder than the pure metals, with different properties from their constituent substances."
+  },
+  {
+    t: "Mixtures",
+    q: "The frame of some spectacles is made of a shape-memory alloy such as nickel–titanium. What is special about this material?",
+    o: [
+      "When bent, it stays permanently in its new shape even after it is heated.",
+      "When bent, it can return to its original shape, for example when heated.",
+      "When bent, it becomes brittle and quickly snaps into pieces if it is heated again.",
+      "When bent, it returns to its original shape only when cooled to below 0 °C."
+    ],
+    a: 1,
+    h: "The name of the alloy tells you what it 'remembers'.",
+    expl: "Shape-memory alloys 'remember' their original shape. After being bent or twisted, they return to it, for example by heating to a certain temperature.",
+    insight: "Shape-memory alloys can return to their original shape after being bent or twisted; uses include dental braces, heart stents and spectacle frames."
+  },
+  {
+    t: "Mixtures",
+    q: "The gases in air are all colourless, and so is air. Which general property of mixtures does this show?",
+    o: [
+      "A mixture always contains its constituents in fixed proportions by mass, like a compound.",
+      "A mixture can form only when its constituents react together chemically to make new substances.",
+      "A mixture has new properties that differ from those of the separate constituents inside it.",
+      "A mixture has the same properties as the constituents it is made of."
+    ],
+    a: 3,
+    h: "Air's colour comes from the colours of the gases inside it.",
+    expl: "Because the constituents of a mixture are not chemically combined, each keeps its own properties. Colourless gases give colourless air.",
+    insight: "Mixtures have the same properties as their constituents; they are not formed by chemical reactions and can be separated by physical processes."
+  },
+
+  // ───────────── ELEMENTS, COMPOUNDS & MIXTURES (6.2) ─────────────
+  {
+    t: "Elements & Compounds",
+    q: "Iron filings and sulfur powder are mixed and then heated strongly. Which new substance is formed?",
+    o: ["iron oxide", "iron sulfide", "iron sulfate", "sulfur dioxide"],
+    a: 1,
+    h: "The product's name comes from the two elements that combined.",
+    expl: "Mixing iron and sulfur forms a mixture. Heating causes a chemical change in which they combine to form the compound iron sulfide.",
+    insight: "Heating iron and sulfur causes a chemical change, forming the compound iron sulfide, which has properties different from iron and sulfur."
+  },
+  {
+    t: "Elements & Compounds",
+    q: "Which description matches an element?",
+    o: [
+      "A substance made of two or more different types of atoms chemically joined together in a fixed ratio.",
+      "A pure substance made of only one type of atom that cannot be broken down chemically.",
+      "A substance made of two or more types of atoms that are mixed but not joined together.",
+      "A pure substance made of one type of molecule that always breaks down when heated."
+    ],
+    a: 1,
+    h: "Gold and diamond are examples. What kind of atoms do they contain?",
+    expl: "An element is a pure substance made up of only one type of atom. It cannot be broken down into anything simpler by chemical reactions.",
+    insight: "Element: a substance that cannot be broken down into simpler substances by chemical reactions; it is made up of only one type of atom."
+  },
+  {
+    t: "Elements & Compounds",
+    q: "A sodium chloride solution does not have a fixed boiling point. What does this tell you about it?",
+    o: [
+      "It is an element, because elements boil over a range of temperatures.",
+      "It is a compound, because compounds have boiling points that keep varying.",
+      "It is a mixture, because its boiling point depends on its composition.",
+      "It is a pure substance, because only pure substances have no fixed boiling point."
+    ],
+    a: 2,
+    h: "Which group has fixed melting and boiling points, and which does not?",
+    expl: "Elements and compounds are pure substances with fixed melting and boiling points. Mixtures do not; their boiling point depends on how much of each constituent is present.",
+    insight: "Elements and compounds are pure substances with specific melting and boiling points; mixtures do not have fixed melting and boiling points."
+  },
+  {
+    t: "Elements & Compounds",
+    q: "Substance C has fixed melting and boiling points, and it breaks down into simpler substances when heated. What is substance C?",
+    o: ["an element", "a mixture", "a compound", "a solution"],
+    a: 2,
+    h: "Fixed melting and boiling points mean it is pure. Which pure substance can still be broken down?",
+    expl: "Fixed melting and boiling points mean C is pure. Elements cannot be broken down chemically, so C must be a compound.",
+    insight: "Compounds are pure substances (fixed melting and boiling points) made of two or more elements chemically combined, so they can be broken down chemically."
+  },
+  {
+    t: "Elements & Compounds",
+    q: "Which of these is a compound?",
+    o: ["Sugar", "Diamond", "Ink", "Bronze"],
+    a: 0,
+    h: "Look for a single pure substance made of more than one type of atom.",
+    expl: "Sugar is a compound of carbon, hydrogen and oxygen. Diamond is an element (carbon only), while ink and bronze are mixtures.",
+    insight: "A compound contains two or more different elements chemically joined together in a fixed ratio."
+  },
+  {
+    t: "Elements & Compounds",
+    q: "Which of these is a mixture?",
+    o: ["Sulfur", "Diamond", "Water", "Milk"],
+    a: 3,
+    h: "Which one contains several different substances that are not chemically joined?",
+    expl: "Milk contains water, fats, proteins and other substances that are not chemically combined. Sulfur and diamond are elements; pure water is a compound.",
+    insight: "Mixtures are not pure substances; they contain two or more elements or compounds that are together but not chemically combined."
+  },
+  {
+    t: "Elements & Compounds",
+    q: "Which statement describes a compound but NOT a mixture?",
+    o: [
+      "Its components can be separated easily from each other by physical methods.",
+      "It has different properties from the elements it is made from.",
+      "The relative amounts of its components can be changed freely when it is made.",
+      "The atoms of its components are not chemically joined together in any way."
+    ],
+    a: 1,
+    h: "Think about table salt compared with sodium (a metal) and chlorine (a gas).",
+    expl: "When elements chemically combine, the compound has entirely new properties. The other three statements all describe mixtures.",
+    insight: "A compound has different properties from the elements it is made from; its components cannot be easily separated and its ratio cannot be changed."
+  },
+  {
+    t: "Elements & Compounds",
+    q: "Sodium melts at 98 °C and chlorine melts at −101 °C, but sodium chloride melts at 801 °C. What does this show?",
+    o: [
+      "A compound keeps the same melting points as each of its separate elements.",
+      "A compound has properties that differ from those of the elements in it.",
+      "A compound always has a melting point between those of its elements.",
+      "A compound melts over a wide range of temperatures, unlike its elements."
+    ],
+    a: 1,
+    h: "Is 801 °C anywhere close to 98 °C or −101 °C?",
+    expl: "The melting point of sodium chloride is completely different from both sodium and chlorine. A compound has its own new properties, and as a pure substance it melts at one fixed temperature.",
+    insight: "When elements combine chemically to form a compound, the compound has properties different from those of its constituent elements."
+  },
+
+  // ───────────── SEPARATING MIXTURES (6.3) ─────────────
+  {
+    t: "Separating Mixtures",
+    q: "What is the simplest way to separate iron filings from sulfur powder?",
+    o: ["Magnetic separation", "Simple filtration", "Simple distillation", "Paper chromatography"],
+    a: 0,
+    h: "Which of the two substances has a special property the other does not?",
+    expl: "Iron is magnetic while sulfur is not, so a magnet attracts the iron filings and removes them from the mixture.",
+    insight: "Separation techniques make use of differences in the properties of the constituents, e.g. iron is magnetic but sulfur is not."
+  },
+  {
+    t: "Separating Mixtures",
+    q: "In filtration, what is the name of the solid that remains on the filter paper?",
+    o: ["Filtrate", "Residue", "Distillate", "Solute"],
+    a: 1,
+    h: "The liquid that passes through has a different name from the solid left behind.",
+    expl: "The solid trapped on the filter paper is the residue. The liquid that passes through is the filtrate.",
+    insight: "Filtration separates an insoluble solid from a liquid: the solid left on the filter paper is the residue; the liquid passing through is the filtrate."
+  },
+  {
+    t: "Separating Mixtures",
+    q: "Why can common salt NOT be separated from a salt solution using filtration?",
+    o: [
+      "The salt particles are too large and block all the tiny pores in the filter paper.",
+      "The dissolved salt particles are small enough to pass through the filter paper.",
+      "The salt reacts chemically with the filter paper and changes into a new, insoluble substance.",
+      "The water evaporates during filtration and leaves the salt crystals stuck to the filter paper."
+    ],
+    a: 1,
+    h: "When salt dissolves, how big are its particles compared with the pores in filter paper?",
+    expl: "When salt dissolves, both the salt and water particles pass through the filter paper. Evaporation is used instead to obtain the salt.",
+    insight: "Evaporation is used to obtain a soluble solid from a solid–liquid mixture; filtration only removes insoluble solids."
+  },
+  {
+    t: "Separating Mixtures",
+    q: "Which technique should be used to obtain pure drinking water from seawater?",
+    o: ["Evaporation", "Filtration", "Distillation", "Chromatography"],
+    a: 2,
+    h: "You need to keep the water, not throw it away as vapour.",
+    expl: "Distillation boils the water and then condenses the steam into pure liquid water. Evaporation would lose the water to the air and keep only the salt.",
+    insight: "Distillation is used to obtain the liquid solvent from a solution; the salt is left behind in the distillation flask."
+  },
+  {
+    t: "Separating Mixtures",
+    q: "In a distillation set-up, what is the job of the condenser?",
+    o: [
+      "It heats the salt solution so that the water boils away faster.",
+      "It traps the salt particles so they cannot reach the conical flask.",
+      "It cools the steam so that it changes back into liquid water.",
+      "It measures the temperature of the vapour leaving the flask."
+    ],
+    a: 2,
+    h: "Cold water flows through the outer jacket of the condenser.",
+    expl: "Cold water flowing through the condenser cools the steam, which condenses into liquid water called the distillate.",
+    insight: "In distillation, steam is cooled and condensed in the condenser; the liquid collected in the conical flask is called the distillate."
+  },
+  {
+    t: "Separating Mixtures",
+    q: "When is fractional distillation used instead of simple distillation?",
+    o: [
+      "When a soluble solid must be obtained from a solution by heating it until dry.",
+      "When an insoluble solid must be removed from a liquid using filter paper.",
+      "When a mixture of coloured dyes must be separated as the dyes travel up a strip of paper.",
+      "When a mixture of more than two liquids with different boiling points is separated."
+    ],
+    a: 3,
+    h: "Crude oil and liquid air are both separated this way.",
+    expl: "Fractional distillation separates a mixture of several liquids with different boiling points into fractions, using a fractionating column or tower.",
+    insight: "Fractional distillation is used to separate a mixture of more than two liquids with different boiling points, e.g. crude oil and liquid air."
+  },
+  {
+    t: "Separating Mixtures",
+    q: "In paper chromatography, why do the different dyes in a drop of ink separate?",
+    o: [
+      "Dyes that hold on to the paper more strongly travel more slowly up it.",
+      "Dyes that are less soluble in the solvent always travel faster up it.",
+      "Dyes that are heavier always rise to the very top of the paper first.",
+      "Dyes that are darker absorb more solvent and so travel the furthest."
+    ],
+    a: 0,
+    h: "The dyes move at different rates. What slows a dye down?",
+    expl: "The solvent carries the dissolved dyes up the paper. Dyes that hold on more to the paper surface move more slowly, so the dyes spread out into separate spots.",
+    insight: "Chromatography separates constituents of a mixture by passing it in solution through a medium; the constituents move at different rates in the medium."
+  },
+  {
+    t: "Separating Mixtures",
+    q: "On a chromatogram, a spot from a sweet's food colouring rises to exactly the same height as a spot from a known illegal dye. What can you conclude?",
+    o: [
+      "The food colouring is a pure substance containing only one dye.",
+      "The food colouring probably contains the illegal dye.",
+      "The food colouring cannot contain the illegal dye at all.",
+      "The food colouring has reacted with the solvent on the paper."
+    ],
+    a: 1,
+    h: "Matching spot heights point to matching substances.",
+    expl: "The same substance travels the same distance under the same conditions, so a matching spot suggests the illegal dye is present.",
+    insight: "Chromatography can be used to identify constituents of mixtures, e.g. to find out whether illegal dyes have been used in food colourings."
+  },
+  {
+    t: "Separating Mixtures",
+    q: "A mixture contains sand (sinks, insoluble) and ammonium chloride (soluble) in water. Which technique removes the sand?",
+    o: ["Filtration", "Chromatography", "Condensation", "Evaporation"],
+    a: 0,
+    h: "The sand does not dissolve and its particles are large.",
+    expl: "Sand is insoluble, so filtration traps it as the residue. The ammonium chloride solution passes through and can then be evaporated to obtain the solid.",
+    insight: "Filtration is used to obtain an insoluble solid from a solid–liquid mixture."
+  },
+
+  // ───────────── SOLUTIONS (6.4) ─────────────
+  {
+    t: "Solutions",
+    q: "Sugar dissolves in water to form sugar solution. What is the sugar called?",
+    o: ["Solvent", "Solute", "Filtrate", "Residue"],
+    a: 1,
+    h: "Is the sugar doing the dissolving or being dissolved?",
+    expl: "The substance that dissolves is the solute (sugar). The substance it dissolves in is the solvent (water).",
+    insight: "The solute is the substance that dissolves; the solvent is the substance the solute dissolves in; together they form a solution."
+  },
+  {
+    t: "Solutions",
+    q: "A student stirs 25 g of salt into 200 g of water until it all dissolves. What is the mass of the solution?",
+    o: ["200 g", "250 g", "225 g", "175 g"],
+    a: 2,
+    h: "Mass is never lost when a solute dissolves.",
+    expl: "Mass of solution = mass of solvent + mass of solute = 200 g + 25 g = 225 g.",
+    insight: "Mass of solution = mass of solvent + mass of solute; mass is conserved when a solute dissolves."
+  },
+  {
+    t: "Solutions",
+    q: "What is an aqueous solution?",
+    o: [
+      "A solution in which water is the solute dissolved in another liquid.",
+      "A solution in which alcohol is the solvent that dissolves the solute.",
+      "A mixture in which water and an insoluble solid settle into two layers.",
+      "A solution in which water is the solvent that dissolves the solute."
+    ],
+    a: 3,
+    h: "'Aqua' means water. Which role does the water play?",
+    expl: "An aqueous solution is any solution in which water is the solvent, e.g. salt solution, sugar solution and mineral water.",
+    insight: "A solution in which water is the solvent is known as an aqueous solution."
+  },
+  {
+    t: "Solutions",
+    q: "Which of these is NOT an aqueous solution?",
+    o: ["Saline drip", "Black tea", "Iodine tincture", "Mineral water"],
+    a: 2,
+    h: "Look for the one whose solvent is not water.",
+    expl: "Tincture of iodine is iodine dissolved in alcohol. The others all have water as the solvent.",
+    insight: "Not all substances dissolve in water; some dissolve in other solvents such as alcohol, acetone or turpentine."
+  },
+  {
+    t: "Solutions",
+    q: "Why is a solution described as homogeneous?",
+    o: [
+      "Its solute particles slowly sink and settle at the bottom over time.",
+      "It has the same colour, density and appearance in every part.",
+      "Its top layer is always more concentrated than its bottom layer.",
+      "Its solute particles stay large enough to be seen with the naked eye."
+    ],
+    a: 1,
+    h: "Would a sample from the top look different from a sample from the bottom?",
+    expl: "The solute particles spread out evenly, so the physical and chemical properties are the same in every part of the solution.",
+    insight: "As solute particles spread out evenly in the solvent, the solution becomes homogeneous: its properties are the same in every part."
+  },
+  {
+    t: "Solutions",
+    q: "What happens to the solute particles when a solute dissolves in a solvent?",
+    o: [
+      "They melt into a liquid because of heat given out by the solvent particles.",
+      "They react with the solvent particles to form molecules of a new substance.",
+      "They separate into individual particles that spread evenly among the solvent.",
+      "They disappear completely, which is why the solution loses some of its mass."
+    ],
+    a: 2,
+    h: "Seawater looks clear, yet the salt is still there. Where did it go?",
+    expl: "Solvent particles surround the solute and pull its particles apart. The particles spread evenly among the solvent particles and become too small to see.",
+    insight: "When a solute dissolves, it separates into individual particles that mix completely and evenly with the solvent particles to form a homogeneous solution."
+  },
+  {
+    t: "Solutions",
+    q: "A spoonful of sugar 'disappears' when stirred into hot tea. Which statement is correct?",
+    o: [
+      "The sugar melts, because heat from the tea turns the solid into a liquid.",
+      "The sugar evaporates, because heat from the tea turns it into a vapour.",
+      "The sugar reacts, because heat from the tea forms a new compound.",
+      "The sugar dissolves, because two substances mix to form a solution."
+    ],
+    a: 3,
+    h: "Melting needs only one substance. How many substances are involved here?",
+    expl: "Dissolving needs a solute and a solvent mixing together. Melting needs only one substance changing from solid to liquid.",
+    insight: "Melting involves one substance changing state; dissolving involves a solute and a solvent mixing to form a solution."
+  },
+  {
+    t: "Solutions",
+    q: "Bronze is described as a solution of tin dissolved in copper. Which metal is the solvent?",
+    o: ["Tin", "Zinc", "Copper", "Iron"],
+    a: 2,
+    h: "The solvent forms the bulk of the solution.",
+    expl: "The tin dissolves in the copper, so tin is the solute and copper is the solvent. The solvent makes up the bulk of the solution.",
+    insight: "In a solution, the solvent forms the bulk of the solution and the solute is the substance that dissolves in it."
+  },
+
+  // ───────────── SOLUBILITY (6.5) ─────────────
+  {
+    t: "Solubility",
+    q: "What is meant by the solubility of a substance?",
+    o: [
+      "The speed at which a solute dissolves in a fixed volume of solvent within a set time.",
+      "The maximum amount of solute that can dissolve in a certain quantity of solvent at a particular temperature.",
+      "The total mass of solute and solvent that are mixed together to make a whole solution.",
+      "The smallest mass of solute needed to change the colour of a fixed quantity of solvent at room temperature."
+    ],
+    a: 1,
+    h: "The definition includes the words 'maximum' and 'particular temperature'.",
+    expl: "Solubility is the maximum amount of solute that can dissolve in a certain quantity of solvent at a particular temperature, usually given in g per 100 g of water.",
+    insight: "Solubility is the maximum amount of a solute that can dissolve in a certain quantity of solvent at a particular temperature."
+  },
+  {
+    t: "Solubility",
+    q: "A student adds 50 g of salt to 100 g of water at 20 °C. Only 36 g dissolves and 14 g stays at the bottom. What type of solution is this?",
+    o: ["dilute solution", "saturated solution", "unsaturated solution", "concentrated solvent"],
+    a: 1,
+    h: "Can any more salt dissolve at this temperature?",
+    expl: "The water holds the maximum salt it can at 20 °C, and the extra salt stays undissolved, so the solution is saturated.",
+    insight: "A saturated solution contains the maximum amount of solute that can dissolve in a given amount of solvent at a particular temperature."
+  },
+  {
+    t: "Solubility",
+    q: "The solubility of common salt is 36 g per 100 g of water at 20 °C. What is the maximum mass of salt that can dissolve in 50 g of water at 20 °C?",
+    o: ["12 g", "18 g", "24 g", "36 g"],
+    a: 1,
+    h: "Solubility is quoted per 100 g of water. Scale it to the water you actually have.",
+    expl: "Half the water dissolves half the salt: 36 g ÷ 2 = 18 g.",
+    insight: "Solubility is given per 100 g of solvent; scale it in proportion to the actual mass of solvent used."
+  },
+  {
+    t: "Solubility",
+    q: "The solubility of common salt is 36 g per 100 g of water at 20 °C. If 58 g of salt is added to 150 g of water at 20 °C, how much salt stays undissolved?",
+    o: ["1 g", "2 g", "3 g", "4 g"],
+    a: 3,
+    h: "First find how much dissolves in 150 g of water (1.5 × 36 g).",
+    expl: "150 g of water dissolves 1.5 × 36 g = 54 g of salt. So 58 g − 54 g = 4 g stays undissolved.",
+    insight: "Undissolved mass = mass of solute added − maximum mass that can dissolve in that mass of solvent at that temperature."
+  },
+  {
+    t: "Solubility",
+    q: "The solubility of copper sulfate is 22 g per 100 g of water at 25 °C. If 25 g of copper sulfate is added to 100 g of water at 25 °C, how much will NOT dissolve?",
+    o: ["3 g", "4 g", "6 g", "8 g"],
+    a: 0,
+    h: "Compare the mass added with the maximum mass that can dissolve.",
+    expl: "Only 22 g can dissolve in 100 g of water at 25 °C, so 25 g − 22 g = 3 g remains undissolved.",
+    insight: "Once a solution is saturated, any extra solute stays undissolved at that temperature."
+  },
+  {
+    t: "Solubility",
+    q: "In general, what happens to the solubility of a solid solute, such as copper sulfate, as the temperature of the water rises?",
+    o: [
+      "It increases, because more solute can dissolve in hot water than in cold water.",
+      "It decreases, because the solute particles escape from the hot water as a vapour.",
+      "It stays the same, because temperature only changes how fast the solute dissolves.",
+      "It falls to zero, because hot water particles move too fast to hold any solute."
+    ],
+    a: 0,
+    h: "Look at the copper sulfate solubility graph: does the line go up or down?",
+    expl: "For most solid solutes, solubility increases with temperature, so more copper sulfate dissolves in hot water than in the same amount of cold water.",
+    insight: "In general, the solubilities of solid solutes increase when the temperature increases."
+  },
+  {
+    t: "Solubility",
+    q: "Why can fish struggle to survive when the water in a pond becomes too warm?",
+    o: [
+      "Warm water dissolves more salt, so the pond quickly becomes too salty.",
+      "More oxygen dissolves in warm water, so fish take in far too much of it.",
+      "Less oxygen stays dissolved, because gas solubility falls as water warms.",
+      "Warm water makes the oxygen react with the water to form a new compound."
+    ],
+    a: 2,
+    h: "Think about bubbles rising out of water as it is heated.",
+    expl: "Gases are less soluble in warm water than in cold water. As the pond warms, dissolved oxygen escapes, leaving less for the fish.",
+    insight: "The solubilities of gases decrease as the temperature increases."
+  },
+  {
+    t: "Solubility",
+    q: "Which factor affects the RATE of dissolving but does NOT affect solubility?",
+    o: ["nature of solute", "rate of stirring", "nature of solvent", "temperature of solvent"],
+    a: 1,
+    h: "Which factor only helps the solute dissolve faster, without letting more dissolve?",
+    expl: "Stirring speeds up dissolving but does not change the maximum amount that can dissolve. Temperature affects both rate and solubility.",
+    insight: "Solubility depends on temperature and the nature of the solute and solvent; stirring and surface area affect only the rate of dissolving."
+  },
+  {
+    t: "Solubility",
+    q: "Iodine dissolves very sparingly in water but is much more soluble in alcohol. What does this show?",
+    o: [
+      "Solubility depends only on the temperature of the solvent, not on which solvent is used.",
+      "Solubility depends on the nature of the solvent as well as the solute.",
+      "Iodine reacts with alcohol to form a brand new compound that is more soluble.",
+      "Iodine particles are too large to fit into the spaces between water particles."
+    ],
+    a: 1,
+    h: "The solute is the same in both test tubes. What is different?",
+    expl: "The same solute dissolves differently in different solvents, so solubility depends on the nature of the solvent as well as the solute.",
+    insight: "The factors that affect solubility are temperature, the nature of the solute and the nature of the solvent."
+  },
+  {
+    t: "Solubility",
+    q: "On a solubility graph, the curve for potassium nitrate rises steeply while the curve for sodium chloride is almost flat. What does this show?",
+    o: [
+      "Heating greatly raises sodium chloride's solubility but barely changes potassium nitrate's.",
+      "Both substances have exactly the same solubility at every temperature on the graph.",
+      "Heating greatly raises potassium nitrate's solubility but barely changes sodium chloride's.",
+      "Heating lowers potassium nitrate's solubility but greatly raises sodium chloride's solubility."
+    ],
+    a: 2,
+    h: "A steep curve means the solubility changes a lot as temperature changes.",
+    expl: "A steep upward curve means solubility rises a lot as temperature rises. A flat curve means temperature has little effect.",
+    insight: "Different solutes have different solubilities in water at a particular temperature, and temperature affects some solutes far more than others."
+  },
+
+  // ───────────── NATURE OF LIGHT (10.1) ─────────────
+  {
+    t: "Nature of Light",
+    q: "Which of these is a luminous object?",
+    o: ["Moon", "Mirror", "Firefly", "Diamond"],
+    a: 2,
+    h: "Which one makes and gives out its own light?",
+    expl: "A firefly produces its own light, so it is luminous. The Moon, a mirror and a diamond only reflect light from other sources.",
+    insight: "Objects that give out light are luminous; objects that do not give out light are non-luminous."
+  },
+  {
+    t: "Nature of Light",
+    q: "The Moon looks bright at night. Why can we see it?",
+    o: [
+      "It gives out its own light, just as the Sun does.",
+      "It absorbs sunlight and then glows from its own heat.",
+      "It reflects light from the Sun towards our eyes.",
+      "It transmits light from distant stars through its surface."
+    ],
+    a: 2,
+    h: "Is the Moon a luminous or a non-luminous object?",
+    expl: "The Moon is non-luminous. We see it only because light from the Sun bounces off it into our eyes.",
+    insight: "Non-luminous objects cannot produce their own light; we see them because light reflects off them into our eyes."
+  },
+  {
+    t: "Nature of Light",
+    q: "What is the speed of light in a vacuum?",
+    o: ["100 000 000 m/s", "200 000 000 m/s", "400 000 000 m/s", "300 000 000 m/s"],
+    a: 3,
+    h: "It is roughly a million times faster than sound in air (about 343 m/s).",
+    expl: "Light travels at 300 000 000 m/s (300 000 km/s) in a vacuum, much faster than sound at about 343 m/s in air.",
+    insight: "The speed of light in vacuum is 300 000 000 m/s; light travels at different speeds in different media."
+  },
+  {
+    t: "Nature of Light",
+    q: "During a thunderstorm, you always see the lightning before you hear the thunder. Why?",
+    o: [
+      "Sound travels through the air much faster than light does.",
+      "Light travels through the air much faster than sound does.",
+      "Thunder is made a few seconds after the lightning flash ends.",
+      "Light and sound have the same speed, but eyes react faster."
+    ],
+    a: 1,
+    h: "Compare 300 000 000 m/s with about 343 m/s.",
+    expl: "The lightning and thunder happen at the same time, but light travels about a million times faster than sound, so the light reaches you first.",
+    insight: "Light travels much faster than sound, which has a speed of about 343 m/s in air."
+  },
+  {
+    t: "Nature of Light",
+    q: "In which of these media does light travel fastest?",
+    o: ["Water", "Glass", "Air", "Diamond"],
+    a: 2,
+    h: "Light slows down in denser transparent materials.",
+    expl: "Light travels faster in air than in water or glass. (It is fastest of all in a vacuum.)",
+    insight: "Light can travel through vacuum, air, water and glass, but at different speeds; it travels faster in air than in water or glass."
+  },
+  {
+    t: "Nature of Light",
+    q: "A bulb is viewed through holes in three lined-up cards. When one card is shifted slightly, the bulb can no longer be seen. What does this show?",
+    o: [
+      "Light travels in curved lines that follow the edges of the cards.",
+      "Light travels in straight lines and cannot bend around the card.",
+      "Light is fully absorbed by the air between the cards when one moves.",
+      "Light slows down and stops when it passes through a small hole."
+    ],
+    a: 1,
+    h: "Light reached the eye only when the holes were in one line.",
+    expl: "Light from the bulb travels in a straight line. When the holes are no longer aligned, the light is blocked and cannot reach the eye.",
+    insight: "Light travels in straight lines in the same medium."
+  },
+  {
+    t: "Nature of Light",
+    q: "A torch bulb lights up a dark room, with its rays spreading outwards from one point. What type of beam is this?",
+    o: ["Parallel", "Convergent", "Scattered", "Divergent"],
+    a: 3,
+    h: "The rays move further apart as they travel away from the bulb.",
+    expl: "Rays that spread outwards from one point form a divergent beam. Parallel rays stay the same distance apart; convergent rays meet at a point.",
+    insight: "A light beam may be parallel, divergent or convergent; in a divergent beam, rays spread outwards from one point."
+  },
+  {
+    t: "Nature of Light",
+    q: "What is a beam of light?",
+    o: [
+      "A single straight path along which light travels from a source.",
+      "A region of darkness formed when the path of light is blocked.",
+      "A bundle of light rays travelling together from a light source.",
+      "An object that produces and gives out its own light energy."
+    ],
+    a: 2,
+    h: "A ray is one path. What do you get when you group many rays together?",
+    expl: "A ray is a single path of light. A beam is a bundle (collection) of many rays.",
+    insight: "The path along which light travels is called a ray; a bundle of rays makes up a beam of light."
+  },
+  {
+    t: "Nature of Light",
+    q: "Frosted glass lets light into a bathroom, but people outside cannot see clearly inside. The frosted glass is:",
+    o: ["Transparent", "Opaque", "Luminous", "Translucent"],
+    a: 3,
+    h: "Some light passes through, but objects behind it look blurry.",
+    expl: "Translucent materials let some light through but scatter it, so objects behind them look blurred. Frosted glass, tracing paper and rice paper are examples.",
+    insight: "Translucent materials allow some light to pass through them, but we cannot see clearly through them."
+  },
+  {
+    t: "Nature of Light",
+    q: "When light falls on a dark cardboard box, much of the light is absorbed. What does 'absorbed' mean here?",
+    o: [
+      "The light bounces back off the surface towards the light source.",
+      "The light passes completely through into the material beyond it.",
+      "The light energy is taken in and converted into thermal energy.",
+      "The light bends around the edges of the box it strikes."
+    ],
+    a: 2,
+    h: "Dark objects left in sunlight warm up. Where does that energy come from?",
+    expl: "Absorbed light is taken in by the material and changed into thermal energy. Bouncing back is reflection; passing through is transmission.",
+    insight: "When light falls on an object, it can be transmitted, absorbed or reflected."
+  },
+
+  // ───────────── SHADOWS (10.2) ─────────────
+  {
+    t: "Shadows",
+    q: "Why does an opaque object form a shadow when light shines on it?",
+    o: [
+      "Light is reflected off the object to form a dark copy of it.",
+      "Light travels in straight lines and cannot bend around the object.",
+      "The object gives out darkness that spreads onto the surface behind.",
+      "Light curves around the object but loses all its energy on the way."
+    ],
+    a: 1,
+    h: "Think about the property of light that the card-and-holes experiment shows.",
+    expl: "Light travels in straight lines. An opaque object blocks the rays, and light cannot bend around it to reach the area behind, so a dark region forms.",
+    insight: "A shadow is a region of darkness formed when the path of light is blocked; shadows are formed because light travels in straight lines."
+  },
+  {
+    t: "Shadows",
+    q: "What kind of shadow forms when light from a point source is blocked by an object?",
+    o: [
+      "A shadow with only a penumbra, which is pale with a blurred outline.",
+      "A shadow with an umbra and a penumbra, with no sharp outline at all.",
+      "A shadow with only an umbra, which is dark with a sharp outline.",
+      "A shadow that shows the colours and patterns of the object itself."
+    ],
+    a: 2,
+    h: "A point source sends light from just one tiny spot.",
+    expl: "Light from a point source comes from a single point, so each place is either fully lit or fully blocked. The shadow is a totally dark umbra with a sharp outline.",
+    insight: "When light from a point source is blocked, a shadow with only an umbra is formed; the umbra is a dark region with a sharp outline."
+  },
+  {
+    t: "Shadows",
+    q: "A street lamp is an extended light source. What does the shadow it casts of a person look like?",
+    o: [
+      "Only a dark umbra with a sharp outline.",
+      "Only a pale penumbra with no umbra.",
+      "A dark umbra surrounded by a lighter penumbra.",
+      "A coloured shadow that matches the person's clothes."
+    ],
+    a: 2,
+    h: "Some places get no light from the lamp, and some get light from only part of it.",
+    expl: "An extended source gives light from many points. Where all light is blocked you get the umbra; where only some is blocked you get the lighter penumbra.",
+    insight: "When light from an extended source is blocked, a shadow with an umbra and a partial shadow called a penumbra is formed; the penumbra is the lighter outer part."
+  },
+  {
+    t: "Shadows",
+    q: "An object is moved closer to a lamp, while the wall behind it stays in the same place. What happens to the object's shadow on the wall?",
+    o: ["Smaller", "Bigger", "Unchanged", "Invisible"],
+    a: 1,
+    h: "Draw rays from the lamp past the edges of the object. Do they spread wider or narrower?",
+    expl: "Closer to the lamp, the object blocks a wider cone of rays, so the shadow on the wall becomes bigger.",
+    insight: "The size and shape of a shadow depend on the size and position of the light source and the object blocking the light rays."
+  },
+  {
+    t: "Shadows",
+    q: "As you walk towards a street lamp, what happens to the length of your shadow behind you?",
+    o: ["Longer", "Shorter", "Wider", "Brighter"],
+    a: 1,
+    h: "Close to the lamp, the light comes down at you more steeply.",
+    expl: "As you get closer to the lamp, the light rays hit you at a steeper angle, so your shadow gets shorter.",
+    insight: "The type of shadow formed depends on the size and position of the light source and the object blocking the light rays."
+  },
+  {
+    t: "Shadows",
+    q: "Which statement about a shadow is correct?",
+    o: [
+      "It is a reflection of the object formed on the surface behind it.",
+      "It shows the colours of the object, but in much darker shades.",
+      "It is a real object that is pushed along by the light rays.",
+      "It shows only the outline shape of the object, not its patterns."
+    ],
+    a: 3,
+    h: "A shadow is just the part of a surface that light cannot reach.",
+    expl: "A shadow is not an object or a reflection. It is an unlit area in the shape of the object, a silhouette with no colours or patterns.",
+    insight: "Shadows are not reflections or objects; a shadow is an unlit area in the shape of the object that blocked the light."
+  },
+  {
+    t: "Shadows",
+    q: "During a solar eclipse, what do people standing in the umbra of the Moon's shadow experience?",
+    o: [
+      "Partial darkness, because only some of the Sun's light is blocked.",
+      "Total darkness, because the Moon blocks all of the Sun's light.",
+      "Bright light, because the Moon reflects extra sunlight towards them.",
+      "Coloured light, because the Moon splits sunlight into its colours."
+    ],
+    a: 1,
+    h: "The umbra is the darkest inner part of a shadow.",
+    expl: "In the umbra, the Moon blocks all light from the Sun, so people there experience total darkness. In the penumbra, only some light is blocked.",
+    insight: "Umbra: the darkest inner part of the shadow where all light is blocked; penumbra: the lighter outer part where only some light is blocked."
+  }
+];
+BANK.forEach((q, i) => q.id = i);
+const TOPICS = [...new Set(BANK.map(q => q.t))];
+
+/* ===================== STORAGE ===================== */
+function freshState(){
+  const ledger = {};
+  BANK.forEach(q => ledger[q.id] = { streak: 0, status: "active", lastCorrect: 0 });
+  return { ledger };
+}
+function loadState(){
+  let st = null;
+  try {
+    if (typeof localStorage !== "undefined" && localStorage) {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) st = JSON.parse(raw);
+    }
+  } catch (e) { st = null; }
+  const base = freshState();
+  if (!st || typeof st !== "object" || !st.ledger || typeof st.ledger !== "object") return base;
+  // Merge saved entries onto a full fresh ledger (handles bank changes / partial data)
+  BANK.forEach(q => {
+    const e = st.ledger[q.id];
+    if (e && typeof e === "object") {
+      base.ledger[q.id] = {
+        streak: Number.isFinite(e.streak) ? Math.max(0, Math.min(e.streak, STREAK_TO_MASTER)) : 0,
+        status: e.status === "mastered" ? "mastered" : "active",
+        lastCorrect: Number.isFinite(e.lastCorrect) ? e.lastCorrect : 0
+      };
+    }
+  });
+  return base;
+}
+function saveState(){
+  try { if (typeof localStorage !== "undefined" && localStorage) localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
+}
+function clearState(){
+  try { if (typeof localStorage !== "undefined" && localStorage) localStorage.removeItem(LS_KEY); } catch (e) {}
+}
+let state = loadState();
+
+/* ===================== HELPERS ===================== */
+const $ = id => document.getElementById(id);
+function shuffle(arr){ const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c])); }
+const L = id => state.ledger[id];
+const isFinalPass = id => L(id).status === "active" && L(id).streak === STREAK_TO_MASTER - 1;
+function isEligible(id){
+  const e = L(id);
+  if (e.status !== "active") return false;
+  if (e.streak === STREAK_TO_MASTER - 1 && FINAL_PASS_SPACING_MS > 0) {
+    return Date.now() - e.lastCorrect >= FINAL_PASS_SPACING_MS;
+  }
+  return true;
+}
+function restingIds(){ return BANK.filter(q => L(q.id).status === "active" && !isEligible(q.id)).map(q => q.id); }
+
+/* ===================== HOME ===================== */
+function renderHome(){
+  $("version").textContent = VERSION;
+  $("pills").innerHTML = TOPICS.map(t => `<span class="pill" style="color:${TOPIC_COLORS[t] || "#333"}">${esc(t)}</span>`).join("");
+
+  const total = BANK.length;
+  const mastered = BANK.filter(q => L(q.id).status === "mastered").length;
+  const active = total - mastered;
+  $("activeNum").textContent = active;
+  $("doneNum").textContent = mastered;
+  const pct = total ? Math.round(100 * mastered / total) : 0;
+  $("mainPct").textContent = pct + "% completed";
+  $("how").innerHTML = `<b>How it works:</b> Answer correctly ${STREAK_TO_MASTER} times in a row to complete a question. A wrong answer resets your progress on that question. Work through all ${total} questions to finish.`;
+
+  // Topic cards
+  const grid = $("topics");
+  grid.className = "topics" + (TOPICS.length >= 7 ? " two" : "");
+  grid.innerHTML = TOPICS.map(t => {
+    const qs = BANK.filter(q => q.t === t);
+    const m = qs.filter(q => L(q.id).status === "mastered").length;
+    const half = qs.filter(q => L(q.id).status === "active" && L(q.id).streak >= 1).length;
+    const c = TOPIC_COLORS[t] || "#333";
+    const p = qs.length ? Math.round(100 * m / qs.length) : 0;
+    return `<div class="tcard">
+      <div class="tname" style="color:${c}">${esc(t)}</div>
+      <div class="tmeta">
+        <span>${half > 0 ? `<span class="half" title="One more correct answer to complete these">▶${half}</span>` : ""}</span>
+        <span>${m}/${qs.length}</span>
+      </div>
+      <div class="bar"><span data-w="${p}" style="background:${c}"></span></div>
+    </div>`;
+  }).join("");
+
+  // Notices
+  const eligible = BANK.filter(q => isEligible(q.id)).length;
+  const resting = restingIds();
+  const notice = $("notice"), doneMsg = $("doneMsg"), cont = $("continueBtn");
+  notice.style.display = "none"; doneMsg.style.display = "none"; cont.disabled = false;
+  cont.textContent = "▶ Continue Progress";
+  if (active === 0) {
+    doneMsg.style.display = "block";
+    cont.disabled = true;
+  } else if (resting.length > 0) {
+    const soonest = Math.min(...resting.map(id => L(id).lastCorrect + FINAL_PASS_SPACING_MS));
+    const mins = Math.max(1, Math.ceil((soonest - Date.now()) / 60000));
+    notice.innerHTML = eligible === 0
+      ? `All ${resting.length} remaining question${resting.length > 1 ? "s are" : " is"} waiting for a short break before the final try. The next one is ready in about <b>${mins} min</b>. You can still practise them now, but practice answers won't complete them.`
+      : `${resting.length} question${resting.length > 1 ? "s are" : " is"} taking a short break before the final try (next one ready in about ${mins} min).`;
+    notice.style.display = "block";
+    if (eligible === 0) cont.textContent = "▶ Practise While You Wait";
+  }
+
+  // Animate bars from 0
+  const main = $("mainBar");
+  main.style.transition = "none"; main.style.width = "0";
+  grid.querySelectorAll(".bar > span").forEach(s => { s.style.transition = "none"; s.style.width = "0"; });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    main.style.transition = ""; main.style.width = pct + "%";
+    grid.querySelectorAll(".bar > span").forEach(s => { s.style.transition = ""; s.style.width = s.dataset.w + "%"; });
+  }));
+}
+
+/* ===================== ROUND BUILDING ===================== */
+let round = null;
+function buildRound(){
+  const eligible = shuffle(BANK.filter(q => isEligible(q.id)).map(q => q.id));
+  // Prefer questions not yet answered correctly, then those on their final try
+  eligible.sort((a, b) => L(a).streak - L(b).streak);
+  const firstPass = shuffle(eligible.filter(id => L(id).streak < STREAK_TO_MASTER - 1));
+  const finalPass = shuffle(eligible.filter(id => L(id).streak >= STREAK_TO_MASTER - 1));
+  // Mix both groups so each round contains some final tries when available
+  let picked = [];
+  const nFinal = Math.min(finalPass.length, Math.ceil(QS_PER_ROUND / 2));
+  picked = finalPass.slice(0, nFinal).concat(firstPass.slice(0, QS_PER_ROUND - nFinal));
+  if (picked.length < QS_PER_ROUND) {
+    const more = finalPass.slice(nFinal).concat(firstPass.slice(QS_PER_ROUND - nFinal));
+    picked = picked.concat(more.slice(0, QS_PER_ROUND - picked.length));
+  }
+  const items = picked.map(id => ({ id, practice: false }));
+  // Relief valve: fill remaining slots with resting questions as practice-only
+  if (items.length < QS_PER_ROUND) {
+    const resting = restingIds().sort((a, b) => L(a).lastCorrect - L(b).lastCorrect);
+    resting.slice(0, QS_PER_ROUND - items.length).forEach(id => items.push({ id, practice: true }));
+  }
+  return { items: shuffle(items), idx: 0, correct: 0, completed: 0, perTopic: {}, answered: false };
+}
+
+/* ===================== QUIZ ===================== */
+function show(id){
+  document.querySelectorAll(".screen").forEach(s => s.classList.toggle("active", s.id === id));
+  $("nextBar").classList.remove("show");
+  window.scrollTo(0, 0);
+}
+function startRound(){
+  round = buildRound();
+  if (!round.items.length) { renderHome(); return; }
+  show("quiz");
+  renderQuestion();
+}
+function renderQuestion(){
+  const item = round.items[round.idx];
+  const q = BANK[item.id];
+  item.final = !item.practice && isFinalPass(item.id);
+  round.answered = false;
+  const c = TOPIC_COLORS[q.t] || "#333";
+  const badge = $("qBadge"); badge.textContent = q.t; badge.style.color = c;
+  $("qCount").textContent = `Q ${round.idx + 1} of ${round.items.length}`;
+  $("qText").textContent = q.q;
+
+  const hb = $("hintBtn"), hbox = $("hintBox");
+  hbox.classList.remove("open"); hbox.textContent = q.h;
+  if (item.final) { hb.disabled = true; hb.textContent = "💡 No hint on the final try"; }
+  else { hb.disabled = false; hb.textContent = "💡 Show hint"; }
+
+  const order = shuffle([0, 1, 2, 3]);
+  $("options").innerHTML = order.map(i => `<button class="opt" data-i="${i}">${esc(q.o[i])}</button>`).join("");
+  $("options").querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => answer(+b.dataset.i)));
+  $("feedback").classList.remove("show");
+  $("nextBar").classList.remove("show");
+  window.scrollTo(0, 0);
+}
+function answer(choice){
+  if (round.answered) return;
+  round.answered = true;
+  const item = round.items[round.idx];
+  const q = BANK[item.id];
+  const ok = choice === q.a;
+  const e = L(item.id);
+
+  if (ok) {
+    if (!item.practice) {
+      e.streak++;
+      e.lastCorrect = Date.now();
+      if (e.streak >= STREAK_TO_MASTER) { e.status = "mastered"; round.completed++; }
+    }
+    round.correct++;
+  } else {
+    e.streak = 0;
+  }
+  saveState(); // save immediately after every answer
+
+  const pt = round.perTopic[q.t] || (round.perTopic[q.t] = { correct: 0, drawn: 0 });
+  pt.drawn++; if (ok) pt.correct++;
+
+  $("options").querySelectorAll(".opt").forEach(b => {
+    const i = +b.dataset.i;
+    b.disabled = true;
+    if (i === q.a) b.classList.add("correct");
+    else if (i === choice) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+  $("hintBtn").disabled = true;
+  const v = $("verdict");
+  v.className = "verdict " + (ok ? "ok" : "no");
+  v.textContent = ok ? (e.status === "mastered" && !item.practice ? "Correct! Question completed ✓" : "Correct!") : "Not quite.";
+  $("explText").textContent = q.expl;
+  $("insightText").textContent = q.insight;
+  $("feedback").classList.add("show");
+  $("nextBtn").textContent = round.idx + 1 < round.items.length ? "Next →" : "See Results →";
+  $("nextBar").classList.add("show");
+}
+function next(){
+  if (round.idx + 1 < round.items.length) { round.idx++; renderQuestion(); }
+  else showResults();
+}
+
+/* ===================== RESULTS ===================== */
+function showResults(){
+  $("score").textContent = `${round.correct} / ${round.items.length}`;
+  const cb = $("cbadge");
+  if (round.completed > 0) { cb.textContent = `+ ${round.completed} question${round.completed > 1 ? "s" : ""} completed this session`; cb.style.display = "block"; }
+  else cb.style.display = "none";
+  $("rtable").innerHTML = TOPICS.filter(t => round.perTopic[t]).map(t => {
+    const p = round.perTopic[t];
+    return `<tr><td style="color:${TOPIC_COLORS[t] || "#333"};font-weight:700">${esc(t)}</td><td class="n">${p.correct}</td><td class="n">${p.drawn}</td></tr>`;
+  }).join("");
+  show("results");
+}
+
+/* ===================== EVENTS ===================== */
+$("continueBtn").addEventListener("click", startRound);
+$("hintBtn").addEventListener("click", () => { if (!$("hintBtn").disabled) $("hintBox").classList.toggle("open"); });
+$("nextBtn").addEventListener("click", next);
+$("backBtn").addEventListener("click", () => { show("home"); renderHome(); });
+$("resetBtn").addEventListener("click", () => $("modal").classList.add("show"));
+$("mCancel").addEventListener("click", () => $("modal").classList.remove("show"));
+$("modal").addEventListener("click", ev => { if (ev.target.id === "modal") $("modal").classList.remove("show"); });
+$("mConfirm").addEventListener("click", () => {
+  clearState();
+  state = freshState();
+  $("modal").classList.remove("show");
+  show("home"); renderHome();
+});
+document.addEventListener("visibilitychange", () => { if (!document.hidden && $("home").classList.contains("active")) renderHome(); });
+
+renderHome();
+</script>
+</body>
+</html>
