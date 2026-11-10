@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G8 LifeSci MYE</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#f5f6fa;color:#1a1a2e;font-family:system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;line-height:1.45}
+body{padding:16px 12px 96px}
+.app{max-width:640px;margin:0 auto}
+.card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:16px;margin-bottom:14px}
+.hidden{display:none!important}
+.navy{background:#1a1a2e;color:#fff}
+/* header */
+.hdr{position:relative;padding:4px 0 10px}
+.ver{position:absolute;top:0;right:0;font-size:12px;color:#6b6f80;font-weight:600}
+h1{font-size:26px;font-weight:800;padding-right:70px;margin-bottom:10px}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:#fff;border:1.5px solid;white-space:nowrap}
+/* progress */
+.stats{display:flex;gap:12px;margin-bottom:12px}
+.stat{flex:1;text-align:center}
+.stat .n{font-size:34px;font-weight:800}
+.stat .l{font-size:13px;color:#555a6e}
+.bar{height:10px;background:#e8e9f0;border-radius:6px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;border-radius:6px;transition:width .9s ease}
+.pct{font-size:13px;color:#555a6e;margin-top:6px;text-align:right}
+.how{font-size:14px;color:#3a3d50;margin-top:12px;background:#f5f6fa;border-radius:8px;padding:10px}
+/* buttons */
+.btn{display:block;width:100%;border:none;border-radius:10px;font-size:17px;font-weight:700;padding:14px;cursor:pointer;font-family:inherit;margin-bottom:10px}
+.btn-primary{background:#1a1a2e;color:#fff}
+.btn-primary:disabled{background:#9a9cab;cursor:not-allowed}
+.btn-danger{background:#fff;color:#c62828;border:2px solid #c62828}
+.btn-ghost{background:#fff;color:#1a1a2e;border:2px solid #1a1a2e}
+.note{font-size:13px;color:#7a4a00;background:#fff4e5;border-radius:8px;padding:8px 10px;margin-bottom:10px}
+/* topics */
+.topics{display:grid;grid-template-columns:1fr;gap:10px}
+.topics.two{grid-template-columns:1fr 1fr}
+.tcard{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:10px}
+.tname{font-weight:700;font-size:14px;margin-bottom:4px;line-height:1.25}
+.tmeta{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#555a6e;margin-bottom:6px}
+.half{color:#f57c00;font-weight:700;cursor:help}
+.tcard .bar{height:7px}
+/* quiz */
+.qtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px}
+.qcount{font-size:14px;font-weight:600;color:#555a6e;white-space:nowrap}
+.qtext{font-size:20px;font-weight:700;text-align:center;margin:6px 0 14px}
+.hintbtn{background:#fff;border:1.5px dashed #8a8fa8;color:#3a3d50;border-radius:8px;padding:8px 12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;width:100%;text-align:left}
+.hintbtn:disabled{background:#eceef3;color:#9a9cab;border-color:#c9cbd6;cursor:not-allowed}
+.hinttext{font-size:14px;padding:8px 12px;margin-top:6px;background:#f5f6fa;border-radius:8px}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.opt{background:#fff;border:2px solid #d8dae3;border-radius:10px;padding:13px 14px;font-size:16px;text-align:left;cursor:pointer;font-family:inherit;color:#1a1a2e;transition:background-color .15s,border-color .15s,color .15s}
+.opt:hover:not(:disabled){border-color:#1a1a2e}
+.opt:disabled{cursor:default}
+.opt.correct{background:#e8f5e9;border-color:#2e7d32;color:#1b5e20;font-weight:600}
+.opt.wrong{background:#ffebee;border-color:#c62828;color:#b71c1c}
+.opt.dim{opacity:.6}
+.fb{margin-top:14px;font-size:15px}
+.verdict{font-weight:800;margin-bottom:6px}
+.verdict.ok{color:#2e7d32}.verdict.no{color:#c62828}
+.expl{background:#f5f6fa;border-radius:8px;padding:10px 12px;margin-bottom:10px}
+.insight{border:2px solid #1a1a2e;background:#f0f1f8;border-radius:8px;padding:10px 12px}
+.insight b{display:block;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#555a6e;margin-bottom:2px}
+.nextbar{position:fixed;left:0;right:0;bottom:0;padding:12px;background:linear-gradient(transparent,#f5f6fa 30%)}
+.nextbar .btn{max-width:640px;margin:0 auto}
+/* results */
+.score{font-size:40px;font-weight:800;text-align:center}
+.badge{display:block;text-align:center;margin:10px auto 0;background:#e8f5e9;color:#2e7d32;border:1.5px solid #2e7d32;border-radius:999px;padding:6px 14px;font-weight:700;width:fit-content}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #eceef3}
+th{color:#555a6e;font-weight:600}
+td.c{text-align:center}th.c{text-align:center}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(26,26,46,.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
+.mbox{background:#fff;border-radius:12px;padding:20px;max-width:380px;width:100%}
+.mbox h2{font-size:19px;margin-bottom:8px}
+.mbox p{font-size:15px;margin-bottom:16px;color:#3a3d50}
+.mrow{display:flex;gap:10px}.mrow .btn{margin:0}
+.btn-confirm{background:#c62828;color:#fff}
+.done{text-align:center;font-weight:700;color:#2e7d32;font-size:18px;margin-bottom:10px}
+@media (max-width:400px){h1{font-size:22px}.tcard{padding:8px}.tname{font-size:13px}.tmeta{font-size:12px}.qtext{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- HOME -->
+<section id="home">
+  <div class="hdr">
+    <div class="ver" id="ver"></div>
+    <h1 id="title"></h1>
+    <div class="pills" id="pills"></div>
+  </div>
+  <div class="card">
+    <div class="stats">
+      <div class="stat"><div class="n" id="nActive">0</div><div class="l">Active Questions</div></div>
+      <div class="stat"><div class="n" id="nDone">0</div><div class="l">Completed</div></div>
+    </div>
+    <div class="bar"><i id="mainBar" style="background:#1a1a2e"></i></div>
+    <div class="pct" id="pct"></div>
+    <div class="how" id="how"></div>
+  </div>
+  <div id="allDone" class="done hidden">🎉 All questions completed. Great work!</div>
+  <div id="homeNote" class="note hidden"></div>
+  <button class="btn btn-primary" id="btnContinue">▶ Continue Progress</button>
+  <button class="btn btn-danger" id="btnReset">↺ Start All Over</button>
+  <div class="topics" id="topics" style="margin-top:6px"></div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="hidden">
+  <div class="card">
+    <div class="qtop"><span class="pill" id="qTopic"></span><span class="qcount" id="qCount"></span></div>
+    <div class="qtext" id="qText"></div>
+    <button class="hintbtn" id="hintBtn">💡 Show hint</button>
+    <div class="hinttext hidden" id="hintText"></div>
+    <div class="opts" id="opts"></div>
+    <div class="fb hidden" id="fb">
+      <div class="verdict" id="verdict"></div>
+      <div class="expl" id="expl"></div>
+      <div class="insight"><b>Key point</b><span id="insight"></span></div>
+    </div>
+  </div>
+  <div class="nextbar hidden" id="nextBar"><button class="btn btn-primary" id="btnNext">Next →</button></div>
+</section>
+
+<!-- RESULTS -->
+<section id="results" class="hidden">
+  <div class="card">
+    <div style="text-align:center;color:#555a6e;font-weight:600">Round score</div>
+    <div class="score" id="rScore"></div>
+    <div class="badge hidden" id="rBadge"></div>
+  </div>
+  <div class="card">
+    <table><thead><tr><th>Topic</th><th class="c">Correct</th><th class="c">Drawn this session</th></tr></thead><tbody id="rTable"></tbody></table>
+  </div>
+  <button class="btn btn-primary" id="btnBack">Continue Studying →</button>
+</section>
+</div>
+
+<!-- RESET MODAL -->
+<div class="modal hidden" id="resetModal">
+  <div class="mbox">
+    <h2>Start all over?</h2>
+    <p>This will erase all your progress. Are you sure?</p>
+    <div class="mrow"><button class="btn btn-ghost" id="mCancel">Cancel</button><button class="btn btn-confirm" id="mConfirm">Confirm</button></div>
+  </div>
+</div>
+
+<!-- WAIT MODAL (relief valve) -->
+<div class="modal hidden" id="waitModal">
+  <div class="mbox">
+    <h2>Short break needed</h2>
+    <p id="waitText"></p>
+    <div class="mrow"><button class="btn btn-ghost" id="wLater">Come back later</button><button class="btn btn-primary" id="wPractise">Practise now</button></div>
+  </div>
+</div>
+
+<script>
+const BANK = [
+// ===== T1 Photosynthesis & Plant Transport (16) =====
+{t:"Photosynthesis & Plant Transport",f:"s",
+q:"Which raw materials do green plants need for photosynthesis?",
+o:["Carbon dioxide and water","Carbon dioxide and oxygen","Water and mineral salts","Glucose and carbon dioxide"],a:0,
+h:"Think about what the plant takes in from the air and from the soil to build sugar.",
+expl:"Plants take in carbon dioxide through the stomata and water through the roots. Light energy is used to combine them into sugar.",
+insight:"Raw materials of photosynthesis: carbon dioxide and water (light energy absorbed by chlorophyll)."},
+{t:"Photosynthesis & Plant Transport",f:"e",
+q:"Which word equation correctly summarises photosynthesis?",
+o:["carbon dioxide + water → glucose + oxygen","glucose + oxygen → carbon dioxide + water","oxygen + water → glucose + carbon dioxide","carbon dioxide + oxygen → glucose + water"],a:0,
+h:"Reactants are what the plant takes in; products are the food it makes and the gas it releases.",
+expl:"Carbon dioxide and water react using light energy to make glucose (sugar) and oxygen. The reverse equation is aerobic respiration.",
+insight:"carbon dioxide + water → glucose + oxygen (in the presence of light and chlorophyll)."},
+{t:"Photosynthesis & Plant Transport",f:"d",
+q:"What is the role of chlorophyll in a leaf?",
+o:["It absorbs light energy so the plant can make glucose","It takes in carbon dioxide gas through the leaf surface","It stores the excess glucose as starch inside the leaf","It transports water from the leaf veins to the cells"],a:0,
+h:"Chlorophyll is the green pigment. What does a pigment interact with?",
+expl:"Chlorophyll is a green pigment in chloroplasts that captures (absorbs) light energy, which is then used to make glucose.",
+insight:"Chlorophyll absorbs light energy for photosynthesis (glucose synthesis)."},
+{t:"Photosynthesis & Plant Transport",f:"s",
+q:"In which part of a leaf cell is chlorophyll found?",
+o:["Chloroplast","Mitochondrion","Nucleus","Vacuole"],a:0,
+h:"The name of this structure shares a root word with 'chlorophyll'.",
+expl:"Chlorophyll is located inside chloroplasts, which is where photosynthesis takes place.",
+insight:"Photosynthesis occurs in chloroplasts, which contain chlorophyll."},
+{t:"Photosynthesis & Plant Transport",f:"s",
+q:"Through which structures does carbon dioxide enter a leaf?",
+o:["Stomata","Veins","Phloem","Xylem"],a:0,
+h:"These are tiny pores, mostly on the underside of the leaf.",
+expl:"Carbon dioxide diffuses into the leaf through stomata. Oxygen and water vapour leave through the same pores.",
+insight:"Stomata are pores for gas exchange: CO₂ in, O₂ and water vapour out."},
+{t:"Photosynthesis & Plant Transport",f:"s",
+q:"Where are stomata usually found on a leaf?",
+o:["On the lower surface","On the upper surface","Along the leaf veins","At the leaf tip"],a:0,
+h:"The side facing away from direct sunlight loses less water.",
+expl:"Most stomata are on the underside of the leaf, which is cooler and shaded, so less water is lost.",
+insight:"Stomata are mainly found on the lower (under) surface of the leaf."},
+{t:"Photosynthesis & Plant Transport",f:"d",
+q:"What is the main function of root hair cells?",
+o:["To absorb water and mineral salts quickly from the soil","To carry dissolved sugars from the leaves down to the roots","To release excess water vapour from the roots into the soil","To store excess starch made by the leaves during the day"],a:0,
+h:"They grow out into the soil and are in direct contact with soil water.",
+expl:"Root hairs absorb water and dissolved mineral salts (e.g. nitrates) from the soil. The roots also anchor the plant.",
+insight:"Root hairs absorb water and mineral salts; roots also anchor the plant."},
+{t:"Photosynthesis & Plant Transport",f:"d",
+q:"Why does having many root hairs help a plant absorb water faster?",
+o:["They push water upwards into the phloem vessels","They make the root walls thicker to hold more water","They give a larger surface area for absorbing water","They contain chlorophyll to make more food for the root"],a:2,
+h:"More hairs means more contact with the soil.",
+expl:"Many thin root hairs greatly increase the surface area in contact with soil water, so water is absorbed more quickly.",
+insight:"Root hairs increase the surface area for absorption of water and mineral salts."},
+{t:"Photosynthesis & Plant Transport",f:"s",
+q:"Which substances does the xylem transport?",
+o:["Sugars and amino acids","Water and mineral salts","Oxygen and carbon dioxide","Starch and dissolved sugars"],a:1,
+h:"Xylem starts in the roots. What do roots absorb?",
+expl:"Xylem carries water and dissolved mineral salts upward from the roots to the stem and leaves.",
+insight:"Xylem transports water and mineral salts upward from roots to leaves."},
+{t:"Photosynthesis & Plant Transport",f:"s",
+q:"Which tissue transports sugars made in the leaves to all other parts of the plant?",
+o:["Xylem","Phloem","Epidermis","Mesophyll"],a:1,
+h:"It's the transport tissue that carries 'food', not water.",
+expl:"Phloem transports dissolved sugars (food) made by photosynthesis from the leaves to all parts of the plant.",
+insight:"Phloem transports dissolved sugars (food) from leaves to all parts of the plant."},
+{t:"Photosynthesis & Plant Transport",f:"d",
+q:"Which description matches the structure of xylem vessels?",
+o:["Living cells joined end to end with thin, flexible walls","Dead cells arranged in a loose layer under the stomata","Living cells packed with chloroplasts near the leaf surface","Dead cells joined end to end with thick, stiff walls"],a:3,
+h:"These vessels must stay open like hollow tubes and support the plant.",
+expl:"Xylem is made of dead cells joined end to end to form a continuous hollow tube, with thick, stiffened walls for support.",
+insight:"Xylem: dead cells, joined end to end, with thick stiffened walls."},
+{t:"Photosynthesis & Plant Transport",f:"d",
+q:"What is transpiration?",
+o:["Movement of sugars from the leaves to the roots","Loss of water vapour by evaporation from the leaves","Uptake of water by root hairs from the soil","Release of oxygen gas through stomata in daylight"],a:1,
+h:"It's about water leaving the plant.",
+expl:"Transpiration is the evaporation of water from the leaves (mainly through stomata). Moving sugars is called translocation.",
+insight:"Transpiration: loss of water vapour from leaves by evaporation through stomata."},
+{t:"Photosynthesis & Plant Transport",f:"d",
+q:"Why does water move up the xylem against gravity?",
+o:["The phloem pushes water upward as it carries sugars down","Root hairs contract to squeeze water up towards the leaves","Water evaporating from the leaves pulls water up the xylem","Sunlight heats the stem so the water rises like warm air"],a:2,
+h:"Think about what keeps happening at the leaves all day.",
+expl:"As water evaporates from the leaves (transpiration), more water is pulled up the xylem to replace it, and the roots absorb more.",
+insight:"Transpiration pulls water and mineral salts up the xylem from the roots."},
+{t:"Photosynthesis & Plant Transport",f:"d",
+q:"A leaf turns blue-black when tested with iodine solution. What does this show?",
+o:["Glucose is present, so the leaf has been respiring quickly","Starch is present, so the leaf has been photosynthesising","Protein is present, so the leaf has been making enzymes","Starch is absent, so the leaf has been kept in darkness"],a:1,
+h:"Iodine is the test for one specific nutrient that plants store.",
+expl:"Iodine turns blue-black when starch is present. Excess sugar from photosynthesis is stored as starch, so it shows the leaf made food.",
+insight:"Starch test: iodine solution turns from brown to blue-black when starch is present."},
+{t:"Photosynthesis & Plant Transport",f:"s",
+q:"What colour change shows a positive starch test with iodine solution?",
+o:["Blue to orange-red","Brown to colourless","Brown to blue-black","Yellow to purple"],a:2,
+h:"Iodine solution starts off a brownish colour.",
+expl:"Iodine solution is brown and turns blue-black with starch. Blue to orange-red is the Benedict's test for sugar.",
+insight:"Iodine solution: brown → blue-black indicates starch."},
+{t:"Photosynthesis & Plant Transport",f:"s",
+q:"Pondweed placed under bright light releases bubbles. Which gas is in the bubbles?",
+o:["Carbon dioxide","Water vapour","Nitrogen gas","Oxygen gas"],a:3,
+h:"It's a product of photosynthesis.",
+expl:"Photosynthesis produces oxygen, which is released as bubbles. Counting bubbles measures the rate of photosynthesis.",
+insight:"Aquatic plants release oxygen in light; bubble count/volume measures photosynthesis rate."},
+
+// ===== T2 Food, Nutrients & Diet (10) =====
+{t:"Food, Nutrients & Diet",f:"s",
+q:"Which nutrient releases the most energy per gram?",
+o:["Carbohydrates","Proteins","Fats","Fibre"],a:2,
+h:"It's the nutrient the body stores as a long-term energy reserve.",
+expl:"Fats have the highest energy value per gram (about twice that of carbohydrates or proteins).",
+insight:"Fats provide the highest energy content per gram."},
+{t:"Food, Nutrients & Diet",f:"s",
+q:"Which nutrient is the body's first source of energy, even though it does not have the highest energy value?",
+o:["Fats","Carbohydrates","Proteins","Vitamins"],a:1,
+h:"Rice, noodles and bread are rich in it.",
+expl:"Carbohydrates are used first for energy. Fats are used when carbohydrates run out; proteins only when both are unavailable.",
+insight:"Carbohydrates are the main/first energy source; fats have the highest energy per gram."},
+{t:"Food, Nutrients & Diet",f:"d",
+q:"Why is calcium important in the human diet?",
+o:["It is needed to make haemoglobin in red blood cells","It is needed to release energy from carbohydrates in cells","It is needed to build strong bones and teeth","It is needed to make hormones in the thyroid gland"],a:2,
+h:"Milk and dairy products are rich in this mineral.",
+expl:"Calcium is needed for strong bones and teeth (and also for muscle contraction and blood clotting).",
+insight:"Calcium: for strong bones and teeth."},
+{t:"Food, Nutrients & Diet",f:"d",
+q:"A person whose diet lacks iron often feels tired and short of energy. Why?",
+o:["Too little bone is made, so muscles cannot contract properly","Too little bile is made, so fats cannot be digested fully","Too few platelets are made, so wounds keep bleeding for longer","Too little haemoglobin is made, so blood carries less oxygen"],a:3,
+h:"Iron is part of the red pigment in red blood cells.",
+expl:"Iron is needed to make haemoglobin. Less haemoglobin means less oxygen reaches cells for respiration (anaemia), so the person feels tired.",
+insight:"Iron: needed for haemoglobin formation in red blood cells; deficiency causes anaemia."},
+{t:"Food, Nutrients & Diet",f:"d",
+q:"How does dietary fibre help prevent constipation?",
+o:["It is digested into glucose that gives intestine muscles more energy","It coats the intestine wall so water is absorbed more quickly","It adds bulk that helps intestine muscles push food by peristalsis","It is absorbed into the blood and softens the food in the colon"],a:2,
+h:"Fibre cannot be digested, so it stays in the gut.",
+expl:"Fibre (cellulose) is not digested. It adds bulk to food, which helps the intestine muscles push food along by peristalsis.",
+insight:"Dietary fibre prevents constipation by promoting intestinal movement (peristalsis)."},
+{t:"Food, Nutrients & Diet",f:"s",
+q:"Dietary fibre is mainly made of which substance that the body cannot digest?",
+o:["Starch","Glycogen","Protein","Cellulose"],a:3,
+h:"It's what plant cell walls are made of.",
+expl:"Fibre (roughage) is cellulose from plant cell walls. Humans cannot break it down, so it passes out in faeces.",
+insight:"Fibre is cellulose, which cannot be digested by the human body."},
+{t:"Food, Nutrients & Diet",f:"s",
+q:"A student has bleeding gums and wounds that heal slowly (scurvy). Which vitamin is lacking?",
+o:["Vitamin A","Vitamin C","Vitamin D","Vitamin K"],a:1,
+h:"Citrus fruits such as oranges and limes are rich in it.",
+expl:"Lack of vitamin C causes scurvy: swollen, bleeding gums and poor wound healing.",
+insight:"Vitamin C deficiency → scurvy (bleeding gums, poor wound healing)."},
+{t:"Food, Nutrients & Diet",f:"s",
+q:"Which term describes eating too much or too little energy or nutrients?",
+o:["Starvation","Obesity","Anaemia","Malnutrition"],a:3,
+h:"The prefix 'mal-' means 'bad'.",
+expl:"Malnutrition covers both too much and too little intake. Obesity and starvation are only one side of it.",
+insight:"Malnutrition: excessive or inadequate intake of energy or nutrients."},
+{t:"Food, Nutrients & Diet",f:"d",
+q:"Which statement best describes a balanced diet?",
+o:["A diet with equal amounts of carbohydrates, proteins and fats","A diet with the right amounts of all nutrients, fibre and water","A diet with mostly proteins and vitamins but very little fat","A diet with as little energy as possible from each food group"],a:1,
+h:"'Balanced' means meeting the body's needs, not equal amounts.",
+expl:"A balanced diet has the right amounts of carbohydrates, proteins, fats, vitamins, minerals, fibre and water to meet the body's needs.",
+insight:"Balanced diet: right amounts of all nutrients, fibre and water to meet energy and nutritional needs."},
+{t:"Food, Nutrients & Diet",f:"d",
+q:"What is the main function of proteins in the diet?",
+o:["To supply the first source of energy the body uses","To insulate the body and keep it warm in cold weather","To add bulk to food so it moves through the gut","To make new cells for growth and repair of tissues"],a:3,
+h:"Growing children need plenty of this nutrient.",
+expl:"Proteins are used to make cells, tissues, enzymes and hormones, so they are essential for growth and repair.",
+insight:"Proteins: growth and repair (making cells, tissues, enzymes and hormones)."},
+
+// ===== T3 Digestion & Enzymes (12) =====
+{t:"Digestion & Enzymes",f:"d",
+q:"Which statement correctly describes physical digestion?",
+o:["Large molecules are broken into smaller molecules by enzymes","Food is broken into smaller pieces without changing its molecules","Small soluble molecules are absorbed into the blood through villi","Food molecules react with acid to form new soluble molecules"],a:1,
+h:"Think of teeth cutting and crushing food.",
+expl:"Physical digestion breaks big pieces into small pieces. The molecules stay the same, so no chemical reaction happens.",
+insight:"Physical digestion increases surface area of food without chemical change."},
+{t:"Digestion & Enzymes",f:"d",
+q:"How does chewing food help chemical digestion?",
+o:["It changes starch molecules into maltose without enzymes","It raises the temperature so enzymes work more quickly","It adds acid that kills bacteria before food is swallowed","It increases the surface area for enzymes to act on"],a:3,
+h:"Smaller pieces expose more of the food.",
+expl:"Chewing breaks food into smaller pieces, giving a larger surface area for digestive enzymes to work on.",
+insight:"Physical digestion increases the surface area for enzymes to act on."},
+{t:"Digestion & Enzymes",f:"s",
+q:"Enzymes speed up chemical reactions in the body. What are they described as?",
+o:["Mineral salts","Simple sugars","Biological catalysts","Fatty acids"],a:2,
+h:"A substance that speeds up a reaction without being used up has a special name.",
+expl:"Enzymes are proteins that act as biological catalysts, speeding up reactions such as digestion.",
+insight:"Enzymes are biological catalysts that break large insoluble molecules into small soluble ones."},
+{t:"Digestion & Enzymes",f:"d",
+q:"Why must food be digested before body cells can use it?",
+o:["Small soluble molecules are too weak to release energy","Undigested food would be absorbed too quickly into blood","Enzymes in the blood only work on very large molecules","Large insoluble molecules cannot pass through cell membranes"],a:3,
+h:"Think about size and whether the molecule dissolves.",
+expl:"Starch, proteins and fats are large and insoluble, so they cannot pass through the gut wall or cell membranes until broken down.",
+insight:"Digestion breaks large insoluble molecules into small soluble molecules that can be absorbed."},
+{t:"Digestion & Enzymes",f:"s",
+q:"Salivary amylase breaks down starch into which substance?",
+o:["Glycerol","Cellulose","Glycogen","Maltose"],a:3,
+h:"It's a sugar made of two glucose units.",
+expl:"Salivary amylase in the mouth breaks starch into maltose. Further enzymes in the small intestine break maltose into simple sugars.",
+insight:"Salivary amylase: starch → maltose."},
+{t:"Digestion & Enzymes",f:"d",
+q:"Why does the stomach produce hydrochloric acid?",
+o:["To help protease enzymes work and kill bacteria in food","To break large fat droplets into smaller droplets","To neutralise bile and help absorb glucose into blood","To turn starch into maltose before food enters the intestine"],a:0,
+h:"Stomach enzymes digest protein and work best in acid.",
+expl:"Hydrochloric acid provides the acidic conditions stomach proteases need and kills bacteria swallowed with food.",
+insight:"Stomach: HCl gives acidic conditions for protease and kills bacteria; initial protein digestion."},
+{t:"Digestion & Enzymes",f:"s",
+q:"Which enzyme breaks down fats into fatty acids and glycerol?",
+o:["Amylase","Lipase","Protease","Pepsin"],a:1,
+h:"'Lipid' is another word for fat.",
+expl:"Lipase (from the pancreas and small intestine) digests fats into fatty acids and glycerol.",
+insight:"Lipase: fats → fatty acids + glycerol."},
+{t:"Digestion & Enzymes",f:"d",
+q:"What is the role of bile in digestion?",
+o:["It breaks fat molecules into fatty acids and glycerol as an enzyme","It splits large fat drops into small droplets, increasing surface area","It breaks long protein chains into shorter chains in the stomach","It breaks partly digested starch into simple sugars in the colon"],a:1,
+h:"Bile is not an enzyme. It acts physically on fat.",
+expl:"Bile emulsifies fat: it breaks large fat droplets into smaller droplets, giving lipase a larger surface area to act on.",
+insight:"Bile emulsifies fats (breaks large fat drops into small droplets) to increase surface area."},
+{t:"Digestion & Enzymes",f:"s",
+q:"Bile is made in the ___ and stored in the ___.",
+o:["Pancreas; gall bladder","Liver; gall bladder","Gall bladder; liver","Stomach; gall bladder"],a:1,
+h:"The largest organ in the abdomen makes it.",
+expl:"The liver produces bile; the gall bladder stores it and releases it through the bile duct into the duodenum.",
+insight:"Liver produces bile; gall bladder stores bile."},
+{t:"Digestion & Enzymes",f:"d",
+q:"What is the function of villi in the small intestine?",
+o:["They produce bile to emulsify fats arriving from the stomach","They push undigested fibre along to the large intestine","They absorb most of the water that remains in the faeces","They increase surface area for absorbing digested food into blood"],a:3,
+h:"They are tiny finger-like projections on the inner wall.",
+expl:"Villi greatly increase the surface area of the small intestine so digested food is absorbed into the blood quickly.",
+insight:"Small intestine: nutrients absorbed into blood via villi (large surface area)."},
+{t:"Digestion & Enzymes",f:"d",
+q:"What is the main function of the large intestine (colon)?",
+o:["Absorbing digested glucose and amino acids through villi","Producing enzymes that complete the digestion of proteins","Absorbing water and minerals back into the bloodstream","Storing bile until fatty food arrives from the stomach"],a:2,
+h:"What is left after the small intestine is mostly water and fibre.",
+expl:"The colon reabsorbs excess water and remaining minerals into the blood. Undigested food is stored in the rectum as faeces.",
+insight:"Large intestine: reabsorption of water and minerals into the bloodstream."},
+{t:"Digestion & Enzymes",f:"s",
+q:"What are the wave-like muscular contractions that push food along the oesophagus called?",
+o:["Emulsification","Absorption","Transpiration","Peristalsis"],a:3,
+h:"The same movement also happens in the stomach and intestines.",
+expl:"Peristalsis is the wave of muscle contraction and relaxation that pushes food along the alimentary canal.",
+insight:"Oesophagus: food pushed to stomach by peristalsis (wave-like muscular contractions)."},
+
+// ===== T4 Respiration & Breathing (12) =====
+{t:"Respiration & Breathing",f:"e",
+q:"Which word equation correctly shows aerobic respiration?",
+o:["carbon dioxide + water → glucose + oxygen","glucose + carbon dioxide → oxygen + water","glucose + water → carbon dioxide + oxygen","glucose + oxygen → carbon dioxide + water"],a:3,
+h:"Cells use food and a gas from the air to release energy.",
+expl:"Glucose reacts with oxygen to release energy, producing carbon dioxide and water. It is the reverse of photosynthesis.",
+insight:"glucose + oxygen → carbon dioxide + water (+ energy released)."},
+{t:"Respiration & Breathing",f:"s",
+q:"Aerobic respiration takes place in which cell structures?",
+o:["Chloroplasts","Nuclei","Mitochondria","Vacuoles"],a:2,
+h:"Often called the 'powerhouse' of the cell.",
+expl:"Aerobic respiration releases energy from glucose inside the mitochondria.",
+insight:"Aerobic respiration occurs in the mitochondria."},
+{t:"Respiration & Breathing",f:"d",
+q:"Which statement correctly defines aerobic respiration?",
+o:["Exchange of oxygen and carbon dioxide gases in the alveoli","Movement of air into and out of the lungs by breathing","Production of glucose in cells using light energy and water","Release of energy from glucose in cells using oxygen"],a:3,
+h:"Respiration is a chemical process in every cell, not just breathing.",
+expl:"Aerobic respiration is the release of energy from glucose in cells, using oxygen. Breathing is only the movement of air.",
+insight:"Aerobic respiration: release of energy from glucose in the presence of oxygen, in the mitochondria."},
+{t:"Respiration & Breathing",f:"e",
+q:"Which sequence shows the path of inhaled air from the nose to the alveoli?",
+o:["nose → bronchi → trachea → bronchioles → alveoli","nose → trachea → bronchi → bronchioles → alveoli","nose → trachea → bronchioles → bronchi → alveoli","nose → bronchioles → trachea → bronchi → alveoli"],a:1,
+h:"Air travels from the widest tube to the narrowest.",
+expl:"Air passes through the trachea (windpipe), splits into two bronchi, then into smaller bronchioles, ending in the alveoli.",
+insight:"Air pathway: nose → trachea → bronchi → bronchioles → alveoli."},
+{t:"Respiration & Breathing",f:"s",
+q:"The trachea divides into two tubes, one to each lung. What are these tubes called?",
+o:["Alveoli","Bronchioles","Bronchi","Capillaries"],a:2,
+h:"These are larger than bronchioles.",
+expl:"The trachea splits into two bronchi (singular: bronchus). Each bronchus divides into smaller bronchioles.",
+insight:"Trachea divides into two bronchi, which divide into bronchioles."},
+{t:"Respiration & Breathing",f:"d",
+q:"Which feature of the alveoli speeds up gas exchange?",
+o:["Thick muscular walls that pump air into the blood","A small surface area that traps oxygen for longer","Very thin walls and a dense network of surrounding capillaries","A dry lining that stops gases dissolving too quickly"],a:2,
+h:"Gases need a short distance to travel and a good blood supply.",
+expl:"Alveoli have very thin walls (short diffusion distance) and a rich capillary network, so gases diffuse quickly.",
+insight:"Alveoli adaptations: thin walls, large surface area, rich capillary network."},
+{t:"Respiration & Breathing",f:"d",
+q:"Why do the lungs contain millions of tiny alveoli rather than one large air sac?",
+o:["Many small alveoli hold more air because each has thicker walls","Many small alveoli give a much larger surface area for gas exchange","Many small alveoli stop oxygen from reaching the blood too quickly","Many small alveoli contain muscle that pushes air into the blood"],a:1,
+h:"Compare the total 'skin' of many small bubbles with one big one.",
+expl:"Millions of small alveoli give a far greater total surface area than a single sac, so more gas can be exchanged at once.",
+insight:"Large surface area of alveoli allows rapid gas exchange."},
+{t:"Respiration & Breathing",f:"d",
+q:"What happens during inhalation (breathing in)?",
+o:["Diaphragm relaxes and domes up; ribcage moves up and out","Diaphragm contracts and flattens; ribcage moves down and in","Diaphragm contracts and flattens; ribcage moves up and out","Diaphragm relaxes and domes up; ribcage moves down and in"],a:2,
+h:"The chest must get bigger to draw air in.",
+expl:"The diaphragm contracts and flattens while the ribcage moves up and out. The chest volume increases and air is drawn in.",
+insight:"Inhalation: diaphragm contracts (flattens down); ribcage moves up and out."},
+{t:"Respiration & Breathing",f:"s",
+q:"During exhalation, what does the diaphragm do?",
+o:["Contracts and flattens downward","Relaxes and domes upward","Relaxes and flattens downward","Contracts and domes upward"],a:1,
+h:"Breathing out at rest is the muscle 'letting go'.",
+expl:"During exhalation the diaphragm relaxes and domes upward, reducing chest volume and pushing air out.",
+insight:"Exhalation: diaphragm relaxes (domes up); ribcage moves down and in."},
+{t:"Respiration & Breathing",f:"d",
+q:"Why does air move into the lungs during inhalation?",
+o:["The chest volume decreases, so air is squeezed into the lungs","The chest volume increases, so the lungs expand and draw air in","The diaphragm relaxes upward, so air is sucked in through the nose","The alveoli contract, which pulls fresh air down the trachea"],a:1,
+h:"Think about whether the chest gets bigger or smaller.",
+expl:"Contraction of the diaphragm and rib movement increase chest volume. The lungs expand and air is drawn in from outside.",
+insight:"Inhalation increases chest volume; lungs expand and air is drawn in."},
+{t:"Respiration & Breathing",f:"d",
+q:"In the alveoli, in which direction do oxygen and carbon dioxide move?",
+o:["Carbon dioxide enters the blood; oxygen enters the alveoli","Oxygen enters the blood; carbon dioxide enters the alveoli","Oxygen and carbon dioxide both enter the blood together","Oxygen and carbon dioxide both enter the alveoli together"],a:1,
+h:"The body needs one gas for respiration and removes the other as waste.",
+expl:"Oxygen diffuses from the alveoli into the blood; carbon dioxide diffuses from the blood into the alveoli to be breathed out.",
+insight:"Gas exchange: O₂ from alveoli into blood; CO₂ from blood into alveoli."},
+{t:"Respiration & Breathing",f:"s",
+q:"Which substance in red blood cells combines with oxygen to carry it to cells for respiration?",
+o:["Chlorophyll","Haemoglobin","Amylase","Collagen"],a:1,
+h:"It contains iron and gives blood its red colour.",
+expl:"Haemoglobin, an iron-containing protein, combines with oxygen in the lungs and releases it to body cells.",
+insight:"Red blood cells transport oxygen via haemoglobin."},
+
+// ===== T5 Heart, Vessels & Blood (13) =====
+{t:"Heart, Vessels & Blood",f:"n",
+q:"How many chambers does the human heart have?",
+o:["2","3","4","6"],a:2,
+h:"There are two upper chambers and two lower chambers.",
+expl:"The heart has 4 chambers: 2 atria (upper) and 2 ventricles (lower).",
+insight:"The heart has 4 chambers: left and right atria, left and right ventricles."},
+{t:"Heart, Vessels & Blood",f:"d",
+q:"What does the right side of the heart do?",
+o:["Pumps oxygenated blood to the lungs","Pumps deoxygenated blood to the body","Pumps oxygenated blood to the body","Pumps deoxygenated blood to the lungs"],a:3,
+h:"Blood returning from the body has given up its oxygen.",
+expl:"The right side receives deoxygenated blood from the body and pumps it to the lungs through the pulmonary artery.",
+insight:"Right side pumps deoxygenated blood to the lungs (pulmonary artery); left side pumps oxygenated blood to the body (aorta)."},
+{t:"Heart, Vessels & Blood",f:"s",
+q:"Which blood vessel carries deoxygenated blood from the right ventricle to the lungs?",
+o:["Pulmonary vein","Vena cava","Pulmonary artery","Coronary artery"],a:2,
+h:"Vessels that carry blood away from the heart are arteries.",
+expl:"The pulmonary artery carries deoxygenated blood to the lungs. It is the only artery carrying deoxygenated blood.",
+insight:"Pulmonary artery: deoxygenated blood from right ventricle to lungs."},
+{t:"Heart, Vessels & Blood",f:"s",
+q:"Which chamber of the heart receives oxygenated blood from the pulmonary veins?",
+o:["Right atrium","Left atrium","Right ventricle","Left ventricle"],a:1,
+h:"Blood enters the heart through the upper chambers; oxygenated blood is on one particular side.",
+expl:"Oxygenated blood from the lungs returns via the pulmonary veins to the left atrium, then passes to the left ventricle.",
+insight:"Pulmonary veins return oxygenated blood to the left atrium."},
+{t:"Heart, Vessels & Blood",f:"d",
+q:"Why is the muscular wall of the left ventricle thicker than that of the right ventricle?",
+o:["It must hold a larger volume of blood than the right side","It must stop blood flowing backwards into the pulmonary veins","It must pump blood at high pressure all around the body","It must carry more deoxygenated blood than the right ventricle"],a:2,
+h:"Compare the distance each ventricle must push blood.",
+expl:"The left ventricle pumps blood through the aorta to the whole body, so it needs more muscle to create higher pressure. The right only pumps to the nearby lungs.",
+insight:"Left ventricle has thicker muscle to pump blood at higher pressure to the whole body."},
+{t:"Heart, Vessels & Blood",f:"s",
+q:"What is the thick muscular wall that separates the left and right sides of the heart?",
+o:["Valve","Septum","Aorta","Diaphragm"],a:1,
+h:"It keeps oxygenated and deoxygenated blood from mixing.",
+expl:"The septum divides the heart into left and right sides so oxygenated and deoxygenated blood do not mix.",
+insight:"Septum separates the left and right sides of the heart."},
+{t:"Heart, Vessels & Blood",f:"d",
+q:"Why do arteries have thick, elastic walls?",
+o:["To stop blood flowing backwards as it returns to the heart","To let oxygen and nutrients pass easily into body cells","To withstand the high pressure of blood pumped from the heart","To store blood when the body needs less oxygen at rest"],a:2,
+h:"Arteries receive blood straight from the pumping heart.",
+expl:"Blood leaves the heart at high pressure. Thick, elastic walls let arteries withstand and stretch with this pressure.",
+insight:"Arteries: thick, elastic walls; carry blood away from the heart under high pressure."},
+{t:"Heart, Vessels & Blood",f:"d",
+q:"What is the function of valves in veins?",
+o:["They increase blood pressure so blood flows faster to the body","They let gases and nutrients pass out to surrounding tissues","They squeeze blood forward by contracting like heart muscle","They prevent blood from flowing backwards, away from the heart"],a:3,
+h:"Blood in veins is under low pressure and moves slowly.",
+expl:"Blood in veins is at low pressure. Valves close to stop backflow, so blood only flows towards the heart.",
+insight:"Veins have valves to prevent backflow of blood, returning blood to the heart."},
+{t:"Heart, Vessels & Blood",f:"d",
+q:"Why are capillary walls only one cell thick?",
+o:["So blood can flow through them at very high pressure","So substances can pass quickly between the blood and cells","So they can stretch to hold a large volume of blood","So valves can fit inside them to stop backflow of blood"],a:1,
+h:"Capillaries are where exchange with body cells happens.",
+expl:"A wall one cell thick gives a very short distance, so oxygen, nutrients and wastes can be exchanged quickly with cells.",
+insight:"Capillaries: one-cell-thick walls for exchange of nutrients and gases."},
+{t:"Heart, Vessels & Blood",f:"d",
+q:"Which statement correctly compares arteries and veins?",
+o:["Arteries carry blood towards the heart; veins carry blood away from it","Arteries have valves to stop backflow; veins have thick elastic walls","Arteries always carry deoxygenated blood; veins always carry oxygenated blood","Arteries carry blood away from the heart; veins carry blood towards it"],a:3,
+h:"Remember: A for Artery, A for Away.",
+expl:"Arteries carry blood away from the heart; veins return it. Oxygen content is not the rule (the pulmonary artery carries deoxygenated blood).",
+insight:"Arteries carry blood away from the heart; veins return blood to the heart."},
+{t:"Heart, Vessels & Blood",f:"s",
+q:"Which blood component helps blood to clot at a wound?",
+o:["Plasma","Haemoglobin","Antibodies","Platelets"],a:3,
+h:"They are tiny cell fragments, not whole cells.",
+expl:"Platelets help blood clot, plugging damaged vessels and stopping bleeding.",
+insight:"Platelets: blood clotting."},
+{t:"Heart, Vessels & Blood",f:"d",
+q:"What is the main function of white blood cells?",
+o:["Carrying oxygen around the body by combining it with haemoglobin","Forming clots at wounds to stop bleeding from damaged vessels","Defending the body by attacking and destroying disease-causing germs","Transporting dissolved glucose, carbon dioxide and hormones in blood"],a:2,
+h:"Think of the body's immune system.",
+expl:"White blood cells protect the body against disease by attacking and destroying pathogens (germs).",
+insight:"White blood cells: immune defence against pathogens."},
+{t:"Heart, Vessels & Blood",f:"s",
+q:"Which component of blood is a pale yellow liquid that transports dissolved substances?",
+o:["Platelets","Haemoglobin","Antibodies","Plasma"],a:3,
+h:"It makes up more than half of the blood's volume.",
+expl:"Plasma is mostly water and carries dissolved digested food, mineral salts, carbon dioxide and hormones.",
+insight:"Plasma: liquid transport medium for dissolved substances and blood cells."},
+
+// ===== T6 Smoking & Fitness (4) =====
+{t:"Smoking & Fitness",f:"d",
+q:"How does carbon monoxide in cigarette smoke harm the body?",
+o:["It coats the airways in a sticky layer causing lung cancer","It binds to haemoglobin, so red blood cells carry less oxygen","It causes addiction and makes the blood clot more easily","It damages cells lining the air passages, causing smoker's cough"],a:1,
+h:"It affects the blood, not the airways.",
+expl:"Carbon monoxide binds to haemoglobin in place of oxygen, reducing the blood's ability to carry oxygen.",
+insight:"Carbon monoxide reduces the oxygen-carrying capacity of the blood (binds to haemoglobin)."},
+{t:"Smoking & Fitness",f:"s",
+q:"Which substance in cigarette smoke is a sticky material that increases mucus in the lungs and damages the airways?",
+o:["Nicotine","Carcinogens","Irritants","Tar"],a:3,
+h:"It also stains smokers' lungs and fingers brown.",
+expl:"Tar coats the airways, damages cells in the air passages and increases mucus and phlegm. It also contains cancer-causing chemicals.",
+insight:"Tar damages the respiratory tract and increases mucus; causes lung cancer."},
+{t:"Smoking & Fitness",f:"s",
+q:"Which chemical in tobacco smoke causes addiction?",
+o:["Tar","Nicotine","Irritants","Carcinogens"],a:1,
+h:"Tobacco plants are named after a word related to it.",
+expl:"Nicotine is the addictive drug in tobacco. It also makes blood clot more easily.",
+insight:"Nicotine causes addiction."},
+{t:"Smoking & Fitness",f:"d",
+q:"How does regular exercise affect the heart and lungs?",
+o:["The heart beats faster at rest and lung capacity decreases","The heart pumps less blood per beat and lungs need less air","The heart wall becomes thinner so blood flows with less effort","The heart pumps more blood per beat and lung capacity increases"],a:3,
+h:"Exercise strengthens muscles, including the heart.",
+expl:"Exercise strengthens the heart so it pumps more blood per beat (stroke volume rises), and lung capacity increases.",
+insight:"Exercise increases heart stroke volume and lung capacity."},
+
+// ===== T7 Practical & Data Skills (5) =====
+{t:"Practical & Data Skills",f:"s",
+q:"A student moves a lamp to different distances from pondweed and measures the volume of gas collected in 10 minutes. What is the independent variable?",
+o:["Volume of gas","Distance from lamp","Type of pondweed","Length of time"],a:1,
+h:"It's the one thing the student deliberately changes.",
+expl:"The independent variable is what is changed: distance from the lamp. The volume of gas is the dependent variable; pondweed type and time are controlled.",
+insight:"Independent variable = factor changed (distance/light intensity); dependent variable = factor measured (volume of gas)."},
+{t:"Practical & Data Skills",f:"n",
+q:"Gas collected from pondweed: 5 cm → 5.0 cm³, 10 cm → 2.5 cm³, 15 cm → 1.2 cm³. If the pattern continues, what volume is expected at 20 cm?",
+o:["1.0 cm³","0.6 cm³","0.3 cm³","0.9 cm³"],a:1,
+h:"Look at what happens to the volume each time the distance goes up by 5 cm.",
+expl:"The volume roughly halves every 5 cm (5.0 → 2.5 → 1.2), so the next value is about 0.6 cm³.",
+insight:"Rate of photosynthesis decreases as light distance increases (inverse relationship)."},
+{t:"Practical & Data Skills",f:"d",
+q:"Which statement best describes the trend in the pondweed results?",
+o:["As distance from the lamp increases, more gas is collected","As distance from the lamp increases, the volume stays the same","As distance from the lamp increases, the volume of gas decreases","As distance from the lamp increases, the volume rises then falls"],a:2,
+h:"Look at the volumes from the nearest to the furthest distance.",
+expl:"Volume falls from 5.0 to 1.2 cm³ as distance rises from 5 to 15 cm, so volume decreases as distance increases.",
+insight:"Describe: as distance increases, volume of gas (rate of photosynthesis) decreases."},
+{t:"Practical & Data Skills",f:"d",
+q:"Why does less gas collect as the lamp is moved further from the pondweed?",
+o:["Temperature rises, so the pondweed respires faster and uses oxygen","Carbon dioxide falls, so the water holds less dissolved gas","Light intensity falls, so the rate of photosynthesis decreases","Light intensity falls, so the pondweed releases more carbon dioxide"],a:2,
+h:"What does the lamp provide that the plant needs to make food?",
+expl:"Further away, light intensity is lower, so less light energy is absorbed. Photosynthesis slows and less oxygen is produced.",
+insight:"Explain: lower light intensity → less light energy absorbed → lower rate of photosynthesis → less oxygen."},
+{t:"Practical & Data Skills",f:"d",
+q:"Which is correct practice when plotting a line graph of results?",
+o:["Label only the y-axis and join every point with straight lines","Use a scale that changes partway along so all points fit","Label both axes with units and use an evenly spaced scale","Leave out the units and plot each point as a large dot"],a:2,
+h:"A reader must be able to read values accurately from both axes.",
+expl:"Both axes need labels with units and an even scale. Plot points clearly with an X and draw a smooth line or curve of best fit.",
+insight:"Graphs: label both axes with units, even scale, plot points with X, smooth line/curve of best fit."}
+];
+
+(function(){
+"use strict";
+var VERSION = "ver1.00";
+var QUIZ_NAME = "G8 LifeSci MYE";
+var QS_PER_ROUND = 12;
+var STREAK_TO_MASTER = 2;
+var FINAL_PASS_SPACING_MS = 5 * 60 * 1000;
+function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_+|_+$/g,"");}
+var LS_KEY = slugify(QUIZ_NAME) + "_v1";
+
+BANK.forEach(function(q,i){q.id=i;});
+var TOPIC_COLORS = {
+  "Photosynthesis & Plant Transport":"#2e7d4f",
+  "Food, Nutrients & Diet":"#9a6b00",
+  "Digestion & Enzymes":"#8e44ad",
+  "Respiration & Breathing":"#1e6fd9",
+  "Heart, Vessels & Blood":"#c2185b",
+  "Smoking & Fitness":"#5d6d7e",
+  "Practical & Data Skills":"#00897b"
+};
+var TOPICS = [];
+BANK.forEach(function(q){ if(TOPICS.indexOf(q.t)<0) TOPICS.push(q.t); });
+var FALLBACK = ["#2e7d4f","#9a6b00","#8e44ad","#1e6fd9","#c2185b","#5d6d7e","#00897b","#6d4c41"];
+TOPICS.forEach(function(t,i){ if(!TOPIC_COLORS[t]) TOPIC_COLORS[t]=FALLBACK[i%FALLBACK.length]; });
+
+/* ---------- storage ---------- */
+var storageOK = (function(){ try{ var k="__t"; window.localStorage.setItem(k,"1"); window.localStorage.removeItem(k); return true; }catch(e){ return false; } })();
+function freshState(){ var l={}; BANK.forEach(function(q){ l[q.id]={streak:0,status:"active",lastCorrect:0}; }); return {ledger:l}; }
+function loadState(){
+  var s=null;
+  if(storageOK){ try{ var raw=localStorage.getItem(LS_KEY); if(raw) s=JSON.parse(raw); }catch(e){ s=null; } }
+  if(!s || typeof s!=="object" || !s.ledger || typeof s.ledger!=="object") s=freshState();
+  BANK.forEach(function(q){
+    var e=s.ledger[q.id];
+    if(!e || typeof e!=="object") e={};
+    s.ledger[q.id]={
+      streak: (typeof e.streak==="number" && e.streak>=0) ? e.streak : 0,
+      status: e.status==="mastered" ? "mastered" : "active",
+      lastCorrect: typeof e.lastCorrect==="number" ? e.lastCorrect : 0
+    };
+  });
+  return s;
+}
+function saveState(){ if(!storageOK) return; try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
+var state = loadState();
+
+/* ---------- helpers ---------- */
+function $(id){ return document.getElementById(id); }
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+function show(id){ ["home","quiz","results"].forEach(function(s){ $(s).classList.toggle("hidden", s!==id); }); window.scrollTo(0,0); }
+function isFinalPass(e){ return e.status==="active" && e.streak===STREAK_TO_MASTER-1; }
+function isEligible(e){
+  if(e.status!=="active") return false;
+  if(isFinalPass(e) && FINAL_PASS_SPACING_MS>0) return (Date.now()-e.lastCorrect) >= FINAL_PASS_SPACING_MS;
+  return true;
+}
+function fmtWait(ms){ var s=Math.max(0,Math.ceil(ms/1000)); var m=Math.floor(s/60); s=s%60; return m+":"+(s<10?"0":"")+s; }
+
+/* ---------- home ---------- */
+var noteTimer=null;
+function renderHome(){
+  $("ver").textContent = VERSION;
+  $("title").textContent = QUIZ_NAME;
+  $("pills").innerHTML = TOPICS.map(function(t){ var c=TOPIC_COLORS[t]; return '<span class="pill" style="border-color:'+c+';color:'+c+'">'+esc(t)+'</span>'; }).join("");
+  var total=BANK.length, done=0;
+  BANK.forEach(function(q){ if(state.ledger[q.id].status==="mastered") done++; });
+  $("nActive").textContent = total-done;
+  $("nDone").textContent = done;
+  var pct = Math.round(100*done/total);
+  $("pct").textContent = pct + "% completed";
+  $("how").textContent = "Answer correctly "+STREAK_TO_MASTER+" times in a row to complete a question. A wrong answer resets your progress on that question. Work through all "+total+" questions to finish.";
+  var mb=$("mainBar"); mb.style.width="0"; setTimeout(function(){ mb.style.width=pct+"%"; },60);
+
+  var tc=$("topics"); tc.classList.toggle("two", TOPICS.length>=7);
+  tc.innerHTML = TOPICS.map(function(t,i){
+    var qs=BANK.filter(function(q){return q.t===t;}), m=0, half=0;
+    qs.forEach(function(q){ var e=state.ledger[q.id]; if(e.status==="mastered") m++; else if(e.streak>0) half++; });
+    var c=TOPIC_COLORS[t];
+    return '<div class="tcard"><div class="tname" style="color:'+c+'">'+esc(t)+'</div>'+
+      '<div class="tmeta"><span>'+(half>0?'<span class="half" title="One more correct answer to complete these">▶'+half+'</span>':'')+'</span><span>'+m+'/'+qs.length+'</span></div>'+
+      '<div class="bar"><i data-w="'+Math.round(100*m/qs.length)+'" style="background:'+c+'"></i></div></div>';
+  }).join("");
+  setTimeout(function(){ Array.prototype.forEach.call(tc.querySelectorAll(".bar>i"),function(el){ el.style.width=el.getAttribute("data-w")+"%"; }); },60);
+
+  var all = done===total;
+  $("allDone").classList.toggle("hidden", !all);
+  $("btnContinue").disabled = all;
+  $("btnContinue").textContent = all ? "✓ All questions completed" : "▶ Continue Progress";
+  updateNote();
+  if(noteTimer) clearInterval(noteTimer);
+  noteTimer = setInterval(updateNote, 1000);
+}
+function waitingInfo(){
+  var waiting=[], soonest=Infinity;
+  BANK.forEach(function(q){ var e=state.ledger[q.id]; if(e.status==="active" && !isEligible(e)){ waiting.push(q); soonest=Math.min(soonest, FINAL_PASS_SPACING_MS-(Date.now()-e.lastCorrect)); } });
+  return {waiting:waiting, soonest:soonest};
+}
+function updateNote(){
+  if($("home").classList.contains("hidden")) return;
+  var w=waitingInfo(), n=$("homeNote");
+  if(w.waiting.length===0){ n.classList.add("hidden"); return; }
+  n.classList.remove("hidden");
+  n.textContent = "⏳ "+w.waiting.length+" question"+(w.waiting.length>1?"s are":" is")+" resting before the final try. Next one ready in "+fmtWait(w.soonest)+".";
+}
+
+/* ---------- session ---------- */
+var session=null;
+function startSession(){
+  var eligible = shuffle(BANK.filter(function(q){ return isEligible(state.ledger[q.id]); }));
+  if(eligible.length===0){
+    var w=waitingInfo();
+    if(w.waiting.length===0) return;
+    $("waitText").textContent = "Every remaining question is resting before its final try. The next one is ready in "+fmtWait(w.soonest)+". You can practise them now, but correct answers won't count toward completion until the break is over (a wrong answer still resets).";
+    $("waitModal").classList.remove("hidden");
+    return;
+  }
+  // priority: questions ready for their final try (up to half the round), then everything else
+  var finals = eligible.filter(function(q){ return isFinalPass(state.ledger[q.id]); });
+  var others = eligible.filter(function(q){ return !isFinalPass(state.ledger[q.id]); });
+  var nFinal = Math.min(finals.length, Math.ceil(QS_PER_ROUND/2));
+  var chosen = finals.slice(0,nFinal).concat(others.slice(0, QS_PER_ROUND-nFinal));
+  if(chosen.length < QS_PER_ROUND) chosen = chosen.concat(finals.slice(nFinal, nFinal + QS_PER_ROUND - chosen.length));
+  var picks = chosen.map(function(q){ return {q:q, practice:false}; });
+  // relief valve: top up a short round with resting questions as practice
+  if(picks.length < QS_PER_ROUND){
+    var rest = shuffle(waitingInfo().waiting).slice(0, QS_PER_ROUND-picks.length);
+    rest.forEach(function(q){ picks.push({q:q, practice:true}); });
+  }
+  beginRound(shuffle(picks));
+}
+function startPracticeOnly(){
+  var rest = shuffle(waitingInfo().waiting).slice(0, QS_PER_ROUND).map(function(q){ return {q:q, practice:true}; });
+  if(rest.length) beginRound(rest);
+}
+function beginRound(items){
+  session = {items:items, idx:0, correct:0, mastered:0, byTopic:{}};
+  show("quiz"); renderQuestion();
+}
+function renderQuestion(){
+  var it=session.items[session.idx], q=it.q, e=state.ledger[q.id], c=TOPIC_COLORS[q.t];
+  var tp=$("qTopic"); tp.textContent=q.t; tp.style.borderColor=c; tp.style.color=c;
+  $("qCount").textContent = "Q "+(session.idx+1)+" of "+session.items.length;
+  $("qText").textContent = q.q;
+  var hb=$("hintBtn"), ht=$("hintText");
+  ht.classList.add("hidden"); ht.textContent=q.h;
+  var noHint = !it.practice && isFinalPass(e);
+  hb.disabled = noHint;
+  hb.textContent = noHint ? "💡 No hint on the final try" : "💡 Show hint";
+  var order = shuffle([0,1,2,3]);
+  var box=$("opts"); box.innerHTML="";
+  order.forEach(function(oi){
+    var b=document.createElement("button"); b.className="opt"; b.textContent=q.o[oi]; b.setAttribute("data-i",oi);
+    b.addEventListener("click", function(){ answer(oi); });
+    box.appendChild(b);
+  });
+  $("fb").classList.add("hidden"); $("nextBar").classList.add("hidden");
+}
+function answer(oi){
+  var it=session.items[session.idx], q=it.q, e=state.ledger[q.id], ok = oi===q.a;
+  Array.prototype.forEach.call($("opts").children,function(b){
+    var i=+b.getAttribute("data-i"); b.disabled=true;
+    if(i===q.a) b.classList.add("correct"); else if(i===oi) b.classList.add("wrong"); else b.classList.add("dim");
+  });
+  $("hintBtn").disabled=true;
+  var tb = session.byTopic[q.t] || (session.byTopic[q.t]={c:0,n:0}); tb.n++;
+  if(ok){
+    session.correct++; tb.c++;
+    if(!it.practice){
+      e.streak++; e.lastCorrect=Date.now();
+      if(e.streak>=STREAK_TO_MASTER){ e.status="mastered"; session.mastered++; }
+    }
+  } else { e.streak=0; }
+  saveState();
+  var v=$("verdict");
+  if(ok){ v.className="verdict ok"; v.textContent = e.status==="mastered" && !it.practice ? "✓ Correct. Question completed!" : (it.practice ? "✓ Correct (practice)" : "✓ Correct"); }
+  else { v.className="verdict no"; v.textContent="✗ Not quite. The correct answer is highlighted."; }
+  $("expl").textContent=q.expl; $("insight").textContent=q.insight;
+  $("fb").classList.remove("hidden"); $("nextBar").classList.remove("hidden");
+  $("btnNext").textContent = session.idx===session.items.length-1 ? "See results →" : "Next →";
+}
+function next(){ session.idx++; if(session.idx>=session.items.length) renderResults(); else { renderQuestion(); window.scrollTo(0,0); } }
+function renderResults(){
+  $("rScore").textContent = session.correct+" / "+session.items.length+" correct";
+  var b=$("rBadge");
+  if(session.mastered>0){ b.textContent="+ "+session.mastered+" question"+(session.mastered>1?"s":"")+" completed this session"; b.classList.remove("hidden"); } else b.classList.add("hidden");
+  $("rTable").innerHTML = TOPICS.filter(function(t){return session.byTopic[t];}).map(function(t){
+    var r=session.byTopic[t]; return '<tr><td style="color:'+TOPIC_COLORS[t]+';font-weight:600">'+esc(t)+'</td><td class="c">'+r.c+'</td><td class="c">'+r.n+'</td></tr>';
+  }).join("");
+  show("results");
+}
+
+/* ---------- events ---------- */
+$("hintBtn").addEventListener("click",function(){ $("hintText").classList.toggle("hidden"); });
+$("btnContinue").addEventListener("click", startSession);
+$("btnNext").addEventListener("click", next);
+$("btnBack").addEventListener("click", function(){ show("home"); renderHome(); });
+$("btnReset").addEventListener("click", function(){ $("resetModal").classList.remove("hidden"); });
+$("mCancel").addEventListener("click", function(){ $("resetModal").classList.add("hidden"); });
+$("mConfirm").addEventListener("click", function(){
+  if(storageOK){ try{ localStorage.removeItem(LS_KEY); }catch(e){} }
+  state = freshState(); saveState();
+  $("resetModal").classList.add("hidden"); show("home"); renderHome();
+});
+$("wLater").addEventListener("click", function(){ $("waitModal").classList.add("hidden"); });
+$("wPractise").addEventListener("click", function(){ $("waitModal").classList.add("hidden"); startPracticeOnly(); });
+
+renderHome();
+})();
+</script>
+</body>
+</html>
