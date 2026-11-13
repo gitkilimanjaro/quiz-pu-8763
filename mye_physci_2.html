@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G8 Physical Science MYE - Physics</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;background:#f5f6fa;color:#1a1a2e;line-height:1.45;min-height:100vh}
+#app{max-width:640px;margin:0 auto;padding:16px 14px 110px}
+.card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:16px;margin-bottom:14px}
+.ver{text-align:right;font-size:12px;color:#6b7080;margin-bottom:2px}
+h1{font-size:26px;font-weight:800;line-height:1.2;margin-bottom:12px;color:#1a1a2e}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.pill{background:#fff;border:1.5px solid;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;white-space:nowrap}
+.stats{display:flex;gap:12px;margin-bottom:12px}
+.stat{flex:1;text-align:center}
+.stat .num{font-size:34px;font-weight:800;line-height:1.1}
+.stat .lab{font-size:13px;color:#555a6b}
+.bar{height:10px;background:#e6e8f0;border-radius:999px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;border-radius:999px;background:#1a1a2e;transition:width .8s ease}
+.pct{font-size:12px;color:#555a6b;margin-top:4px;text-align:right}
+.how{font-size:13.5px;color:#3c4052;margin-top:10px}
+.note{font-size:13px;color:#7a4a00;background:#fff4e0;border-radius:8px;padding:8px 10px;margin-bottom:12px}
+.done{font-size:15px;font-weight:700;color:#2e7d32;background:#e8f5e9;border-radius:8px;padding:10px 12px;margin-bottom:12px;text-align:center}
+button{font-family:inherit;cursor:pointer}
+.btn{display:block;width:100%;border-radius:10px;padding:14px;font-size:16px;font-weight:700;border:2px solid #1a1a2e;margin-bottom:10px}
+.btn.primary{background:#1a1a2e;color:#fff}
+.btn.primary:disabled{opacity:.45;cursor:default}
+.btn.danger{background:#fff;color:#c62828;border-color:#c62828}
+.btn.ghost{background:#fff;color:#1a1a2e}
+.topics{display:grid;gap:10px;grid-template-columns:1fr;margin-top:6px}
+.topics.two{grid-template-columns:1fr 1fr}
+.tcard{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:10px;min-width:0}
+.tname{font-size:13px;font-weight:700;line-height:1.25;min-height:2.5em}
+.trow{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#555a6b;margin:4px 0}
+.half{color:#f57c00;font-weight:700}
+.tcard .bar{height:7px}
+/* quiz */
+.qtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px}
+.qcount{font-size:13px;color:#555a6b;white-space:nowrap}
+.qtext{font-size:20px;font-weight:700;text-align:center;margin:8px 0 16px;line-height:1.35}
+.hintbtn{display:block;margin:0 auto 6px;background:#fff;border:1.5px solid #1a1a2e;color:#1a1a2e;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600}
+.hintbtn:disabled{border-color:#c5c8d4;color:#a3a7b5;background:#eef0f5;cursor:not-allowed}
+.hint{display:none;font-size:14px;background:#eef2ff;border-radius:8px;padding:9px 12px;margin:6px 0 4px;color:#27306b}
+.hint.show{display:block}
+.opts{display:grid;gap:10px;margin-top:12px}
+.opt{width:100%;text-align:left;background:#fff;border:2px solid #d5d8e3;border-radius:10px;padding:13px 14px;font-size:16px;color:#1a1a2e;transition:background-color .15s,border-color .15s,color .15s}
+.opt:not(:disabled):hover{border-color:#1a1a2e}
+.opt:disabled{cursor:default}
+.opt.correct{background:#e8f5e9;border-color:#2e7d32;color:#1b5e20;font-weight:700}
+.opt.wrong{background:#ffebee;border-color:#c62828;color:#b71c1c;font-weight:700}
+.opt.dim{opacity:.6}
+.verdict{font-weight:800;font-size:16px;margin:16px 0 8px}
+.verdict.ok{color:#2e7d32}.verdict.no{color:#c62828}
+.expl{font-size:15px;background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:10px}
+.insight{font-size:15px;border:1.5px solid #1a1a2e;background:#f3f4fa;border-radius:10px;padding:12px 14px}
+.insight b,.expl b{display:block;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#555a6b;margin-bottom:3px}
+.nextbar{position:fixed;left:0;right:0;bottom:0;background:rgba(245,246,250,.96);padding:10px 14px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -2px 8px rgba(0,0,0,.08)}
+.nextbar .btn{max-width:612px;margin:0 auto}
+/* results */
+.score{font-size:44px;font-weight:800;text-align:center;line-height:1.1}
+.scorelab{text-align:center;color:#555a6b;font-size:14px;margin-bottom:10px}
+.badge{background:#e8f5e9;color:#2e7d32;font-weight:700;border-radius:999px;padding:7px 14px;text-align:center;font-size:14px;margin:0 auto 4px;width:fit-content}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 6px;border-bottom:1px solid #e6e8f0;text-align:center}
+th:first-child,td:first-child{text-align:left}
+th{font-size:12px;color:#555a6b;text-transform:uppercase;letter-spacing:.04em}
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(26,26,46,.6);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal{background:#fff;border-radius:12px;padding:20px;max-width:360px;width:100%}
+.modal p{font-size:16px;font-weight:600;margin-bottom:16px}
+.mrow{display:flex;gap:10px}
+.mrow .btn{margin:0}
+@media (max-width:400px){
+  #app{padding:12px 10px 110px}
+  h1{font-size:23px}
+  .tcard{padding:8px}
+  .tname{font-size:12px}
+  .trow{font-size:11px}
+  .qtext{font-size:18px}
+  .opt{font-size:15px;padding:12px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+"use strict";
+/* ================= CONFIG ================= */
+const QUIZ_NAME = "G8 Physical Science MYE - Physics";
+const VERSION = "ver1.02";
+const LS_KEY = "g8_physical_science_mye_physics_v1";
+// Progress made in the earlier combined quiz (ver1.00) is carried over once, when this quiz has no saved progress yet.
+const LEGACY_KEY = "g8_physical_science_mye_v1";
+const LEGACY_OFFSET = 78;
+const LEGACY_COUNT = 72; // only the first questions existed in the combined quiz
+const QS_PER_ROUND = 12;
+const STREAK_TO_MASTER = 2;
+const FINAL_PASS_SPACING_MS = 5 * 60 * 1000;
+
+/* ================= QUESTION BANK ================= */
+const BANK = [
+  {"t":"Hearing Sound","q":"How is every sound produced?","o":["Vibrations","Reflections","Radiations","Refractions"],"a":0,"h":"Touch your throat while you are talking.","expl":"Sound is a form of energy produced by vibrations, which are to-and-fro movements. When the vibrations stop, the sound stops.","insight":"Sound is a form of energy produced by vibrations."},
+  {"t":"Hearing Sound","q":"Why can sound not travel through a vacuum?","o":["The particles are packed too closely together to vibrate","There are no light rays to carry the sound energy","There are no particles to pass the vibrations along","The sound waves travel too slowly to be detected"],"a":2,"h":"What is a vacuum missing?","expl":"Sound needs a medium (solid, liquid or gas). The vibrations are passed from particle to particle. A vacuum has no particles, so sound cannot travel through it.","insight":"Sound needs a medium to travel; a vacuum has no particles to pass on the vibrations."},
+  {"t":"Hearing Sound","q":"An electric bell rings inside a bell jar while the air is pumped out. What is observed?","o":["The sound gets higher in pitch as the hammer moves faster","The sound gets louder although the hammer is still seen moving","The sound gets quieter although the hammer is still seen moving","The sound stays the same because sound needs no medium"],"a":2,"h":"Light can cross a vacuum. Can sound?","expl":"As the air is removed there are fewer particles to carry the vibrations, so the sound fades. The hammer can still be seen because light does not need a medium.","insight":"The bell jar experiment shows that sound needs a medium to travel, but light does not."},
+  {"t":"Hearing Sound","q":"In which of these does sound travel fastest?","o":["Water","Vacuum","Steel","Air"],"a":2,"h":"Think about how close together the particles are.","expl":"Sound travels fastest in solids, slower in liquids and slowest in gases. It cannot travel in a vacuum at all.","insight":"Speed of sound: solids > liquids > gases."},
+  {"t":"Hearing Sound","q":"What is the approximate speed of sound in air at 20 °C?","o":["143 m/s","243 m/s","443 m/s","343 m/s"],"a":3,"h":"It is a few hundred metres per second.","expl":"Sound travels at about 343 m/s in air at 20 °C. It is about 1482 m/s in water and 5960 m/s in steel.","insight":"Speed of sound in air ≈ 343 m/s (about 340 m/s)."},
+  {"t":"Hearing Sound","q":"Why does sound travel faster in a solid than in a gas?","o":["Particles are further apart, so vibrations have more room to move","Particles are free to flow, so vibrations spread out more easily","Particles are heavier, so each vibration carries much more sound","Particles are closer together, so vibrations pass on more quickly"],"a":3,"h":"Vibrations are passed on when particles collide with their neighbours.","expl":"In a solid the particles are tightly packed, so each vibrating particle quickly passes its vibration to the next one.","insight":"Particles in solids are closer together, so vibrations are passed on more quickly."},
+  {"t":"Hearing Sound","q":"In a sound wave, what is a region where the air particles are squeezed close together called?","o":["Compression","Reflection","Rarefaction","Vibration"],"a":0,"h":"The word means 'pressed together'.","expl":"A compression is a high-pressure region where particles are close together. A rarefaction is a low-pressure region where particles are spread out.","insight":"Compression = particles close together (high pressure). Rarefaction = particles spread out (low pressure)."},
+  {"t":"Hearing Sound","q":"How do the air particles move as a sound wave passes through the air?","o":["They vibrate to and fro about their positions without travelling to the listener","They stay completely still while the sound energy jumps between them","They move up and down at right angles to the direction of the sound","They travel in a straight line all the way from source to listener"],"a":0,"h":"The energy travels to your ear. Do the particles?","expl":"Each air particle vibrates backwards and forwards about its own position and passes the vibration on. The particles do not travel from the source to the ear.","insight":"Air particles vibrate to and fro and pass on the energy; they do not travel with the sound wave."},
+  {"t":"Hearing Sound","q":"Which shows the correct order in which vibrations pass through the ear?","o":["Cochlea → eardrum → ossicles → auditory nerve","Eardrum → cochlea → ossicles → auditory nerve","Eardrum → ossicles → cochlea → auditory nerve","Ossicles → eardrum → cochlea → auditory nerve"],"a":2,"h":"Go from the outer ear, to the middle ear, to the inner ear.","expl":"Sound enters through the pinna and ear canal, makes the eardrum vibrate, passes through the ossicles to the cochlea, and signals travel along the auditory nerve to the brain.","insight":"Pinna → ear canal → eardrum → ossicles (hammer, anvil, stirrup) → cochlea → auditory nerve → brain."},
+  {"t":"Hearing Sound","q":"What is the function of the pinna?","o":["It collects sound waves and directs them into the ear canal","It vibrates when sound waves reach the end of the ear canal","It amplifies the vibrations and passes them to the inner ear","It changes the vibrations into electrical signals for the brain"],"a":0,"h":"It is the part of the ear you can see, shaped like a funnel.","expl":"The pinna is the funnel-shaped outer ear. It collects sound waves and directs them down the ear canal.","insight":"The pinna collects sound waves and directs them into the ear canal."},
+  {"t":"Hearing Sound","q":"Which part of the ear is a thin membrane that vibrates when sound waves hit it?","o":["Pinna","Stirrup","Eardrum","Cochlea"],"a":2,"h":"Its name tells you it behaves like the skin of a musical instrument.","expl":"The eardrum is a thin membrane at the end of the ear canal. It vibrates when sound waves reach it.","insight":"The eardrum is a thin membrane that vibrates when sound waves reach it."},
+  {"t":"Hearing Sound","q":"What do the three small bones in the middle ear (hammer, anvil and stirrup) do?","o":["Amplify the vibrations and pass them on to the cochlea","Change the vibrations into signals and pass them to the brain","Protect the eardrum by absorbing vibrations that are too loud","Collect the sound waves and pass them on to the eardrum"],"a":0,"h":"They work like a set of tiny levers.","expl":"The ossicles amplify the vibrations from the eardrum and transfer them to the cochlea in the inner ear.","insight":"The ossicles (hammer, anvil, stirrup) amplify the vibrations and pass them to the inner ear."},
+  {"t":"Hearing Sound","q":"In which part of the ear are vibrations changed into electrical signals?","o":["Pinna","Cochlea","Eardrum","Anvil"],"a":1,"h":"It is a coiled tube filled with fluid and tiny hair cells.","expl":"In the cochlea, vibrations travel through fluid and move tiny hair cells, which produce electrical signals. The auditory nerve carries these signals to the brain.","insight":"The cochlea changes vibrations into electrical signals; the auditory nerve carries them to the brain."},
+  {"t":"Pitch & Loudness","q":"Which statement best defines frequency?","o":["The maximum distance a particle moves from its rest position","The number of complete vibrations made in one second","The total time taken for one complete vibration to finish","The distance measured between one crest and the next crest"],"a":1,"h":"It is about how often something happens.","expl":"Frequency is the number of complete vibrations (or waves) each second. The maximum distance from the rest position is the amplitude.","insight":"Frequency is the number of complete vibrations per second, measured in hertz (Hz)."},
+  {"t":"Pitch & Loudness","q":"What is the unit of frequency?","o":["Newtons","Hertz","Decibels","Metres"],"a":1,"h":"Its symbol is Hz.","expl":"Frequency is measured in hertz (Hz). 1 Hz means one vibration per second.","insight":"Unit of frequency: hertz (Hz)."},
+  {"t":"Pitch & Loudness","q":"A guitar string makes 600 complete vibrations in 3 seconds. What is its frequency?","o":["300 Hz","100 Hz","600 Hz","200 Hz"],"a":3,"h":"Frequency is the number of vibrations in ONE second.","expl":"Frequency = number of vibrations ÷ time = 600 ÷ 3 = 200 Hz.","insight":"Frequency = number of vibrations ÷ time taken (in seconds)."},
+  {"t":"Pitch & Loudness","q":"What is the highest frequency that a person with normal hearing can usually detect?","o":["20 000 Hz","25 000 Hz","10 000 Hz","15 000 Hz"],"a":0,"h":"The human hearing range starts at 20 Hz.","expl":"The range of human hearing is about 20 Hz to 20 000 Hz. The upper limit gets lower as people get older.","insight":"Human hearing range: 20 Hz to 20 000 Hz."},
+  {"t":"Pitch & Loudness","q":"What are sounds with frequencies above 20 000 Hz called?","o":["Noise","Echoes","Infrasound","Ultrasound"],"a":3,"h":"The prefix means 'beyond'.","expl":"Sounds above 20 000 Hz are ultrasound (used by bats and in medical imaging). Sounds below 20 Hz are infrasound (used by elephants).","insight":"Ultrasound: above 20 000 Hz. Infrasound: below 20 Hz."},
+  {"t":"Pitch & Loudness","q":"Which string would produce the note with the highest pitch?","o":["Short, thick and loose","Long, thick and loose","Short, thin and tight","Long, thin and tight"],"a":2,"h":"Think about the strings on a violin compared with a double bass.","expl":"Short, thin and tight strings vibrate fastest, so they have the highest frequency and the highest pitch.","insight":"Shorter, thinner and tighter strings vibrate faster and give a higher pitch."},
+  {"t":"Pitch & Loudness","q":"A guitar string is tightened. What happens to the note it produces?","o":["It vibrates faster, so the sound becomes much louder","It vibrates further, so the sound becomes louder","It vibrates faster, so the pitch becomes higher","It vibrates more slowly, so the pitch becomes lower"],"a":2,"h":"Tension changes how fast the string vibrates, not how far.","expl":"More tension makes the string vibrate faster. A higher frequency gives a higher pitch.","insight":"Higher frequency = higher pitch. Increasing tension increases frequency."},
+  {"t":"Pitch & Loudness","q":"Which statement best defines amplitude?","o":["The number of complete vibrations made in each second","The distance from one crest to the next crest","The maximum displacement of a particle from its rest position","The total distance travelled by the wave each second"],"a":2,"h":"On a wave trace it is the height of a crest above the centre line.","expl":"Amplitude is the maximum distance a particle moves from its rest position. On a trace it is the height from the centre line to a crest.","insight":"Amplitude is the maximum displacement from the rest position."},
+  {"t":"Pitch & Loudness","q":"Hitting a drum harder makes a louder sound. What has changed about the vibrations?","o":["Higher frequency","Smaller amplitude","Lower frequency","Larger amplitude"],"a":3,"h":"Loudness depends on how big the vibrations are.","expl":"A harder hit gives the drum skin more energy, so it vibrates with a larger amplitude and the sound is louder.","insight":"Larger amplitude = louder sound. Smaller amplitude = softer sound."},
+  {"t":"Pitch & Loudness","q":"In which unit is the loudness of a sound measured?","o":["Decibels","Hertz","Metres","Newtons"],"a":0,"h":"Its symbol is dB.","expl":"Loudness is measured in decibels (dB) using a sound level meter. Hertz is the unit of frequency.","insight":"Loudness is measured in decibels (dB); frequency is measured in hertz (Hz)."},
+  {"t":"Pitch & Loudness","q":"Which instrument is connected to a microphone to display the trace of a sound wave on a screen?","o":["Thermometer","Oscilloscope","Stethoscope","Loudspeaker"],"a":1,"h":"Its name comes from 'oscillate', which means to vibrate.","expl":"A microphone changes the sound into an electrical signal and the oscilloscope shows it as a wave trace on its screen.","insight":"An oscilloscope with a microphone is used to display the trace of a sound wave."},
+  {"t":"Pitch & Loudness","q":"Compared with a quiet note, how does the trace of a louder note of the same pitch look?","o":["Closer waves with the same height","Shorter waves with the same spacing","Taller waves with the same spacing","Wider waves with the same height"],"a":2,"h":"Loudness changes one feature of the trace and pitch changes another.","expl":"A louder sound has a larger amplitude, so the waves are taller. The pitch is the same, so the spacing between the waves does not change.","insight":"Louder sound: larger amplitude (taller trace), same frequency (same number of waves)."},
+  {"t":"Pitch & Loudness","q":"Compared with a low note, how does the trace of a higher note of the same loudness look?","o":["Taller waves on the screen, with the same number","More waves on the screen, with the same height","Fewer waves on the screen, with the same height","Shorter waves on the screen, with the same number"],"a":1,"h":"Higher pitch means more vibrations each second.","expl":"A higher pitch has a higher frequency, so more waves fit on the screen and the crests are closer together. Same loudness means the same height.","insight":"Higher pitch: higher frequency (more waves, closer together), same amplitude."},
+  {"t":"Pitch & Loudness","q":"Two traces are recorded with the same settings. Trace P shows 2 complete waves and trace Q shows 6 complete waves. Both have the same height. Which statement is correct?","o":["Q is the louder sound","P has the higher pitch","Q has the higher pitch","P is the louder sound"],"a":2,"h":"Count the waves to compare frequency; compare the heights for loudness.","expl":"Q has more waves in the same time, so it has the higher frequency and the higher pitch. The heights are equal, so they are equally loud.","insight":"More waves in the same time = higher frequency = higher pitch."},
+  {"t":"Pitch & Loudness","q":"On a wave trace, between which two points is the amplitude measured?","o":["Start of the trace to its end","Top of a crest to the bottom of a trough","Top of one crest to the next crest","Centre line to the top of a crest"],"a":3,"h":"It is a height, measured from the rest position.","expl":"Amplitude is measured from the centre (rest) line to the top of a crest, or to the bottom of a trough. Crest to trough is twice the amplitude.","insight":"Amplitude = distance from the centre line to a crest (or to a trough), not from crest to trough."},
+  {"t":"Light & Shadows","q":"Which of these is a luminous object?","o":["Mirror","Firefly","Planet","Moon"],"a":1,"h":"A luminous object gives out its own light.","expl":"A firefly produces its own light, so it is luminous. The Moon, mirrors and planets only reflect light from other sources.","insight":"Luminous objects give out their own light; non-luminous objects do not."},
+  {"t":"Light & Shadows","q":"The Moon is non-luminous. Why can we see it at night?","o":["It absorbs light from the Sun and glows later","It reflects light from the Sun into our eyes","It refracts light from the Earth into our eyes","It gives out its own light during the night"],"a":1,"h":"Where does the light that reaches the Moon come from?","expl":"The Moon does not make its own light. We see it because it reflects sunlight into our eyes.","insight":"Non-luminous objects are seen because they reflect light into our eyes."},
+  {"t":"Light & Shadows","q":"What is the speed of light in a vacuum?","o":["400 000 000 m/s","300 000 000 m/s","200 000 000 m/s","100 000 000 m/s"],"a":1,"h":"It can also be written as 3 × 10⁸ m/s.","expl":"Light travels at 300 000 000 m/s (3 × 10⁸ m/s) in a vacuum. It travels more slowly in water and glass.","insight":"Speed of light in a vacuum = 300 000 000 m/s (3 × 10⁸ m/s)."},
+  {"t":"Light & Shadows","q":"During a thunderstorm, why do we see the lightning before we hear the thunder?","o":["Light is produced before the sound","Sound travels much faster than light","Light travels much faster than sound","Sound is absorbed by the clouds"],"a":2,"h":"Compare 300 000 000 m/s with about 340 m/s.","expl":"Lightning and thunder are produced at the same time, but light travels much faster than sound, so the light reaches us first.","insight":"Light travels much faster than sound."},
+  {"t":"Light & Shadows","q":"Which observation shows that light travels in straight lines?","o":["A rainbow forms when sunlight meets raindrops","A straw looks bent in a glass of water","A sharp shadow forms behind an opaque object","A white shirt looks red under red light"],"a":2,"h":"If light could curve around things, what would be missing?","expl":"Light cannot bend around an opaque object, so a dark region with the same shape as the object forms behind it. This shows light travels in straight lines.","insight":"Shadows form because light travels in straight lines."},
+  {"t":"Light & Shadows","q":"Which list gives a transparent, a translucent and an opaque material, in that order?","o":["Clear glass, tracing paper, wood","Clear glass, wood, tracing paper","Tracing paper, clear glass, wood","Wood, tracing paper, clear glass"],"a":0,"h":"All light through, some light through, no light through.","expl":"Clear glass lets almost all light through (transparent). Tracing paper lets some light through (translucent). Wood lets no light through (opaque).","insight":"Transparent: almost all light passes. Translucent: some light passes. Opaque: no light passes."},
+  {"t":"Light & Shadows","q":"Why does a shadow form behind an opaque object?","o":["Light travels in straight lines and cannot pass through the object","Light is reflected by the screen and then absorbed by the object","Light bends around the edges of the object and spreads out behind it","Light travels in straight lines and is slowed down by the object"],"a":0,"h":"Two ideas are needed: how light travels, and what an opaque object does.","expl":"Light travels in straight lines. An opaque object blocks the light, so the region behind it receives no light and is dark.","insight":"A shadow is a region of darkness formed when the path of light is blocked by an opaque object."},
+  {"t":"Light & Shadows","q":"What is the region of total darkness in a shadow called?","o":["Corona","Umbra","Penumbra","Spectrum"],"a":1,"h":"It is the darkest, central part of the shadow.","expl":"The umbra is the region where all the light is blocked. The penumbra is the lighter outer region where only some light is blocked.","insight":"Umbra = total shadow (all light blocked). Penumbra = partial shadow (some light blocked)."},
+  {"t":"Light & Shadows","q":"A shadow has a dark centre with a lighter, fuzzy edge around it. What kind of light source produced it?","o":["A reflected source","A coloured source","A point source","An extended source"],"a":3,"h":"Light from different parts of the source reaches the edge of the shadow.","expl":"A large (extended) source gives an umbra surrounded by a penumbra, because the object blocks only part of the light at the edges. A point source gives a sharp umbra only.","insight":"Point source: sharp umbra only. Extended source: umbra surrounded by a penumbra."},
+  {"t":"Light & Shadows","q":"An object is moved closer to the light source. What happens to the size of its shadow on the screen?","o":["Larger","Sharper","Smaller","Brighter"],"a":0,"h":"Nearer the source, the object blocks a wider cone of light.","expl":"When the object is closer to the light source it blocks a wider spread of light rays, so the shadow on the screen becomes larger.","insight":"The closer the object is to the light source, the larger the shadow."},
+  {"t":"Light & Shadows","q":"What is the order of the Sun, Moon and Earth during a solar eclipse?","o":["Earth → Sun → Moon","Sun → Moon → Earth","Sun → Earth → Moon","Moon → Sun → Earth"],"a":1,"h":"In a solar eclipse, it is the Sun that gets hidden from us.","expl":"In a solar eclipse the Moon is between the Sun and the Earth. The Moon blocks the sunlight and its shadow falls on the Earth.","insight":"Solar eclipse: the Moon is between the Sun and the Earth, and the Moon's shadow falls on the Earth."},
+  {"t":"Light & Shadows","q":"What happens during a lunar eclipse?","o":["The Earth blocks sunlight from reaching the Moon","The Moon blocks sunlight from reaching the Earth","The Sun blocks moonlight from reaching the Earth","The Earth blocks moonlight from reaching the Sun"],"a":0,"h":"In a lunar eclipse, it is the Moon that goes dark.","expl":"In a lunar eclipse the Earth is between the Sun and the Moon, so the Earth's shadow falls on the Moon.","insight":"Lunar eclipse: the Earth is between the Sun and the Moon, and the Earth's shadow falls on the Moon."},
+  {"t":"Reflection","q":"A ray of light strikes a plane mirror with an angle of incidence of 40°. What is the angle of reflection?","o":["50°","40°","80°","90°"],"a":1,"h":"Use the law of reflection.","expl":"The angle of reflection is equal to the angle of incidence, so it is 40°.","insight":"Law of reflection: angle of incidence = angle of reflection (i = r)."},
+  {"t":"Reflection","q":"A ray of light hits a plane mirror, making an angle of 30° with the mirror surface. What is the angle of incidence?","o":["60°","120°","30°","90°"],"a":0,"h":"Angles are measured from the normal, not from the mirror.","expl":"The normal is at 90° to the mirror. Angle of incidence = 90° − 30° = 60°.","insight":"The angle of incidence is measured between the incident ray and the normal, not the mirror surface."},
+  {"t":"Reflection","q":"In a ray diagram, what is the normal?","o":["A line drawn at 90° to the surface at the point of incidence","A line drawn along the surface towards the point of incidence","A line showing the path of the ray after it leaves the surface","A line drawn at 45° to the surface at the point of incidence"],"a":0,"h":"It is usually drawn as a dashed line.","expl":"The normal is an imaginary line drawn perpendicular (at 90°) to the surface at the point where the ray hits it.","insight":"The normal is an imaginary line perpendicular (90°) to the surface at the point of incidence."},
+  {"t":"Reflection","q":"The angle of incidence is the angle between which two lines?","o":["The incident ray and the reflected ray","The incident ray and the mirror","The incident ray and the normal","The reflected ray and the mirror"],"a":2,"h":"Both angles in the law of reflection are measured from the same line.","expl":"The angle of incidence is between the incident ray and the normal. The angle of reflection is between the reflected ray and the normal.","insight":"Angle of incidence: between the incident ray and the normal."},
+  {"t":"Reflection","q":"Why can you see your face in a mirror but not in a sheet of white paper?","o":["The mirror is smooth and reflects parallel rays in one direction","The paper is rough and obeys a different law of reflection","The paper is rough and does not reflect any of the light","The mirror is smooth and absorbs parallel rays in one direction"],"a":0,"h":"Compare the two surfaces under a microscope.","expl":"A smooth mirror gives regular reflection: parallel rays stay parallel, so a clear image forms. Rough paper scatters the rays in all directions (diffuse reflection), so no image forms.","insight":"Regular reflection (smooth surface): parallel rays reflect in one direction and an image forms. Diffuse reflection (rough surface): rays scatter and no image forms."},
+  {"t":"Reflection","q":"Which statement about diffuse reflection from a rough surface is correct?","o":["Each ray obeys the law of reflection, but rays scatter in many directions","Each ray is absorbed by the surface, so no light leaves the paper","Each ray obeys the law of reflection, so all rays stay parallel","Each ray breaks the law of reflection, so rays scatter in many directions"],"a":0,"h":"On a rough surface the normal points a different way at each point.","expl":"Every ray still obeys i = r. The surface is uneven, so the normal is in a different direction at each point and the reflected rays scatter.","insight":"In diffuse reflection each ray still obeys the law of reflection; the rays scatter because the surface is uneven."},
+  {"t":"Reflection","q":"Which describes the image formed by a plane mirror?","o":["Real, upright and the same size as the object","Virtual, inverted and smaller than the object","Real, inverted and larger than the object","Virtual, upright and the same size as the object"],"a":3,"h":"Think about what you see when you look in a bathroom mirror.","expl":"A plane mirror image is the same size as the object, upright, virtual, laterally inverted, and as far behind the mirror as the object is in front.","insight":"Plane mirror image: same size, upright, virtual, laterally inverted, same distance behind the mirror as the object is in front."},
+  {"t":"Reflection","q":"A girl stands 2 m in front of a plane mirror. How far is her image from her?","o":["4 m","2 m","1 m","3 m"],"a":0,"h":"The question asks for the distance from the girl, not from the mirror.","expl":"The image is 2 m behind the mirror. Distance from girl to image = 2 m + 2 m = 4 m.","insight":"Image distance behind the mirror = object distance in front of the mirror."},
+  {"t":"Reflection","q":"The word AMBULANCE is printed back-to-front on the front of the vehicle so drivers can read it in their mirrors. Which property of a mirror image explains this?","o":["Greatly magnified","Slightly diminished","Laterally inverted","Vertically inverted"],"a":2,"h":"Raise your right hand in front of a mirror and watch the image.","expl":"A plane mirror image is laterally inverted, meaning left and right are swapped. The reversed word looks the right way round in a mirror.","insight":"A plane mirror image is laterally inverted (left and right are reversed)."},
+  {"t":"Reflection","q":"How are we able to see a book in a room lit by a lamp?","o":["Light from the book travels to the lamp and then our eyes","Light from the lamp reflects off the book into our eyes","Light from our eyes reflects off the book to the lamp","Light from the lamp is absorbed by the book and our eyes"],"a":1,"h":"Start at the light source and follow the path of the light.","expl":"The book is non-luminous. Light from the lamp hits the book, is reflected, and enters our eyes.","insight":"We see a non-luminous object when light from a source is reflected off the object into our eyes."},
+  {"t":"Refraction & Dispersion","q":"Which statement best defines refraction?","o":["The bending of light as it passes from one transparent medium into another","The splitting of light as it is absorbed by a coloured filter","The bouncing of light as it strikes the surface of a smooth mirror","The spreading of light as it passes around the edge of an obstacle"],"a":0,"h":"It happens at the boundary between two materials such as air and glass.","expl":"Refraction is the bending (change in direction) of light when it passes from one transparent medium to another.","insight":"Refraction is the bending of light as it passes from one transparent medium to another."},
+  {"t":"Refraction & Dispersion","q":"What causes light to refract at the boundary between two media?","o":["A change in colour","A change in temperature","A change in brightness","A change in speed"],"a":3,"h":"Light does not travel equally fast in air, water and glass.","expl":"Light travels at different speeds in different media. The change in speed at the boundary makes the light change direction.","insight":"Refraction occurs because light changes speed when it enters a different medium."},
+  {"t":"Refraction & Dispersion","q":"A ray of light passes from air into glass at an angle. What happens to it?","o":["It speeds up and bends away from the normal","It slows down and bends towards the normal","It slows down and bends away from the normal","It speeds up and bends towards the normal"],"a":1,"h":"Glass is optically denser than air.","expl":"Light travels more slowly in glass than in air. When light slows down, it bends towards the normal.","insight":"Less dense to denser medium (air to glass): light slows down and bends towards the normal."},
+  {"t":"Refraction & Dispersion","q":"A ray of light passes from water into air at an angle. Which statement is correct?","o":["The angle of refraction is smaller than the angle of incidence","The angle of refraction is zero for every angle of incidence","The angle of refraction is larger than the angle of incidence","The angle of refraction is equal to the angle of incidence"],"a":2,"h":"Light speeds up when it leaves water. Which way does it bend?","expl":"From water to air, light speeds up and bends away from the normal, so the angle of refraction is larger than the angle of incidence.","insight":"Denser to less dense medium (water to air): light speeds up and bends away from the normal, so angle r > angle i."},
+  {"t":"Refraction & Dispersion","q":"A ray of light enters a glass block along the normal. What happens to it?","o":["It slows down but does not change direction","It speeds up and bends away from the normal","It slows down and bends towards the normal","It keeps the same speed and the same direction"],"a":0,"h":"The angle of incidence here is 0°.","expl":"The ray still slows down in the glass, but because it hits the boundary at 90° to the surface it passes straight through without bending.","insight":"A ray travelling along the normal changes speed but does not bend."},
+  {"t":"Refraction & Dispersion","q":"A ray of light passes through a rectangular glass block and comes out the other side. How is the emergent ray related to the incident ray?","o":["Parallel to the incident ray","Along the same normal line","Perpendicular to the incident ray","Reflected back into the glass"],"a":0,"h":"The ray bends one way going in and the opposite way coming out.","expl":"The ray bends towards the normal on entering and away from the normal by the same amount on leaving, so the emergent ray is parallel to the incident ray but shifted sideways.","insight":"For a rectangular glass block, the emergent ray is parallel to the incident ray."},
+  {"t":"Refraction & Dispersion","q":"Why does a swimming pool look shallower than it really is?","o":["Light from the bottom is reflected back down by the water surface","Light from the bottom bends towards the normal as it leaves the water","Light from the bottom is absorbed and slowed as it leaves the water","Light from the bottom bends away from the normal as it leaves the water"],"a":3,"h":"Follow a ray from the bottom of the pool to your eye.","expl":"Light leaving the water speeds up and bends away from the normal. Our eyes trace the rays back in straight lines, so the bottom appears closer to the surface than it is.","insight":"Apparent depth: light bends away from the normal as it passes from water to air, so objects appear closer to the surface."},
+  {"t":"Refraction & Dispersion","q":"Which list puts the media in order of the speed of light in them, from fastest to slowest?","o":["Air, water, glass","Glass, water, air","Water, air, glass","Air, glass, water"],"a":0,"h":"Light is slowest in the optically densest medium.","expl":"Light travels fastest in a vacuum or air, slower in water, and slower still in glass.","insight":"Speed of light: fastest in vacuum/air, slower in water, slowest in glass."},
+  {"t":"Refraction & Dispersion","q":"What is the splitting of white light into its colours by a prism called?","o":["Reflection","Dispersion","Absorption","Diffusion"],"a":1,"h":"The colours are spread out, or 'dispersed'.","expl":"Dispersion is the splitting of white light into its component colours when it passes through a prism.","insight":"Dispersion is the splitting of white light into its component colours."},
+  {"t":"Refraction & Dispersion","q":"Which colour of light is refracted the most by a glass prism?","o":["Red","Green","Yellow","Violet"],"a":3,"h":"It is at one end of the spectrum: ROYGBIV.","expl":"Violet light slows down the most in glass, so it bends the most. Red slows down the least and bends the least.","insight":"Violet is refracted the most; red is refracted the least."},
+  {"t":"Refraction & Dispersion","q":"Which colour is refracted the least by a glass prism, and why?","o":["Red, because it slows down the most in glass","Violet, because it slows down the least in glass","Violet, because it slows down the most in glass","Red, because it slows down the least in glass"],"a":3,"h":"The smaller the change in speed, the smaller the bend.","expl":"Different colours travel at different speeds in glass. Red light slows down the least, so it is refracted the least.","insight":"Dispersion happens because different colours travel at different speeds in glass, so they are refracted by different amounts."},
+  {"t":"Refraction & Dispersion","q":"How can the spectrum from a prism be recombined to give white light again?","o":["Using a second, identical filter","Using a second, inverted prism","Using a plane mirror only","Using a frosted glass block"],"a":1,"h":"You need something that bends each colour back by the same amount.","expl":"A second prism placed upside down bends the colours back together to form white light. A spinning Newton's disc also shows that the colours combine into white.","insight":"The spectrum can be recombined into white light using a second inverted prism."},
+  {"t":"Coloured Light","q":"What are the primary colours of light?","o":["Cyan, magenta and yellow","Red, yellow and blue","Red, green and yellow","Red, green and blue"],"a":3,"h":"They are not the same as the primary colours of paint.","expl":"The primary colours of light are red, green and blue. Cyan, magenta and yellow are the secondary colours of light.","insight":"Primary colours of light: red, green, blue. Secondary colours: cyan, magenta, yellow."},
+  {"t":"Coloured Light","q":"Which colour is produced when red light and green light overlap?","o":["Cyan","White","Yellow","Magenta"],"a":2,"h":"It is a secondary colour of light.","expl":"Red + green = yellow. Red + blue = magenta. Blue + green = cyan.","insight":"Red + green = yellow."},
+  {"t":"Coloured Light","q":"Which two colours of light combine to produce magenta light?","o":["Green and yellow","Red and green","Blue and green","Red and blue"],"a":3,"h":"Magenta is the secondary colour that contains no green.","expl":"Red + blue = magenta. Red + green = yellow and blue + green = cyan.","insight":"Red + blue = magenta. Blue + green = cyan."},
+  {"t":"Coloured Light","q":"Which colour is produced when red, green and blue light all overlap?","o":["Grey","Black","Brown","White"],"a":3,"h":"This is colour addition, not mixing paint.","expl":"Adding all three primary colours of light together produces white light.","insight":"Red + green + blue = white light."},
+  {"t":"Coloured Light","q":"White light shines on a red filter. What does the filter do?","o":["It absorbs red light and transmits green and blue light","It reflects red light and transmits green and blue light","It transmits red light and absorbs green and blue light","It adds red colour to all the light passing through"],"a":2,"h":"Filters only take colours away. They never add colour.","expl":"A red filter lets red light pass through (transmits it) and absorbs the other colours. Filters subtract colours and do not add any.","insight":"A coloured filter transmits light of its own colour and absorbs the other colours."},
+  {"t":"Coloured Light","q":"White light passes through a red filter and then through a green filter. What is seen after the second filter?","o":["Yellow light","Red light","White light","No light"],"a":3,"h":"Work out what leaves the first filter, then what the second filter does to it.","expl":"Only red light leaves the red filter. The green filter absorbs red light, so no light gets through.","insight":"A green filter absorbs red light, so red light cannot pass through a green filter."},
+  {"t":"Coloured Light","q":"Why does a red object look red in white light?","o":["It reflects red light and absorbs the other colours","It absorbs red light and reflects the other colours","It transmits red light and reflects the other colours","It reflects all colours but the red light reaches us first"],"a":0,"h":"We see the colour of the light that reaches our eyes.","expl":"A red object reflects the red part of white light into our eyes and absorbs all the other colours.","insight":"A coloured object reflects light of its own colour and absorbs the other colours."},
+  {"t":"Coloured Light","q":"What colour does a red object appear in blue light?","o":["Black","Magenta","Red","Blue"],"a":0,"h":"Is there any red light available for the object to reflect?","expl":"A red object can only reflect red light. Blue light is absorbed, so no light is reflected and the object looks black.","insight":"An object looks black when it absorbs all the light falling on it and reflects none."},
+  {"t":"Coloured Light","q":"What colour does a green leaf appear in yellow light?","o":["Red","Yellow","Black","Green"],"a":3,"h":"Yellow light is a mixture of two primary colours.","expl":"Yellow light is red + green. The leaf absorbs the red part and reflects the green part, so it looks green.","insight":"Yellow light = red + green. A green object reflects the green part and absorbs the red part."},
+  {"t":"Coloured Light","q":"Why does a black object look black in white light?","o":["It absorbs all colours of light and reflects none","It absorbs only the three primary colours of light","It reflects all colours of light and absorbs none","It transmits all colours of light straight through itself"],"a":0,"h":"Black is what we see when no light reaches our eyes from an object.","expl":"A black object absorbs all the colours of light falling on it and reflects none. A white object reflects all colours.","insight":"Black objects absorb all colours and reflect none; white objects reflect all colours."},
+  {"t":"Hearing Sound","q":"In a sound wave, what is a region where the air particles are spread further apart called?","o":["Rarefaction","Vibration","Compression","Refraction"],"a":0,"h":"It is the opposite of a compression.","expl":"A rarefaction is a low-pressure region where the particles are spread out. A compression is a high-pressure region where they are close together.","insight":"Rarefaction = particles spread out (low pressure). Compression = particles close together (high pressure)."},
+  {"t":"Pitch & Loudness","q":"Elephants communicate using sounds with frequencies below 20 Hz. What are these sounds called?","o":["Noise","Echoes","Ultrasound","Infrasound"],"a":3,"h":"The prefix means 'below'.","expl":"Sounds with frequencies below 20 Hz are called infrasound. Humans cannot hear them because our hearing range starts at about 20 Hz.","insight":"Infrasound: below 20 Hz. Ultrasound: above 20 000 Hz. Humans hear 20 Hz to 20 000 Hz."},
+  {"t":"Pitch & Loudness","q":"On a wave trace, what is the distance from one crest to the next crest called?","o":["Wavelength","Pitch","Amplitude","Frequency"],"a":0,"h":"It is the length of one complete wave.","expl":"The distance from one crest to the next crest (or one trough to the next trough) is one wavelength. Amplitude is the height from the centre line to a crest.","insight":"Wavelength = distance from one crest to the next crest (one complete wave)."},
+  {"t":"Pitch & Loudness","q":"How does the trace of a noise differ from the trace of a pure musical note?","o":["It is always taller, with a larger amplitude","It is regular, with a smooth repeating pattern","It is irregular, with no repeating pattern","It is always flatter, with a lower frequency"],"a":2,"h":"Compare the sound of a tuning fork with the sound of traffic.","expl":"A pure note gives a regular, smooth, repeating wave. Noise gives an irregular trace because its frequency and amplitude keep changing randomly.","insight":"Pure note: regular, repeating trace. Noise: irregular trace with no repeating pattern."},
+  {"t":"Pitch & Loudness","q":"Why can very loud sounds damage a person's hearing?","o":["They have a very long wavelength, which cannot enter the ear canal","They travel much faster, which gives the ear less time to react","They have a very high frequency, which the cochlea cannot detect","They carry a lot of energy, which can damage the eardrum"],"a":3,"h":"Loudness is linked to amplitude. What does a large amplitude carry more of?","expl":"Loud sounds have large amplitudes and carry a lot of energy. This energy pushes hard on the eardrum and can damage the ear, causing hearing loss.","insight":"Loud sounds have large amplitudes and carry more energy, which can damage the ear."},
+  {"t":"Light & Shadows","q":"A beam of light has rays that spread out as they travel away from the source. How is this beam described?","o":["Parallel","Reflected","Divergent","Convergent"],"a":2,"h":"To 'diverge' means to move apart.","expl":"A divergent beam spreads out. A convergent beam comes together, and in a parallel beam the rays stay the same distance apart.","insight":"Light beams can be parallel, divergent (spreading out) or convergent (coming together)."},
+  {"t":"Light & Shadows","q":"Where must a person be standing to see a total solar eclipse?","o":["In the Earth's penumbra","In the Earth's umbra","In the Moon's penumbra","In the Moon's umbra"],"a":3,"h":"Whose shadow falls on the Earth in a solar eclipse, and which part is fully dark?","expl":"In a solar eclipse the Moon's shadow falls on the Earth. People in the umbra, where all sunlight is blocked, see a total eclipse. People in the penumbra see a partial eclipse.","insight":"Total solar eclipse: seen from the Moon's umbra. Partial solar eclipse: seen from the Moon's penumbra."},
+  {"t":"Reflection","q":"A plane mirror forms a virtual image. What does 'virtual' mean?","o":["It cannot be formed on a screen","It cannot be seen by the eye","It is always smaller than the object","It is always turned upside down"],"a":0,"h":"Imagine holding a sheet of paper behind the mirror where the image appears to be.","expl":"A virtual image cannot be projected onto a screen, because the light rays do not actually meet where the image appears to be.","insight":"A virtual image cannot be formed (projected) on a screen."},
+  {"t":"Reflection","q":"A ray of light strikes a plane mirror with an angle of incidence of 35°. What is the angle between the incident ray and the reflected ray?","o":["35°","110°","70°","55°"],"a":2,"h":"Find the angle of reflection first. Both angles are measured from the normal.","expl":"Angle of reflection = angle of incidence = 35°. The angle between the two rays = 35° + 35° = 70°.","insight":"Angle between incident and reflected rays = angle of incidence + angle of reflection = 2 × i."},
+  {"t":"Refraction & Dispersion","q":"In a rainbow, which colour appears on the outer (top) edge?","o":["Blue","Violet","Green","Red"],"a":3,"h":"It is the colour that is refracted the least.","expl":"Raindrops act like tiny prisms and split sunlight into colours. Red appears at the top of the rainbow and violet at the bottom.","insight":"Rainbow: raindrops refract, reflect and refract sunlight; red is at the top and violet at the bottom."},
+  {"t":"Coloured Light","q":"Which colour is produced when blue light and green light overlap?","o":["White","Cyan","Magenta","Yellow"],"a":1,"h":"It is the secondary colour that contains no red.","expl":"Blue + green = cyan. Red + green = yellow and red + blue = magenta.","insight":"Blue + green = cyan."},
+  {"t":"Coloured Light","q":"What colour does a white object appear in green light?","o":["Black","Cyan","Green","White"],"a":2,"h":"A white object reflects whatever colours of light fall on it.","expl":"A white object reflects all colours. If only green light shines on it, only green light is reflected, so it looks green.","insight":"A white object takes on the colour of the light shining on it, because it reflects all colours."}
+];
+BANK.forEach((q, i) => q.id = i);
+
+const TOPIC_COLORS = ["#1565c0","#00897b","#6a1b9a","#9c6b00","#880e4f","#455a64","#bf360c","#795548","#558b2f","#3949ab","#0097a7","#d81b60"];
+const TOPICS = [];
+BANK.forEach(q => { if (!TOPICS.includes(q.t)) TOPICS.push(q.t); });
+const colorOf = t => TOPIC_COLORS[TOPICS.indexOf(t) % TOPIC_COLORS.length];
+
+/* ================= STORAGE ================= */
+let memoryStore = null;
+function freshState() {
+  const ledger = {};
+  BANK.forEach(q => ledger[q.id] = { streak: 0, status: "active", lastCorrect: 0 });
+  return { ledger };
+}
+function loadState() {
+  let raw = null;
+  try { raw = (typeof localStorage !== "undefined") ? localStorage.getItem(LS_KEY) : memoryStore; }
+  catch (e) { raw = memoryStore; }
+  let st = null;
+  if (raw) { try { st = JSON.parse(raw); } catch (e) { st = null; } }
+  if (!raw) {
+    try {
+      const lg = JSON.parse(localStorage.getItem(LEGACY_KEY));
+      if (lg && lg.ledger) {
+        st = { ledger: {} };
+        BANK.slice(0, LEGACY_COUNT).forEach(q => { const e = lg.ledger[q.id + LEGACY_OFFSET]; if (e) st.ledger[q.id] = { streak: e.streak, status: e.status, lastCorrect: e.lastCorrect }; });
+      }
+    } catch (e) { st = null; }
+  }
+  if (!st || typeof st !== "object" || !st.ledger || typeof st.ledger !== "object") st = freshState();
+  BANK.forEach(q => {
+    const e = st.ledger[q.id];
+    if (!e || typeof e !== "object" || typeof e.streak !== "number" || (e.status !== "active" && e.status !== "mastered")) {
+      st.ledger[q.id] = { streak: 0, status: "active", lastCorrect: 0 };
+    } else if (typeof e.lastCorrect !== "number") e.lastCorrect = 0;
+  });
+  return st;
+}
+function saveState() {
+  const raw = JSON.stringify(state);
+  memoryStore = raw;
+  try { if (typeof localStorage !== "undefined") localStorage.setItem(LS_KEY, raw); } catch (e) {}
+}
+function wipeState() {
+  memoryStore = null;
+  try { if (typeof localStorage !== "undefined") localStorage.removeItem(LS_KEY); } catch (e) {}
+  state = freshState();
+}
+let state = loadState();
+let session = null;
+
+/* ================= HELPERS ================= */
+const app = document.getElementById("app");
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+const entry = q => state.ledger[q.id];
+const isMastered = q => entry(q).status === "mastered";
+const onFinalPass = q => entry(q).status === "active" && entry(q).streak === STREAK_TO_MASTER - 1;
+function isReady(q, now) {
+  const e = entry(q);
+  if (e.status !== "active") return false;
+  if (e.streak === STREAK_TO_MASTER - 1 && FINAL_PASS_SPACING_MS > 0) {
+    return now - e.lastCorrect >= FINAL_PASS_SPACING_MS;
+  }
+  return true;
+}
+function pools() {
+  const now = Date.now();
+  const active = BANK.filter(q => !isMastered(q));
+  const ready = active.filter(q => isReady(q, now));
+  const resting = active.filter(q => !isReady(q, now));
+  return { now, active, ready, resting };
+}
+function animateBars() {
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.querySelectorAll(".bar>i").forEach(b => b.style.width = b.dataset.w + "%");
+  }));
+}
+
+/* ================= HOME ================= */
+function renderHome() {
+  session = null;
+  window.scrollTo(0, 0);
+  app.innerHTML = "";
+  const total = BANK.length;
+  const mastered = BANK.filter(isMastered).length;
+  const p = pools();
+
+  app.appendChild(el("div", "ver", VERSION));
+  app.appendChild(el("h1", "", QUIZ_NAME));
+  const pills = el("div", "pills");
+  TOPICS.forEach(t => {
+    const s = el("span", "pill", t);
+    s.style.color = colorOf(t); s.style.borderColor = colorOf(t);
+    pills.appendChild(s);
+  });
+  app.appendChild(pills);
+
+  const card = el("div", "card");
+  const stats = el("div", "stats");
+  const s1 = el("div", "stat"); s1.appendChild(el("div", "num", String(total - mastered))); s1.appendChild(el("div", "lab", "Active Questions"));
+  const s2 = el("div", "stat"); s2.appendChild(el("div", "num", String(mastered))); s2.appendChild(el("div", "lab", "Completed"));
+  stats.appendChild(s1); stats.appendChild(s2); card.appendChild(stats);
+  const pct = total ? Math.round(100 * mastered / total) : 0;
+  const bar = el("div", "bar"); const fill = el("i"); fill.dataset.w = pct; bar.appendChild(fill); card.appendChild(bar);
+  card.appendChild(el("div", "pct", pct + "% completed"));
+  card.appendChild(el("div", "how", "Answer correctly " + STREAK_TO_MASTER + " times in a row to complete a question. A wrong answer resets your progress on that question. Work through all " + total + " questions to finish."));
+  app.appendChild(card);
+
+  if (p.active.length === 0) {
+    app.appendChild(el("div", "done", "All " + total + " questions completed. Well done!"));
+  } else if (p.ready.length < Math.min(QS_PER_ROUND, p.active.length) && p.resting.length > 0) {
+    const soonest = Math.min.apply(null, p.resting.map(q => entry(q).lastCorrect + FINAL_PASS_SPACING_MS - p.now));
+    const mins = Math.max(1, Math.ceil(soonest / 60000));
+    const msg = p.ready.length === 0
+      ? "All remaining questions are resting before their final check. The next one is due in about " + mins + " min. You can wait, or continue now and they will come back early."
+      : "Only " + p.ready.length + " question" + (p.ready.length === 1 ? " is" : "s are") + " due right now. If you continue, some resting questions will come back early to fill the round.";
+    app.appendChild(el("div", "note", msg));
+  }
+
+  const go = el("button", "btn primary", "▶ Continue Progress");
+  go.disabled = p.active.length === 0;
+  go.onclick = startSession;
+  app.appendChild(go);
+  const rs = el("button", "btn danger", "↺ Start All Over");
+  rs.onclick = showResetModal;
+  app.appendChild(rs);
+
+  const grid = el("div", "topics" + (TOPICS.length >= 7 ? " two" : ""));
+  TOPICS.forEach(t => {
+    const qs = BANK.filter(q => q.t === t);
+    const m = qs.filter(isMastered).length;
+    const half = qs.filter(q => !isMastered(q) && entry(q).streak >= 1).length;
+    const c = el("div", "tcard");
+    const nm = el("div", "tname", t); nm.style.color = colorOf(t); c.appendChild(nm);
+    const row = el("div", "trow");
+    const left = el("span", "half", half > 0 ? "▶" + half : "");
+    if (half > 0) left.title = "One more correct answer to complete these";
+    row.appendChild(left);
+    row.appendChild(el("span", "", m + "/" + qs.length));
+    c.appendChild(row);
+    const b = el("div", "bar"); const f = el("i"); f.dataset.w = qs.length ? Math.round(100 * m / qs.length) : 0; f.style.background = colorOf(t); b.appendChild(f); c.appendChild(b);
+    grid.appendChild(c);
+  });
+  app.appendChild(grid);
+  animateBars();
+}
+
+/* ================= SESSION ================= */
+function startSession() {
+  const p = pools();
+  if (p.active.length === 0) { renderHome(); return; }
+  let picks = shuffle(p.ready).slice(0, QS_PER_ROUND);
+  // Relief valve: if not enough questions are due, bring resting ones back early (longest-rested first).
+  if (picks.length < QS_PER_ROUND && p.resting.length > 0) {
+    const early = p.resting.slice().sort((a, b) => entry(a).lastCorrect - entry(b).lastCorrect);
+    picks = picks.concat(early.slice(0, QS_PER_ROUND - picks.length));
+    picks = shuffle(picks);
+  }
+  session = { qs: picks, i: 0, correct: 0, completed: 0, byTopic: {} };
+  renderQuestion();
+}
+
+function renderQuestion() {
+  window.scrollTo(0, 0);
+  app.innerHTML = "";
+  const q = session.qs[session.i];
+  const finalPass = onFinalPass(q);
+
+  const top = el("div", "qtop");
+  const badge = el("span", "pill", q.t);
+  badge.style.color = colorOf(q.t); badge.style.borderColor = colorOf(q.t);
+  top.appendChild(badge);
+  top.appendChild(el("span", "qcount", "Q " + (session.i + 1) + " of " + session.qs.length));
+  app.appendChild(top);
+
+  app.appendChild(el("div", "qtext", q.q));
+
+  const hb = el("button", "hintbtn", finalPass ? "Hint not available for this one" : "Show hint");
+  const hint = el("div", "hint", q.h);
+  if (finalPass) { hb.disabled = true; }
+  else hb.onclick = () => { const s = hint.classList.toggle("show"); hb.textContent = s ? "Hide hint" : "Show hint"; };
+  app.appendChild(hb); app.appendChild(hint);
+
+  const opts = el("div", "opts");
+  const order = shuffle(q.o.map((_, i) => i));
+  const buttons = [];
+  order.forEach(idx => {
+    const b = el("button", "opt", q.o[idx]);
+    b.dataset.idx = idx;
+    b.onclick = () => answer(q, idx, buttons, hb);
+    buttons.push(b); opts.appendChild(b);
+  });
+  app.appendChild(opts);
+}
+
+function answer(q, idx, buttons, hb) {
+  const ok = idx === q.a;
+  const e = entry(q);
+  if (ok) {
+    e.streak++;
+    e.lastCorrect = Date.now();
+    if (e.streak >= STREAK_TO_MASTER) { e.status = "mastered"; session.completed++; }
+    session.correct++;
+  } else {
+    e.streak = 0;
+  }
+  saveState(); // saved immediately after every answer
+
+  const bt = session.byTopic[q.t] || (session.byTopic[q.t] = { drawn: 0, correct: 0 });
+  bt.drawn++; if (ok) bt.correct++;
+
+  hb.disabled = true;
+  buttons.forEach(b => {
+    b.disabled = true;
+    const i = Number(b.dataset.idx);
+    if (i === q.a) b.classList.add("correct");
+    else if (i === idx) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+
+  app.appendChild(el("div", "verdict " + (ok ? "ok" : "no"), ok ? "Correct" : "Not quite"));
+  const ex = el("div", "expl"); ex.appendChild(el("b", "", "Why")); ex.appendChild(document.createTextNode(q.expl)); app.appendChild(ex);
+  const ins = el("div", "insight"); ins.appendChild(el("b", "", "Key point to remember")); ins.appendChild(document.createTextNode(q.insight)); app.appendChild(ins);
+
+  const bar = el("div", "nextbar");
+  const last = session.i === session.qs.length - 1;
+  const nx = el("button", "btn primary", last ? "See results →" : "Next →");
+  nx.onclick = () => { session.i++; if (session.i >= session.qs.length) renderResults(); else renderQuestion(); };
+  bar.appendChild(nx); app.appendChild(bar);
+  nx.focus({ preventScroll: true });
+}
+
+/* ================= RESULTS ================= */
+function renderResults() {
+  window.scrollTo(0, 0);
+  app.innerHTML = "";
+  const s = session;
+  const card = el("div", "card");
+  card.appendChild(el("div", "score", s.correct + " / " + s.qs.length));
+  card.appendChild(el("div", "scorelab", "correct this session"));
+  if (s.completed > 0) card.appendChild(el("div", "badge", "+ " + s.completed + " question" + (s.completed === 1 ? "" : "s") + " completed this session"));
+  app.appendChild(card);
+
+  const tc = el("div", "card");
+  const table = el("table");
+  const hr = el("tr"); ["Topic", "Correct", "Drawn this session"].forEach(h => hr.appendChild(el("th", "", h))); table.appendChild(hr);
+  TOPICS.filter(t => s.byTopic[t]).forEach(t => {
+    const r = el("tr");
+    const td = el("td", "", t); td.style.color = colorOf(t); td.style.fontWeight = "700"; r.appendChild(td);
+    r.appendChild(el("td", "", String(s.byTopic[t].correct)));
+    r.appendChild(el("td", "", String(s.byTopic[t].drawn)));
+    table.appendChild(r);
+  });
+  tc.appendChild(table); app.appendChild(tc);
+
+  const back = el("button", "btn primary", "Continue Studying →");
+  back.onclick = renderHome;
+  app.appendChild(back);
+}
+
+/* ================= RESET MODAL ================= */
+function showResetModal() {
+  const ov = el("div", "overlay");
+  const m = el("div", "modal");
+  m.appendChild(el("p", "", "This will erase all your progress. Are you sure?"));
+  const row = el("div", "mrow");
+  const cancel = el("button", "btn ghost", "Cancel");
+  cancel.onclick = () => ov.remove();
+  const confirm = el("button", "btn danger", "Confirm");
+  confirm.onclick = () => { wipeState(); ov.remove(); renderHome(); };
+  row.appendChild(cancel); row.appendChild(confirm); m.appendChild(row); ov.appendChild(m);
+  document.body.appendChild(ov);
+}
+
+renderHome();
+</script>
+</body>
+</html>
