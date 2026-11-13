@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G8 Physical Science MYE - Chemistry</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;background:#f5f6fa;color:#1a1a2e;line-height:1.45;min-height:100vh}
+#app{max-width:640px;margin:0 auto;padding:16px 14px 110px}
+.card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:16px;margin-bottom:14px}
+.ver{text-align:right;font-size:12px;color:#6b7080;margin-bottom:2px}
+h1{font-size:26px;font-weight:800;line-height:1.2;margin-bottom:12px;color:#1a1a2e}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.pill{background:#fff;border:1.5px solid;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;white-space:nowrap}
+.stats{display:flex;gap:12px;margin-bottom:12px}
+.stat{flex:1;text-align:center}
+.stat .num{font-size:34px;font-weight:800;line-height:1.1}
+.stat .lab{font-size:13px;color:#555a6b}
+.bar{height:10px;background:#e6e8f0;border-radius:999px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;border-radius:999px;background:#1a1a2e;transition:width .8s ease}
+.pct{font-size:12px;color:#555a6b;margin-top:4px;text-align:right}
+.how{font-size:13.5px;color:#3c4052;margin-top:10px}
+.note{font-size:13px;color:#7a4a00;background:#fff4e0;border-radius:8px;padding:8px 10px;margin-bottom:12px}
+.done{font-size:15px;font-weight:700;color:#2e7d32;background:#e8f5e9;border-radius:8px;padding:10px 12px;margin-bottom:12px;text-align:center}
+button{font-family:inherit;cursor:pointer}
+.btn{display:block;width:100%;border-radius:10px;padding:14px;font-size:16px;font-weight:700;border:2px solid #1a1a2e;margin-bottom:10px}
+.btn.primary{background:#1a1a2e;color:#fff}
+.btn.primary:disabled{opacity:.45;cursor:default}
+.btn.danger{background:#fff;color:#c62828;border-color:#c62828}
+.btn.ghost{background:#fff;color:#1a1a2e}
+.topics{display:grid;gap:10px;grid-template-columns:1fr;margin-top:6px}
+.topics.two{grid-template-columns:1fr 1fr}
+.tcard{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:10px;min-width:0}
+.tname{font-size:13px;font-weight:700;line-height:1.25;min-height:2.5em}
+.trow{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#555a6b;margin:4px 0}
+.half{color:#f57c00;font-weight:700}
+.tcard .bar{height:7px}
+/* quiz */
+.qtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px}
+.qcount{font-size:13px;color:#555a6b;white-space:nowrap}
+.qtext{font-size:20px;font-weight:700;text-align:center;margin:8px 0 16px;line-height:1.35}
+.hintbtn{display:block;margin:0 auto 6px;background:#fff;border:1.5px solid #1a1a2e;color:#1a1a2e;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600}
+.hintbtn:disabled{border-color:#c5c8d4;color:#a3a7b5;background:#eef0f5;cursor:not-allowed}
+.hint{display:none;font-size:14px;background:#eef2ff;border-radius:8px;padding:9px 12px;margin:6px 0 4px;color:#27306b}
+.hint.show{display:block}
+.opts{display:grid;gap:10px;margin-top:12px}
+.opt{width:100%;text-align:left;background:#fff;border:2px solid #d5d8e3;border-radius:10px;padding:13px 14px;font-size:16px;color:#1a1a2e;transition:background-color .15s,border-color .15s,color .15s}
+.opt:not(:disabled):hover{border-color:#1a1a2e}
+.opt:disabled{cursor:default}
+.opt.correct{background:#e8f5e9;border-color:#2e7d32;color:#1b5e20;font-weight:700}
+.opt.wrong{background:#ffebee;border-color:#c62828;color:#b71c1c;font-weight:700}
+.opt.dim{opacity:.6}
+.verdict{font-weight:800;font-size:16px;margin:16px 0 8px}
+.verdict.ok{color:#2e7d32}.verdict.no{color:#c62828}
+.expl{font-size:15px;background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:10px}
+.insight{font-size:15px;border:1.5px solid #1a1a2e;background:#f3f4fa;border-radius:10px;padding:12px 14px}
+.insight b,.expl b{display:block;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#555a6b;margin-bottom:3px}
+.nextbar{position:fixed;left:0;right:0;bottom:0;background:rgba(245,246,250,.96);padding:10px 14px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -2px 8px rgba(0,0,0,.08)}
+.nextbar .btn{max-width:612px;margin:0 auto}
+/* results */
+.score{font-size:44px;font-weight:800;text-align:center;line-height:1.1}
+.scorelab{text-align:center;color:#555a6b;font-size:14px;margin-bottom:10px}
+.badge{background:#e8f5e9;color:#2e7d32;font-weight:700;border-radius:999px;padding:7px 14px;text-align:center;font-size:14px;margin:0 auto 4px;width:fit-content}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 6px;border-bottom:1px solid #e6e8f0;text-align:center}
+th:first-child,td:first-child{text-align:left}
+th{font-size:12px;color:#555a6b;text-transform:uppercase;letter-spacing:.04em}
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(26,26,46,.6);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal{background:#fff;border-radius:12px;padding:20px;max-width:360px;width:100%}
+.modal p{font-size:16px;font-weight:600;margin-bottom:16px}
+.mrow{display:flex;gap:10px}
+.mrow .btn{margin:0}
+@media (max-width:400px){
+  #app{padding:12px 10px 110px}
+  h1{font-size:23px}
+  .tcard{padding:8px}
+  .tname{font-size:12px}
+  .trow{font-size:11px}
+  .qtext{font-size:18px}
+  .opt{font-size:15px;padding:12px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+"use strict";
+/* ================= CONFIG ================= */
+const QUIZ_NAME = "G8 Physical Science MYE - Chemistry";
+const VERSION = "ver1.02";
+const LS_KEY = "g8_physical_science_mye_chemistry_v1";
+// Progress made in the earlier combined quiz (ver1.00) is carried over once, when this quiz has no saved progress yet.
+const LEGACY_KEY = "g8_physical_science_mye_v1";
+const LEGACY_OFFSET = 0;
+const LEGACY_COUNT = 78; // only the first questions existed in the combined quiz
+const QS_PER_ROUND = 12;
+const STREAK_TO_MASTER = 2;
+const FINAL_PASS_SPACING_MS = 5 * 60 * 1000;
+
+/* ================= QUESTION BANK ================= */
+const BANK = [
+  {"t":"Elements & Atoms","q":"Which statement best defines an element?","o":["A pure substance that always exists as single atoms and never forms any molecules","A substance whose particles can be separated from each other only by physical methods","A pure substance that cannot be broken down into simpler substances by chemical reactions","A pure substance made of two or more different atoms joined in a fixed ratio"],"a":2,"h":"Think about what you get if you try to split it using chemistry.","expl":"An element is the simplest kind of substance. No chemical reaction can split it into anything simpler. Two or more different atoms joined in a fixed ratio describes a compound.","insight":"An element is a pure substance that cannot be broken down into simpler substances by chemical reactions."},
+  {"t":"Elements & Atoms","q":"Which element is the most abundant in the universe?","o":["Carbon","Oxygen","Hydrogen","Helium"],"a":2,"h":"It is the lightest element and the main fuel of stars.","expl":"Hydrogen is the most abundant element in the universe, followed by helium. Oxygen is the most abundant in the Earth's crust and in the human body.","insight":"Universe: hydrogen (then helium). Earth's crust and human body: oxygen."},
+  {"t":"Elements & Atoms","q":"What is the chemical symbol for sodium?","o":["S","Na","Sd","So"],"a":1,"h":"The symbol comes from its Latin name, natrium.","expl":"Sodium's symbol is Na, from the Latin name natrium. S is sulfur.","insight":"Sodium = Na (from natrium). Some symbols come from Latin names, not English names."},
+  {"t":"Elements & Atoms","q":"What is the chemical symbol for potassium?","o":["Po","K","P","Pt"],"a":1,"h":"The symbol comes from its Latin name, kalium.","expl":"Potassium's symbol is K, from kalium. P is phosphorus.","insight":"Potassium = K. Phosphorus = P."},
+  {"t":"Elements & Atoms","q":"Fe is the chemical symbol for which element?","o":["Tin","Iron","Fluorine","Lead"],"a":1,"h":"The Latin name is ferrum.","expl":"Fe comes from ferrum, the Latin name for iron. Fluorine is F.","insight":"Iron = Fe (from ferrum)."},
+  {"t":"Elements & Atoms","q":"Which is the correct way to write the chemical symbol for magnesium?","o":["mG","MG","Mg","mg"],"a":2,"h":"Remember the rule about capital and lowercase letters in symbols.","expl":"The first letter of a symbol is always a capital and the second letter, if there is one, is always lowercase.","insight":"Chemical symbols: first letter capital, second letter lowercase (e.g. Mg, Ca, Cl)."},
+  {"t":"Elements & Atoms","q":"Which element has the chemical symbol Cl?","o":["Chlorine","Carbon","Chromium","Calcium"],"a":0,"h":"It is a non-metal found in table salt.","expl":"Cl is chlorine. Calcium is Ca and carbon is C.","insight":"Chlorine = Cl, Calcium = Ca, Carbon = C."},
+  {"t":"Elements & Atoms","q":"Which statement best defines an atom?","o":["A tiny charged particle that is shared when two elements are chemically joined","A group of two or more particles chemically joined in a fixed number","The smallest particle of a compound that keeps the properties of that compound","The smallest particle of an element that keeps the properties of that element"],"a":3,"h":"It is the basic building block of an element.","expl":"An atom is the smallest particle of an element that can exist and still have the properties of that element. Two or more atoms joined together make a molecule.","insight":"An atom is the smallest particle of an element that retains the properties of that element."},
+  {"t":"Elements & Atoms","q":"Which formula shows a molecule of an element?","o":["O₂","NH₃","CO₂","H₂O"],"a":0,"h":"Look for a formula that contains only one type of atom.","expl":"O₂ contains two oxygen atoms and nothing else, so it is a molecule of an element. The other three contain different types of atoms, so they are molecules of compounds.","insight":"A molecule of an element contains a fixed number of the same type of atom chemically combined."},
+  {"t":"Elements & Atoms","q":"Which formula shows a molecule of a compound?","o":["P₄","CH₄","O₃","S₈"],"a":1,"h":"Look for a formula that contains more than one type of atom.","expl":"CH₄ (methane) contains carbon and hydrogen atoms, so it is a molecule of a compound. O₃, P₄ and S₈ each contain only one type of atom.","insight":"A molecule of a compound contains a fixed number of different types of atoms chemically combined."},
+  {"t":"Elements & Atoms","q":"How many atoms are there in total in the formula CaCO₃?","o":["7","5","8","6"],"a":1,"h":"No subscript after a symbol means one atom of that element.","expl":"Ca = 1 atom, C = 1 atom, O₃ = 3 atoms. 1 + 1 + 3 = 5 atoms.","insight":"The subscript gives the number of that atom; no subscript means exactly one atom."},
+  {"t":"Elements & Atoms","q":"How many different elements are there in NaHCO₃?","o":["1","2","3","4"],"a":3,"h":"Count the different symbols. Each symbol starts with a capital letter.","expl":"The elements are sodium (Na), hydrogen (H), carbon (C) and oxygen (O), which makes 4.","insight":"Each capital letter starts a new element symbol: Na, H, C, O = 4 elements."},
+  {"t":"Elements & Atoms","q":"Which statement correctly describes a covalent bond?","o":["A bond made when a pair of atoms is mixed without any chemical change","A bond made when two atoms are held together by opposite magnetic poles","A bond made when a pair of electrons is shared by two atoms","A bond made when one electron is passed from a metal to a non-metal"],"a":2,"h":"Think about what the two atoms do with their electrons.","expl":"In a covalent bond, two atoms share a pair of electrons. This is how atoms join to form molecules.","insight":"A covalent bond is a bond made when a pair of electrons is shared by two atoms."},
+  {"t":"Elements & Atoms","q":"Oxygen gas is written as O₂. What does the 2 show?","o":["Oxygen combines with two other elements in the gas","Two oxygen molecules are mixed together in every sample","Each oxygen atom contains two smaller particles joined together","Each molecule contains two oxygen atoms joined together"],"a":3,"h":"The small number applies to the symbol just before it.","expl":"The subscript 2 tells you that one oxygen molecule is made of two oxygen atoms chemically joined.","insight":"A chemical formula shows the types and numbers of atoms in one molecule."},
+  {"t":"Metals & Periodic Table","q":"Aluminium can be rolled into very thin foil. Which property does this show?","o":["Conductivity","Sonority","Malleability","Ductility"],"a":2,"h":"It is the property of being hammered or pressed into sheets.","expl":"Malleable means a material can be hammered or rolled into thin sheets without breaking. Ductile means it can be drawn into wires.","insight":"Malleable = can be hammered into sheets. Ductile = can be drawn into wires."},
+  {"t":"Metals & Periodic Table","q":"Copper can be pulled out into long, thin wires. Which word describes this property?","o":["Ductile","Brittle","Sonorous","Malleable"],"a":0,"h":"It is different from being flattened into sheets.","expl":"Ductile means a metal can be drawn into wires. Malleable is about being hammered into sheets.","insight":"Metals are ductile: they can be drawn into wires."},
+  {"t":"Metals & Periodic Table","q":"Bells are made of metal because metals ring when struck. Which word describes this property?","o":["Ductile","Sonorous","Malleable","Lustrous"],"a":1,"h":"The word is related to sound.","expl":"Sonorous means making a ringing sound when struck. Lustrous means shiny.","insight":"Metals are sonorous: they produce a ringing sound when struck."},
+  {"t":"Metals & Periodic Table","q":"Which pair of properties is typical of a non-metal?","o":["Shiny appearance and high melting point","Dull appearance and poor electrical conductivity","Dull appearance and high melting point","Shiny appearance and poor electrical conductivity"],"a":1,"h":"Non-metals are generally the opposite of metals.","expl":"Non-metals are usually dull, poor conductors of heat and electricity, and have low melting and boiling points and low densities.","insight":"Non-metals: dull, low density, low melting and boiling points, poor conductors, not ductile or malleable."},
+  {"t":"Metals & Periodic Table","q":"Which metal is a liquid at room temperature?","o":["Sodium","Bromine","Aluminium","Mercury"],"a":3,"h":"It was used in old thermometers.","expl":"Mercury is the only metal that is liquid at room temperature. Bromine is also a liquid, but it is a non-metal.","insight":"Exception: mercury (Hg) is a metal that is liquid at room temperature."},
+  {"t":"Metals & Periodic Table","q":"Which non-metal is a good conductor of electricity?","o":["Phosphorus","Iodine","Sulfur","Graphite"],"a":3,"h":"It is a form of carbon found in pencils.","expl":"Graphite is a form of carbon. It is a non-metal but conducts electricity well, which makes it an exception.","insight":"Exception: graphite (a form of carbon) is a non-metal that conducts electricity."},
+  {"t":"Metals & Periodic Table","q":"Silicon has some properties of metals and some properties of non-metals. What is it called?","o":["Non-metal","Metalloid","Metal","Alloy"],"a":1,"h":"The name means 'metal-like'.","expl":"Elements with properties of both metals and non-metals are metalloids. Silicon is a semiconductor used in computer chips.","insight":"Metalloids (e.g. silicon) show properties of both metals and non-metals."},
+  {"t":"Metals & Periodic Table","q":"In the Periodic Table, what are the vertical columns called?","o":["Groups","Periods","Rows","Series"],"a":0,"h":"Elements in the same column are like a family.","expl":"Vertical columns are groups. Horizontal rows are periods.","insight":"Group = vertical column. Period = horizontal row."},
+  {"t":"Metals & Periodic Table","q":"What is true about elements in the same group of the Periodic Table?","o":["Similar chemical properties","Similar physical states","Identical melting points","Equal atomic masses"],"a":0,"h":"Think about how they react.","expl":"Elements in the same group react in similar ways, so they have similar chemical properties.","insight":"Elements in the same group have similar chemical properties."},
+  {"t":"Metals & Periodic Table","q":"How do the elements change as you move from left to right across a period?","o":["From gases to solids","From liquids to gases","From metals to non-metals","From non-metals to metals"],"a":2,"h":"Think about where sodium and chlorine sit in the same row.","expl":"Metals are on the left and non-metals are on the right, so the elements change from metallic to non-metallic across a period.","insight":"Across a period (left to right), elements change from metallic to non-metallic."},
+  {"t":"Metals & Periodic Table","q":"Which description fits the Group 1 elements lithium, sodium and potassium?","o":["Brittle, dull non-metals with low melting points","Soft, reactive metals with low melting points","Unreactive gases that exist as single atoms","Hard, unreactive metals with high melting points"],"a":1,"h":"They can be cut with a knife and are stored under oil.","expl":"Group 1 elements are soft metals with low melting points and they are very reactive.","insight":"Group 1: soft, reactive metals with low melting points (Li, Na, K)."},
+  {"t":"Metals & Periodic Table","q":"Helium, neon and argon are in the last group of the Periodic Table. How are they best described?","o":["Reactive metals","Unreactive metals","Reactive gases","Unreactive gases"],"a":3,"h":"They are called the noble gases.","expl":"The noble gases in the last group are inert. They are unreactive gases at room temperature.","insight":"Last group (noble gases: He, Ne, Ar): unreactive (inert) gases."},
+  {"t":"Compounds","q":"Which statement best defines a compound?","o":["A pure substance of two or more elements chemically combined in a fixed proportion","A pure substance of two or more elements physically mixed in any proportion","An impure substance of two or more elements chemically combined in any proportion","A pure substance of one type of atom chemically joined in a fixed number"],"a":0,"h":"Three key ideas: pure, chemically combined, fixed proportion.","expl":"A compound is pure, contains two or more different elements, and the elements are chemically combined in a fixed proportion by mass.","insight":"A compound is a pure substance consisting of two or more different elements chemically combined in a fixed proportion by mass."},
+  {"t":"Compounds","q":"Sodium is a reactive metal and chlorine is a toxic gas, but sodium chloride is safe to eat. What does this show about compounds?","o":["A compound has different properties from the elements that formed it","A compound contains its elements in proportions that can be freely varied","A compound keeps the same properties as the elements that formed it","A compound can be separated into its elements by simple physical methods"],"a":0,"h":"Compare the salt with the two elements it is made from.","expl":"When elements combine chemically, the compound formed has new properties that are different from those of its elements.","insight":"A compound has different properties from its constituent elements."},
+  {"t":"Compounds","q":"Which method can break water down into hydrogen and oxygen?","o":["Evaporation","Distillation","Filtration","Electrolysis"],"a":3,"h":"A compound needs a chemical method, not a physical one.","expl":"Electrolysis uses an electric current to break a compound down chemically. Filtration, distillation and evaporation are physical methods that only separate mixtures.","insight":"Compounds can only be broken down by chemical methods, e.g. electrolysis or thermal decomposition."},
+  {"t":"Compounds","q":"What is the name of the compound CaO?","o":["Carbon oxide","Calcium dioxide","Calcium oxide","Calcium hydroxide"],"a":2,"h":"Name the metal first, then change the ending of the non-metal.","expl":"Ca is calcium and O is oxygen. The metal is named first and oxygen becomes oxide, giving calcium oxide.","insight":"Metal first; a compound of two elements ends in -ide (CaO = calcium oxide)."},
+  {"t":"Compounds","q":"What is the name of the compound NaOH?","o":["Sodium hydroxide","Sodium oxide","Sodium hydride","Sodium carbonate"],"a":0,"h":"The OH part has its own group name.","expl":"Na is sodium and the OH group is called hydroxide, so NaOH is sodium hydroxide.","insight":"The -OH group is hydroxide (oxygen + hydrogen)."},
+  {"t":"Compounds","q":"What is the name of the compound CaCO₃?","o":["Calcium carbide","Calcium nitrate","Calcium carbonate","Calcium sulfate"],"a":2,"h":"The CO₃ part has its own group name.","expl":"The CO₃ group is called carbonate, so CaCO₃ is calcium carbonate. Sulfate is SO₄ and nitrate is NO₃.","insight":"-CO₃ = carbonate, -SO₄ = sulfate, -NO₃ = nitrate, -OH = hydroxide."},
+  {"t":"Compounds","q":"What is the name of the compound CO?","o":["Monocarbon oxide","Carbon monoxide","Carbon dioxide","Carbon trioxide"],"a":1,"h":"The prefix tells you how many oxygen atoms there are.","expl":"CO has one oxygen atom, so the prefix mono- is used: carbon monoxide. CO₂ is carbon dioxide.","insight":"Prefixes show the number of atoms: mono- = one, di- = two."},
+  {"t":"Compounds","q":"A compound made of only two elements usually has a name with which ending?","o":["-ium","-ide","-ate","-ite"],"a":1,"h":"Think of sodium chloride and magnesium oxide.","expl":"Compounds of two elements usually end in -ide, for example sodium chloride and hydrogen sulfide.","insight":"Two elements only: the name ends in -ide."},
+  {"t":"Compounds","q":"Which elements are present in potassium nitrate, KNO₃?","o":["Potassium, nitrogen and oxygen","Phosphorus, nitrogen and oxygen","Potassium, neon and oxygen","Potassium, nitrogen and hydrogen"],"a":0,"h":"Read the formula one capital letter at a time.","expl":"K is potassium, N is nitrogen and O is oxygen. The nitrate group contains nitrogen and oxygen.","insight":"Nitrate (-NO₃) contains nitrogen and oxygen."},
+  {"t":"Compounds","q":"What does the ending -ate (as in sulfate, carbonate and nitrate) tell you about a compound?","o":["The compound contains a metal only","The compound also contains hydrogen","The compound also contains oxygen","The compound contains only two elements"],"a":2,"h":"Look at the formulae SO₄, CO₃ and NO₃. What do they share?","expl":"Names ending in -ate show that oxygen is present as well as the other elements, for example CaSO₄ and CaCO₃.","insight":"An -ate ending shows the compound contains oxygen as well."},
+  {"t":"Compounds","q":"Magnesium burns in oxygen to form magnesium oxide. Which way of forming a compound is this?","o":["Element and element","Element and compound","Compound and compound","Mixture and element"],"a":0,"h":"Decide whether each starting substance is an element or a compound.","expl":"Magnesium and oxygen are both elements, so the compound is formed from an element and an element.","insight":"Compounds can form from element + element, element + compound, or compound + compound."},
+  {"t":"Compounds","q":"Water always contains hydrogen and oxygen in the same ratio by mass. Which property of compounds does this show?","o":["Elements are combined in a fixed proportion by mass","Elements can be separated again by physical methods","Elements keep their own properties inside the compound","Elements can be combined in any proportion by mass"],"a":0,"h":"The key word in the question is 'always'.","expl":"A compound always contains the same elements in the same proportion by mass. Mixtures can have any proportion.","insight":"In a compound, the elements are combined in a fixed proportion by mass."},
+  {"t":"Compounds","q":"Diamond and sodium chloride both have giant structures. What does this suggest about them?","o":["They are gases at room temperature because their particles are far apart","They have low melting points because their small molecules separate very easily","They dissolve easily in water because their particles are only weakly held","They have high melting points because many strong bonds must be broken"],"a":3,"h":"A giant structure has a huge number of particles all bonded together.","expl":"In a giant structure, very many strong bonds hold the particles together, so a lot of energy is needed to melt it. Simple molecular substances have low melting points.","insight":"Giant structures have high melting points; simple (small molecule) structures have low melting points."},
+  {"t":"Compounds","q":"Iron and sulfur are heated until they glow and form iron sulfide. What shows that a compound has formed?","o":["The iron can still be removed with a magnet","The amounts of iron and sulfur can be varied","The two powders can still be seen separately","A new substance with different properties is produced"],"a":3,"h":"A chemical reaction always makes something new.","expl":"A compound is formed by a chemical reaction, which produces a new substance. Iron sulfide is not attracted to a magnet and looks different from iron and sulfur.","insight":"Compounds are formed by chemical reactions; a new substance with different properties is produced."},
+  {"t":"Mixtures","q":"Which statement best defines a mixture?","o":["Two or more compounds joined together by a chemical reaction","Two or more elements chemically combined in a fixed proportion by mass","One type of atom only, which cannot be broken down chemically","Two or more elements and/or compounds that are not chemically combined"],"a":3,"h":"The substances are together, but have they reacted?","expl":"In a mixture the substances are only physically mixed. They are not chemically combined.","insight":"A mixture is made up of two or more elements and/or compounds that are not chemically combined."},
+  {"t":"Mixtures","q":"About what percentage of clean, dry air is nitrogen?","o":["72%","87%","68%","78%"],"a":3,"h":"It is by far the most common gas in air.","expl":"Clean, dry air is about 78% nitrogen, 21% oxygen, and small amounts of argon, carbon dioxide and other gases.","insight":"Air: 78% nitrogen, 21% oxygen, small amounts of carbon dioxide and other gases."},
+  {"t":"Mixtures","q":"About what percentage of clean, dry air is oxygen?","o":["31%","38%","28%","21%"],"a":3,"h":"It is roughly one fifth of the air.","expl":"Oxygen makes up about 21% of clean, dry air. Nitrogen makes up about 78%.","insight":"Air: 21% oxygen, 78% nitrogen."},
+  {"t":"Mixtures","q":"Brass is an alloy. Which metals is it made from?","o":["Copper and zinc","Copper and tin","Nickel and chromium","Iron and carbon"],"a":0,"h":"Brass is a yellow-gold colour and is used in musical instruments.","expl":"Brass is copper mixed with zinc. Bronze is copper and tin, steel is iron and carbon, and nichrome is nickel and chromium.","insight":"Brass = copper + zinc. Bronze = copper + tin. Steel = iron + carbon."},
+  {"t":"Mixtures","q":"Using the particle model, why is an alloy such as brass harder than pure copper?","o":["Atoms of different sizes disrupt the regular layers, so they cannot slide easily","Atoms of different sizes move further apart, so the metal becomes less dense","Atoms of the same size pack into regular layers, so they slide easily","Atoms of different sizes bond chemically, so a new hard compound is formed"],"a":0,"h":"In a pure metal the layers of atoms can slide over each other.","expl":"In pure copper, identical atoms sit in regular layers that slide easily. Zinc atoms are a different size, so they break up the layers and stop them sliding.","insight":"In an alloy, atoms of different sizes disrupt the regular layers, so the layers cannot slide over each other easily."},
+  {"t":"Mixtures","q":"Which statement about mixtures is correct?","o":["Its constituents lose their own properties and are joined in a fixed proportion","Its constituents keep their own properties and can be mixed in any proportion","Its constituents lose their own properties but can be mixed in any proportion","Its constituents keep their own properties but must be in a fixed proportion"],"a":1,"h":"Compare a mixture with a compound on two points: properties and proportion.","expl":"A mixture has the same properties as its constituents, and the constituents can be mixed in any proportion by mass.","insight":"Mixtures: not formed by chemical reactions, separated by physical methods, same properties as constituents, any proportion by mass."},
+  {"t":"Mixtures","q":"Substance A melts over a range of temperatures, from 60 °C to 68 °C. What is A most likely to be?","o":["Mixture","Element","Compound","Molecule"],"a":0,"h":"Pure substances melt at one fixed temperature.","expl":"Pure substances (elements and compounds) have fixed melting and boiling points. A range of temperatures shows the substance is a mixture.","insight":"A mixture melts and boils over a range of temperatures; a pure substance has fixed melting and boiling points."},
+  {"t":"Mixtures","q":"Substance B has a fixed melting point and can be broken down into simpler substances by electrolysis. What is B?","o":["Element","Alloy","Mixture","Compound"],"a":3,"h":"It is pure, but it can still be split chemically.","expl":"A fixed melting point means B is pure. Being broken down chemically into simpler substances means it is a compound, not an element.","insight":"Fixed melting point + can be broken down chemically = compound."},
+  {"t":"Mixtures","q":"Substance C has a fixed boiling point and cannot be broken down by any chemical method. What is C?","o":["Element","Mixture","Compound","Alloy"],"a":0,"h":"It is pure and it is already as simple as possible.","expl":"A fixed boiling point means C is pure. It cannot be broken down chemically, so it is an element.","insight":"Fixed boiling point + cannot be broken down chemically = element."},
+  {"t":"Mixtures","q":"A particle diagram shows only one kind of particle. Each particle is made of two different atoms joined together. What does the diagram show?","o":["A mixture of compounds","A mixture of elements","A pure compound","A pure element"],"a":2,"h":"One kind of particle means pure. Different atoms joined means...?","expl":"Only one kind of particle means the substance is pure. Each particle contains different atoms chemically joined, so it is a compound.","insight":"Element: one type of atom. Compound: different atoms joined, all particles identical. Mixture: more than one kind of particle."},
+  {"t":"Mixtures","q":"In chemistry, what does it mean to say that a substance is pure?","o":["It contains nothing that would be harmful to drink","It comes straight from a natural, untreated source","It contains only one element or one compound","It contains only substances that are fully dissolved"],"a":2,"h":"The everyday meaning and the chemistry meaning are different.","expl":"In chemistry, pure means made of only one substance (one element or one compound), with nothing else mixed in.","insight":"A pure substance is made of one type of element or compound only, not mixed with any other substance."},
+  {"t":"Mixtures","q":"Iron filings and sulfur powder are stirred together without heating. Which observation shows the result is only a mixture?","o":["The powders can no longer be separated","Heat and light are given out strongly","A magnet can still pull the iron out","A new black solid has been formed"],"a":2,"h":"In a mixture, each substance keeps its own properties.","expl":"The iron is still magnetic, so it has kept its own properties and can be separated by a physical method. No new substance has formed.","insight":"A mixture can be separated by physical methods because its constituents keep their own properties."},
+  {"t":"Separating Mixtures","q":"What is filtration used to separate?","o":["Two liquids with different boiling points","Several coloured dyes in an ink","An insoluble solid from a liquid","A dissolved solid from its solvent"],"a":2,"h":"Think about what the tiny holes in filter paper can stop.","expl":"Filter paper lets liquid through but traps solid particles that have not dissolved, so filtration separates an insoluble solid from a liquid.","insight":"Filtration separates an insoluble solid from a liquid."},
+  {"t":"Separating Mixtures","q":"In filtration, what is the liquid that passes through the filter paper called?","o":["Filtrate","Distillate","Residue","Solute"],"a":0,"h":"The word comes from 'filter'.","expl":"The liquid that passes through is the filtrate. The solid left on the filter paper is the residue.","insight":"Filtrate = liquid that passes through. Residue = solid left on the filter paper."},
+  {"t":"Separating Mixtures","q":"Which method is used to obtain solid salt from salt solution?","o":["Evaporation","Filtration","Chromatography","Condensation"],"a":0,"h":"The salt is dissolved, so filter paper cannot trap it.","expl":"Heating the solution makes the water evaporate, leaving the solid salt behind. Filtration would not work because the salt is dissolved.","insight":"Evaporation is used to obtain a soluble solid (solute) from a solution."},
+  {"t":"Separating Mixtures","q":"Which method would you use to obtain pure water from seawater?","o":["Paper chromatography","Simple distillation","Direct evaporation","Gravity filtration"],"a":1,"h":"You need to keep the water, not the salt.","expl":"Simple distillation boils the water and then condenses the steam so the pure water is collected. Evaporation would lose the water.","insight":"Simple distillation is used to obtain the solvent from a solution."},
+  {"t":"Separating Mixtures","q":"Which two changes of state take place during simple distillation, in the correct order?","o":["Melting then evaporation","Evaporation then freezing","Boiling then condensation","Condensation then boiling"],"a":2,"h":"First the liquid becomes a gas, then the gas becomes a liquid again.","expl":"The liquid is boiled into vapour, then the vapour is cooled in the condenser and condenses back into liquid.","insight":"Distillation involves boiling followed by condensation."},
+  {"t":"Separating Mixtures","q":"What is the job of the condenser in distillation?","o":["It cools the vapour so that it turns back into a liquid","It measures the temperature so that the boiling point is always known","It traps the solid particles so that only the liquid passes through","It heats the mixture so that the liquid turns into a vapour"],"a":0,"h":"Cold water flows around the outside of it.","expl":"The condenser is kept cold by flowing water. Hot vapour passing through it cools and condenses into liquid, which is collected as the distillate.","insight":"The condenser cools the vapour so that it condenses into a liquid (the distillate)."},
+  {"t":"Separating Mixtures","q":"Alcohol boils at 78 °C and water boils at 100 °C. When a mixture of the two is distilled, which liquid is collected first, and why?","o":["Water, because it has the higher boiling point","Alcohol, because it has the lower boiling point","Water, because it makes up most of the mixture","Alcohol, because it has the smaller particle size"],"a":1,"h":"Which liquid turns into vapour first as the mixture heats up?","expl":"The liquid with the lower boiling point boils first, so alcohol turns to vapour, enters the condenser and is collected first.","insight":"Distillation separates liquids by their different boiling points; the liquid with the lower boiling point is collected first."},
+  {"t":"Separating Mixtures","q":"Which method is used to separate crude oil into petrol, kerosene and diesel?","o":["Paper chromatography","Fractional distillation","Simple distillation","Repeated filtration"],"a":1,"h":"Crude oil is a mixture of many liquids with different boiling points.","expl":"Fractional distillation uses a fractionating column to separate a mixture of several liquids with different boiling points.","insight":"Fractional distillation separates a mixture of several liquids with different boiling points, e.g. crude oil."},
+  {"t":"Separating Mixtures","q":"Which technique is used to separate and identify the dyes in a food colouring?","o":["Evaporation","Filtration","Distillation","Chromatography"],"a":3,"h":"A spot of the colouring is placed on paper and a solvent moves up.","expl":"Paper chromatography separates small amounts of dissolved substances such as dyes, and lets you identify them.","insight":"Paper chromatography is used to separate and identify substances (e.g. dyes) in a sample."},
+  {"t":"Separating Mixtures","q":"In paper chromatography, why do different dyes separate as the solvent moves up the paper?","o":["They have different particle sizes, so some are trapped by the filter paper","They have different solubilities in the solvent, so travel at different rates","They have different boiling points in the solvent, so evaporate at different times","They have different magnetic strengths, so some are pulled further up the paper"],"a":1,"h":"The more easily a dye dissolves, the further it is carried.","expl":"Dyes that are more soluble in the solvent are carried further up the paper. Less soluble dyes travel a shorter distance.","insight":"Dyes separate because they have different solubilities in the solvent, so they travel at different rates up the paper."},
+  {"t":"Separating Mixtures","q":"On a chromatogram, a black ink gives three separate coloured spots. What does this show?","o":["The black ink is a mixture of three dyes","The black ink is insoluble in the solvent used","The black ink is a compound of three elements","The black ink is a pure substance with three atoms"],"a":0,"h":"A pure substance would give only one spot.","expl":"Each spot is a different dye. Three spots show the ink is a mixture of three dyes. A pure substance gives a single spot.","insight":"On a chromatogram, one spot = pure substance; more than one spot = mixture."},
+  {"t":"Separating Mixtures","q":"Why is a water bath sometimes used for evaporation instead of heating the solution directly?","o":["It heats the solution gently, so the solid does not spit or decompose","It filters the solution slowly, so the insoluble solid is left behind","It cools the vapour quickly, so the solvent can be collected as liquid","It heats the solution strongly, so the solvent boils away much faster"],"a":0,"h":"A water bath cannot get hotter than boiling water.","expl":"A water bath gives gentle, even heating at no more than 100 °C. This stops the solid spitting out or breaking down when it is nearly dry.","insight":"A water bath gives gentle heating, which prevents spitting and stops the solid from decomposing."},
+  {"t":"Separating Mixtures","q":"Rock salt is a mixture of salt and sand. What is the correct order of steps to obtain pure, dry salt?","o":["Evaporate, dissolve, filter","Filter, dissolve, evaporate","Dissolve, evaporate, filter","Dissolve, filter, evaporate"],"a":3,"h":"Salt dissolves in water but sand does not.","expl":"Add water to dissolve the salt, filter to remove the insoluble sand, then evaporate the water from the filtrate to leave the salt.","insight":"Soluble solid + insoluble solid: dissolve, filter, then evaporate the filtrate."},
+  {"t":"Solutions & Solubility","q":"Salt is dissolved in water to make salt solution. What is the salt called?","o":["Residue","Solution","Solute","Solvent"],"a":2,"h":"It is the substance that gets dissolved.","expl":"The solute is the substance that dissolves. The solvent is the liquid it dissolves in. Together they form the solution.","insight":"Solute = substance that dissolves. Solvent = substance it dissolves in. Solute + solvent = solution."},
+  {"t":"Solutions & Solubility","q":"15 g of salt is dissolved completely in 100 g of water. What is the mass of the solution?","o":["85 g","100 g","115 g","105 g"],"a":2,"h":"No mass is lost when a solute dissolves.","expl":"Mass of solution = mass of solute + mass of solvent = 15 g + 100 g = 115 g.","insight":"Mass of solution = mass of solute + mass of solvent."},
+  {"t":"Solutions & Solubility","q":"What happens to the solute particles when a solid dissolves?","o":["They sink slowly and collect together at the bottom","They break down into smaller atoms and then disappear completely","They react with the solvent particles to form a new compound","They separate and spread evenly between the solvent particles"],"a":3,"h":"The solid seems to vanish, but its mass is still there.","expl":"The solute particles separate from each other and spread out evenly between the solvent particles. This is why the solution looks the same throughout.","insight":"When a solute dissolves, its particles separate and spread evenly between the solvent particles."},
+  {"t":"Solutions & Solubility","q":"Beaker A has 2 g of sugar dissolved in 100 cm³ of water. Beaker B has 20 g of sugar dissolved in 100 cm³ of water. Which statement is correct?","o":["A and B are both saturated","A and B are equally concentrated","A is more concentrated than B","B is more concentrated than A"],"a":3,"h":"The volume of water is the same. Compare the amount of solute.","expl":"B has more solute in the same volume of solvent, so B is the more concentrated solution. A is the more dilute solution.","insight":"A concentrated solution has a large amount of solute in a given amount of solvent; a dilute solution has a small amount."},
+  {"t":"Solutions & Solubility","q":"Which statement best describes a saturated solution?","o":["It contains more solvent than any other solution at that temperature","It contains a small amount of solute dissolved in a large amount of solvent","It contains a solute that has reacted completely with the solvent","It contains the maximum amount of solute that can dissolve at that temperature"],"a":3,"h":"If you add more solute, it just sits at the bottom.","expl":"A saturated solution cannot dissolve any more solute at that temperature. Any extra solute stays undissolved at the bottom.","insight":"A saturated solution contains the maximum amount of solute that can dissolve in a given amount of solvent at a given temperature."},
+  {"t":"Solutions & Solubility","q":"The solubility of salt is 36 g per 100 g of water at 20 °C. What is the maximum mass of salt that can dissolve in 50 g of water at 20 °C?","o":["36 g","72 g","9 g","18 g"],"a":3,"h":"Half the water can hold half the salt.","expl":"(36 ÷ 100) × 50 = 18 g.","insight":"Maximum mass dissolved = (solubility ÷ 100) × mass of water."},
+  {"t":"Solutions & Solubility","q":"The solubility of salt is 36 g per 100 g of water at 20 °C. 58 g of salt is added to 150 g of water at 20 °C and stirred. What mass of salt stays undissolved?","o":["4 g","3 g","6 g","8 g"],"a":0,"h":"First work out how much salt 150 g of water can hold.","expl":"Maximum that dissolves = (36 ÷ 100) × 150 = 54 g. Undissolved salt = 58 − 54 = 4 g.","insight":"Undissolved mass = mass added − maximum mass that can dissolve."},
+  {"t":"Solutions & Solubility","q":"How does heating the solvent usually affect solubility?","o":["Solids become less soluble, but gases become more soluble","Both solids and gases become less soluble in water","Solids become more soluble, but gases become less soluble","Both solids and gases become more soluble in water"],"a":2,"h":"Think about sugar in hot tea, and about a warm fizzy drink going flat.","expl":"For most solid solutes, solubility increases as temperature increases. For gases, solubility decreases as temperature increases.","insight":"As temperature increases, the solubility of most solids increases but the solubility of gases decreases."},
+  {"t":"Solutions & Solubility","q":"Which change makes sugar dissolve faster but does NOT change how much sugar can dissolve?","o":["Stirring the mixture","Changing the solute","Changing the solvent","Raising the temperature"],"a":0,"h":"Separate 'how fast' from 'how much'.","expl":"Stirring only affects the rate of dissolving. Temperature, the nature of the solute and the nature of the solvent affect solubility (how much dissolves).","insight":"Solubility depends on temperature, nature of solute and nature of solvent. Rate of dissolving depends on temperature, stirring and size of solute."},
+  {"t":"Solutions & Solubility","q":"Why does powdered sugar dissolve faster than a sugar cube of the same mass?","o":["The powder has a larger surface area in contact with the water","The powder has smaller molecules that fit between water particles","The powder has a higher solubility than the cube in water","The powder has a lower mass, so less needs to dissolve"],"a":0,"h":"Think about how much of the sugar the water can touch.","expl":"Smaller pieces have a larger total surface area, so more solute particles are in contact with the solvent and it dissolves faster. The solubility stays the same.","insight":"Smaller solute particles have a larger surface area, which increases the rate of dissolving."},
+  {"t":"Solutions & Solubility","q":"Why do bubbles appear when a bottle of soft drink is opened?","o":["Pressure falls, so the water boils and forms steam bubbles","Pressure rises, so carbon dioxide becomes less soluble and escapes","Pressure falls, so carbon dioxide becomes less soluble and escapes","Temperature falls, so carbon dioxide becomes more soluble and escapes"],"a":2,"h":"The drink was bottled under high pressure.","expl":"High pressure keeps a lot of carbon dioxide dissolved. Opening the bottle lowers the pressure, so the gas becomes less soluble and comes out as bubbles.","insight":"The solubility of a gas decreases when the pressure decreases."},
+  {"t":"Solutions & Solubility","q":"The solubility of substance X is 110 g per 100 g of water at 60 °C and 30 g per 100 g of water at 20 °C. A saturated solution of X in 100 g of water is cooled from 60 °C to 20 °C. What mass of crystals forms?","o":["80 g","30 g","110 g","140 g"],"a":0,"h":"Find the difference between what the water can hold hot and cold.","expl":"At 60 °C the water holds 110 g. At 20 °C it can hold only 30 g. 110 − 30 = 80 g comes out of solution as crystals.","insight":"Mass of crystals formed on cooling = solubility at the higher temperature − solubility at the lower temperature."},
+  {"t":"Solutions & Solubility","q":"How is the concentration of a solution calculated?","o":["Volume of solvent divided by amount of solute","Mass of solution minus mass of solvent","Amount of solute divided by volume of solvent","Amount of solute multiplied by volume of solvent"],"a":2,"h":"More solute in the same volume should give a bigger answer.","expl":"Concentration tells you how much solute there is in a given volume of solvent, so it is the amount of solute divided by the volume of the solvent.","insight":"Concentration = amount of solute ÷ volume of solvent."},
+  {"t":"Elements & Atoms","q":"Which element is the most abundant in the Earth's crust?","o":["Silicon","Oxygen","Aluminium","Iron"],"a":1,"h":"It is also the most abundant element in the human body.","expl":"Oxygen is the most abundant element in the Earth's crust, followed by silicon and then aluminium. Oxygen is also the most abundant element in the human body.","insight":"Earth's crust: oxygen, then silicon. Human body: oxygen, then carbon. Universe: hydrogen, then helium."},
+  {"t":"Elements & Atoms","q":"Which element has a chemical symbol that comes from its Latin name?","o":["Chlorine","Copper","Carbon","Calcium"],"a":1,"h":"Its symbol does not match the first letters of its English name.","expl":"Copper's symbol is Cu, from the Latin name cuprum. Carbon (C), calcium (Ca) and chlorine (Cl) all use letters from their English names.","insight":"Symbols from Latin names: Cu (copper), Fe (iron), Na (sodium), K (potassium), Ag (silver)."},
+  {"t":"Compounds","q":"Heating silver oxide breaks it down into silver and oxygen. What is this process called?","o":["Simple distillation","Complete combustion","Direct evaporation","Thermal decomposition"],"a":3,"h":"'Thermal' means using heat. What happens to the compound?","expl":"Thermal decomposition is the breaking down of a compound into simpler substances by heating. It is a chemical method, so it can break down a compound.","insight":"Thermal decomposition: a compound is broken down into simpler substances by heat."},
+  {"t":"Compounds","q":"Nitric oxide reacts with oxygen to form nitrogen dioxide. Which way of forming a compound is this?","o":["Element and compound","Compound and compound","Mixture and compound","Element and element"],"a":0,"h":"Decide what each starting substance is: nitric oxide, then oxygen.","expl":"Nitric oxide is a compound (nitrogen and oxygen joined) and oxygen is an element, so the new compound forms from an element and a compound.","insight":"Element + compound: nitric oxide + oxygen → nitrogen dioxide. Compound + compound: ammonia + hydrogen chloride → ammonium chloride."},
+  {"t":"Separating Mixtures","q":"Muddy water is filtered. What is the mud left behind on the filter paper called?","o":["Filtrate","Residue","Solvent","Distillate"],"a":1,"h":"It is what 'remains' after filtering.","expl":"The insoluble solid left on the filter paper is the residue. The liquid that passes through is the filtrate.","insight":"Residue = insoluble solid left on the filter paper. Filtrate = liquid that passes through."},
+  {"t":"Solutions & Solubility","q":"What is an aqueous solution?","o":["A solution in which the solute is water","A solution that cannot dissolve any more solute","A solution that contains only a little solute","A solution in which the solvent is water"],"a":3,"h":"'Aqua' is the Latin word for water.","expl":"An aqueous solution is one where water is the solvent. Solvents other than water, such as alcohol, acetone and turpentine, are non-aqueous solvents.","insight":"Aqueous solution: a solution in which water is the solvent."}
+];
+BANK.forEach((q, i) => q.id = i);
+
+const TOPIC_COLORS = ["#1565c0","#00897b","#6a1b9a","#9c6b00","#880e4f","#455a64","#bf360c","#795548","#558b2f","#3949ab","#0097a7","#d81b60"];
+const TOPICS = [];
+BANK.forEach(q => { if (!TOPICS.includes(q.t)) TOPICS.push(q.t); });
+const colorOf = t => TOPIC_COLORS[TOPICS.indexOf(t) % TOPIC_COLORS.length];
+
+/* ================= STORAGE ================= */
+let memoryStore = null;
+function freshState() {
+  const ledger = {};
+  BANK.forEach(q => ledger[q.id] = { streak: 0, status: "active", lastCorrect: 0 });
+  return { ledger };
+}
+function loadState() {
+  let raw = null;
+  try { raw = (typeof localStorage !== "undefined") ? localStorage.getItem(LS_KEY) : memoryStore; }
+  catch (e) { raw = memoryStore; }
+  let st = null;
+  if (raw) { try { st = JSON.parse(raw); } catch (e) { st = null; } }
+  if (!raw) {
+    try {
+      const lg = JSON.parse(localStorage.getItem(LEGACY_KEY));
+      if (lg && lg.ledger) {
+        st = { ledger: {} };
+        BANK.slice(0, LEGACY_COUNT).forEach(q => { const e = lg.ledger[q.id + LEGACY_OFFSET]; if (e) st.ledger[q.id] = { streak: e.streak, status: e.status, lastCorrect: e.lastCorrect }; });
+      }
+    } catch (e) { st = null; }
+  }
+  if (!st || typeof st !== "object" || !st.ledger || typeof st.ledger !== "object") st = freshState();
+  BANK.forEach(q => {
+    const e = st.ledger[q.id];
+    if (!e || typeof e !== "object" || typeof e.streak !== "number" || (e.status !== "active" && e.status !== "mastered")) {
+      st.ledger[q.id] = { streak: 0, status: "active", lastCorrect: 0 };
+    } else if (typeof e.lastCorrect !== "number") e.lastCorrect = 0;
+  });
+  return st;
+}
+function saveState() {
+  const raw = JSON.stringify(state);
+  memoryStore = raw;
+  try { if (typeof localStorage !== "undefined") localStorage.setItem(LS_KEY, raw); } catch (e) {}
+}
+function wipeState() {
+  memoryStore = null;
+  try { if (typeof localStorage !== "undefined") localStorage.removeItem(LS_KEY); } catch (e) {}
+  state = freshState();
+}
+let state = loadState();
+let session = null;
+
+/* ================= HELPERS ================= */
+const app = document.getElementById("app");
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+const entry = q => state.ledger[q.id];
+const isMastered = q => entry(q).status === "mastered";
+const onFinalPass = q => entry(q).status === "active" && entry(q).streak === STREAK_TO_MASTER - 1;
+function isReady(q, now) {
+  const e = entry(q);
+  if (e.status !== "active") return false;
+  if (e.streak === STREAK_TO_MASTER - 1 && FINAL_PASS_SPACING_MS > 0) {
+    return now - e.lastCorrect >= FINAL_PASS_SPACING_MS;
+  }
+  return true;
+}
+function pools() {
+  const now = Date.now();
+  const active = BANK.filter(q => !isMastered(q));
+  const ready = active.filter(q => isReady(q, now));
+  const resting = active.filter(q => !isReady(q, now));
+  return { now, active, ready, resting };
+}
+function animateBars() {
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.querySelectorAll(".bar>i").forEach(b => b.style.width = b.dataset.w + "%");
+  }));
+}
+
+/* ================= HOME ================= */
+function renderHome() {
+  session = null;
+  window.scrollTo(0, 0);
+  app.innerHTML = "";
+  const total = BANK.length;
+  const mastered = BANK.filter(isMastered).length;
+  const p = pools();
+
+  app.appendChild(el("div", "ver", VERSION));
+  app.appendChild(el("h1", "", QUIZ_NAME));
+  const pills = el("div", "pills");
+  TOPICS.forEach(t => {
+    const s = el("span", "pill", t);
+    s.style.color = colorOf(t); s.style.borderColor = colorOf(t);
+    pills.appendChild(s);
+  });
+  app.appendChild(pills);
+
+  const card = el("div", "card");
+  const stats = el("div", "stats");
+  const s1 = el("div", "stat"); s1.appendChild(el("div", "num", String(total - mastered))); s1.appendChild(el("div", "lab", "Active Questions"));
+  const s2 = el("div", "stat"); s2.appendChild(el("div", "num", String(mastered))); s2.appendChild(el("div", "lab", "Completed"));
+  stats.appendChild(s1); stats.appendChild(s2); card.appendChild(stats);
+  const pct = total ? Math.round(100 * mastered / total) : 0;
+  const bar = el("div", "bar"); const fill = el("i"); fill.dataset.w = pct; bar.appendChild(fill); card.appendChild(bar);
+  card.appendChild(el("div", "pct", pct + "% completed"));
+  card.appendChild(el("div", "how", "Answer correctly " + STREAK_TO_MASTER + " times in a row to complete a question. A wrong answer resets your progress on that question. Work through all " + total + " questions to finish."));
+  app.appendChild(card);
+
+  if (p.active.length === 0) {
+    app.appendChild(el("div", "done", "All " + total + " questions completed. Well done!"));
+  } else if (p.ready.length < Math.min(QS_PER_ROUND, p.active.length) && p.resting.length > 0) {
+    const soonest = Math.min.apply(null, p.resting.map(q => entry(q).lastCorrect + FINAL_PASS_SPACING_MS - p.now));
+    const mins = Math.max(1, Math.ceil(soonest / 60000));
+    const msg = p.ready.length === 0
+      ? "All remaining questions are resting before their final check. The next one is due in about " + mins + " min. You can wait, or continue now and they will come back early."
+      : "Only " + p.ready.length + " question" + (p.ready.length === 1 ? " is" : "s are") + " due right now. If you continue, some resting questions will come back early to fill the round.";
+    app.appendChild(el("div", "note", msg));
+  }
+
+  const go = el("button", "btn primary", "▶ Continue Progress");
+  go.disabled = p.active.length === 0;
+  go.onclick = startSession;
+  app.appendChild(go);
+  const rs = el("button", "btn danger", "↺ Start All Over");
+  rs.onclick = showResetModal;
+  app.appendChild(rs);
+
+  const grid = el("div", "topics" + (TOPICS.length >= 7 ? " two" : ""));
+  TOPICS.forEach(t => {
+    const qs = BANK.filter(q => q.t === t);
+    const m = qs.filter(isMastered).length;
+    const half = qs.filter(q => !isMastered(q) && entry(q).streak >= 1).length;
+    const c = el("div", "tcard");
+    const nm = el("div", "tname", t); nm.style.color = colorOf(t); c.appendChild(nm);
+    const row = el("div", "trow");
+    const left = el("span", "half", half > 0 ? "▶" + half : "");
+    if (half > 0) left.title = "One more correct answer to complete these";
+    row.appendChild(left);
+    row.appendChild(el("span", "", m + "/" + qs.length));
+    c.appendChild(row);
+    const b = el("div", "bar"); const f = el("i"); f.dataset.w = qs.length ? Math.round(100 * m / qs.length) : 0; f.style.background = colorOf(t); b.appendChild(f); c.appendChild(b);
+    grid.appendChild(c);
+  });
+  app.appendChild(grid);
+  animateBars();
+}
+
+/* ================= SESSION ================= */
+function startSession() {
+  const p = pools();
+  if (p.active.length === 0) { renderHome(); return; }
+  let picks = shuffle(p.ready).slice(0, QS_PER_ROUND);
+  // Relief valve: if not enough questions are due, bring resting ones back early (longest-rested first).
+  if (picks.length < QS_PER_ROUND && p.resting.length > 0) {
+    const early = p.resting.slice().sort((a, b) => entry(a).lastCorrect - entry(b).lastCorrect);
+    picks = picks.concat(early.slice(0, QS_PER_ROUND - picks.length));
+    picks = shuffle(picks);
+  }
+  session = { qs: picks, i: 0, correct: 0, completed: 0, byTopic: {} };
+  renderQuestion();
+}
+
+function renderQuestion() {
+  window.scrollTo(0, 0);
+  app.innerHTML = "";
+  const q = session.qs[session.i];
+  const finalPass = onFinalPass(q);
+
+  const top = el("div", "qtop");
+  const badge = el("span", "pill", q.t);
+  badge.style.color = colorOf(q.t); badge.style.borderColor = colorOf(q.t);
+  top.appendChild(badge);
+  top.appendChild(el("span", "qcount", "Q " + (session.i + 1) + " of " + session.qs.length));
+  app.appendChild(top);
+
+  app.appendChild(el("div", "qtext", q.q));
+
+  const hb = el("button", "hintbtn", finalPass ? "Hint not available for this one" : "Show hint");
+  const hint = el("div", "hint", q.h);
+  if (finalPass) { hb.disabled = true; }
+  else hb.onclick = () => { const s = hint.classList.toggle("show"); hb.textContent = s ? "Hide hint" : "Show hint"; };
+  app.appendChild(hb); app.appendChild(hint);
+
+  const opts = el("div", "opts");
+  const order = shuffle(q.o.map((_, i) => i));
+  const buttons = [];
+  order.forEach(idx => {
+    const b = el("button", "opt", q.o[idx]);
+    b.dataset.idx = idx;
+    b.onclick = () => answer(q, idx, buttons, hb);
+    buttons.push(b); opts.appendChild(b);
+  });
+  app.appendChild(opts);
+}
+
+function answer(q, idx, buttons, hb) {
+  const ok = idx === q.a;
+  const e = entry(q);
+  if (ok) {
+    e.streak++;
+    e.lastCorrect = Date.now();
+    if (e.streak >= STREAK_TO_MASTER) { e.status = "mastered"; session.completed++; }
+    session.correct++;
+  } else {
+    e.streak = 0;
+  }
+  saveState(); // saved immediately after every answer
+
+  const bt = session.byTopic[q.t] || (session.byTopic[q.t] = { drawn: 0, correct: 0 });
+  bt.drawn++; if (ok) bt.correct++;
+
+  hb.disabled = true;
+  buttons.forEach(b => {
+    b.disabled = true;
+    const i = Number(b.dataset.idx);
+    if (i === q.a) b.classList.add("correct");
+    else if (i === idx) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+
+  app.appendChild(el("div", "verdict " + (ok ? "ok" : "no"), ok ? "Correct" : "Not quite"));
+  const ex = el("div", "expl"); ex.appendChild(el("b", "", "Why")); ex.appendChild(document.createTextNode(q.expl)); app.appendChild(ex);
+  const ins = el("div", "insight"); ins.appendChild(el("b", "", "Key point to remember")); ins.appendChild(document.createTextNode(q.insight)); app.appendChild(ins);
+
+  const bar = el("div", "nextbar");
+  const last = session.i === session.qs.length - 1;
+  const nx = el("button", "btn primary", last ? "See results →" : "Next →");
+  nx.onclick = () => { session.i++; if (session.i >= session.qs.length) renderResults(); else renderQuestion(); };
+  bar.appendChild(nx); app.appendChild(bar);
+  nx.focus({ preventScroll: true });
+}
+
+/* ================= RESULTS ================= */
+function renderResults() {
+  window.scrollTo(0, 0);
+  app.innerHTML = "";
+  const s = session;
+  const card = el("div", "card");
+  card.appendChild(el("div", "score", s.correct + " / " + s.qs.length));
+  card.appendChild(el("div", "scorelab", "correct this session"));
+  if (s.completed > 0) card.appendChild(el("div", "badge", "+ " + s.completed + " question" + (s.completed === 1 ? "" : "s") + " completed this session"));
+  app.appendChild(card);
+
+  const tc = el("div", "card");
+  const table = el("table");
+  const hr = el("tr"); ["Topic", "Correct", "Drawn this session"].forEach(h => hr.appendChild(el("th", "", h))); table.appendChild(hr);
+  TOPICS.filter(t => s.byTopic[t]).forEach(t => {
+    const r = el("tr");
+    const td = el("td", "", t); td.style.color = colorOf(t); td.style.fontWeight = "700"; r.appendChild(td);
+    r.appendChild(el("td", "", String(s.byTopic[t].correct)));
+    r.appendChild(el("td", "", String(s.byTopic[t].drawn)));
+    table.appendChild(r);
+  });
+  tc.appendChild(table); app.appendChild(tc);
+
+  const back = el("button", "btn primary", "Continue Studying →");
+  back.onclick = renderHome;
+  app.appendChild(back);
+}
+
+/* ================= RESET MODAL ================= */
+function showResetModal() {
+  const ov = el("div", "overlay");
+  const m = el("div", "modal");
+  m.appendChild(el("p", "", "This will erase all your progress. Are you sure?"));
+  const row = el("div", "mrow");
+  const cancel = el("button", "btn ghost", "Cancel");
+  cancel.onclick = () => ov.remove();
+  const confirm = el("button", "btn danger", "Confirm");
+  confirm.onclick = () => { wipeState(); ov.remove(); renderHome(); };
+  row.appendChild(cancel); row.appendChild(confirm); m.appendChild(row); ov.appendChild(m);
+  document.body.appendChild(ov);
+}
+
+renderHome();
+</script>
+</body>
+</html>
