@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G8 History MYS Quiz</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;background:#f5f6fa;color:#1a1a2e;line-height:1.45;-webkit-font-smoothing:antialiased}
+#app{max-width:640px;margin:0 auto;padding:16px 14px 110px}
+.screen{display:none}.screen.on{display:block}
+.card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:16px;margin-bottom:14px}
+.ver{position:absolute;top:0;right:0;font-size:12px;color:#6b6b80;font-weight:600}
+.hdr{position:relative;padding:22px 0 10px}
+.hdr h1{font-size:26px;font-weight:800;line-height:1.2;padding-right:60px}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.pill{background:#fff;border:1.5px solid;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;white-space:nowrap}
+.stats{display:flex;gap:12px;margin-bottom:12px}
+.stat{flex:1;text-align:center}
+.stat b{display:block;font-size:34px;font-weight:800;line-height:1.1}
+.stat span{font-size:13px;color:#555}
+.bar{height:10px;background:#e8e9f0;border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:99px;transition:width .8s ease}
+.how{font-size:14px;color:#444;margin-top:12px}
+.note{font-size:13px;color:#8a5a00;background:#fff6e5;border-radius:8px;padding:8px 10px;margin-top:10px;display:none}
+.btn{display:block;width:100%;border:none;border-radius:10px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-pri{background:#1a1a2e;color:#fff}
+.btn-pri:disabled{opacity:.45;cursor:default}
+.btn-sec{background:#fff;color:#c62828;border:2px solid #c62828;margin-top:10px}
+.btn-ghost{background:#fff;color:#1a1a2e;border:2px solid #1a1a2e}
+.topics{display:grid;gap:10px;margin-top:14px}
+.topics.two{grid-template-columns:1fr 1fr}
+.tcard{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:10px 11px}
+.tname{font-weight:700;font-size:14px;line-height:1.25}
+.tmeta{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:#555;margin:5px 0 6px}
+.half{color:#f57c00;font-weight:700;cursor:help}
+.tcard .bar{height:7px}
+.qtop{display:flex;justify-content:space-between;align-items:center;margin:6px 0 14px;gap:8px}
+.badge{border:1.5px solid;background:#fff;border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:700}
+.qnum{font-size:14px;font-weight:600;color:#555}
+.home-link{background:none;border:none;color:#6b6b80;font-size:13px;cursor:pointer;font-family:inherit;text-decoration:underline}
+.qtext{font-size:20px;font-weight:700;text-align:center;line-height:1.35;margin:4px 0 14px}
+.hintbtn{background:#fff;border:1.5px dashed #9a9ab0;color:#444;border-radius:8px;padding:8px 12px;font-size:14px;cursor:pointer;width:100%;font-family:inherit;text-align:left}
+.hintbtn:disabled{background:#eceef3;color:#9a9ab0;border-color:#c9cad6;cursor:not-allowed}
+.hint{display:none;font-size:14px;background:#f4f4fb;border-radius:8px;padding:9px 12px;margin-top:6px;color:#333}
+.opts{margin-top:14px;display:grid;gap:10px}
+.opt{background:#fff;border:2px solid #dcdde6;border-radius:10px;padding:13px 14px;font-size:16px;text-align:left;cursor:pointer;font-family:inherit;color:#1a1a2e;transition:background .15s,border-color .15s,color .15s}
+.opt:hover:not(:disabled){border-color:#1a1a2e}
+.opt:disabled{cursor:default}
+.opt.ok{background:#e8f5e9;border-color:#2e7d32;color:#1b5e20;font-weight:600}
+.opt.bad{background:#ffebee;border-color:#c62828;color:#b71c1c}
+.expl{display:none;margin-top:14px;font-size:15px}
+.expl .verdict{font-weight:800;margin-bottom:4px}
+.insight{display:none;margin-top:10px;border:1.5px solid #1a1a2e;background:#f3f4fa;border-radius:10px;padding:11px 13px;font-size:14.5px}
+.insight b{display:block;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#555;margin-bottom:3px}
+.nextbar{position:fixed;left:0;right:0;bottom:0;padding:12px 14px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(rgba(245,246,250,0),#f5f6fa 30%);display:none}
+.nextbar .btn{max-width:612px;margin:0 auto}
+.score{text-align:center;padding:10px 0}
+.score b{font-size:46px;font-weight:800}
+.done-badge{display:none;text-align:center;background:#e8f5e9;color:#2e7d32;font-weight:700;border-radius:999px;padding:8px 14px;margin:6px auto 4px;width:fit-content}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #eee}
+th{font-size:12.5px;color:#666;font-weight:600}
+td.n,th.n{text-align:center}
+.modal{position:fixed;inset:0;background:rgba(26,26,46,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal.on{display:flex}
+.modal .card{max-width:380px;width:100%;text-align:center}
+.modal p{margin:6px 0 16px;font-size:16px}
+.mrow{display:flex;gap:10px}
+.mrow .btn{margin:0}
+.btn-danger{background:#c62828;color:#fff}
+@media (max-width:400px){.hdr h1{font-size:22px}.qtext{font-size:18px}.tname{font-size:13px}.topics.two{gap:8px}.tcard{padding:9px}}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- HOME -->
+<section id="home" class="screen on">
+  <div class="hdr">
+    <span class="ver" id="ver"></span>
+    <h1 id="title"></h1>
+    <div class="pills" id="pills"></div>
+  </div>
+  <div class="card">
+    <div class="stats">
+      <div class="stat"><b id="sActive">0</b><span>Active Questions</span></div>
+      <div class="stat"><b id="sDone">0</b><span>Completed</span></div>
+    </div>
+    <div class="bar"><i id="mainBar" style="background:#1a1a2e"></i></div>
+    <p class="how" id="how"></p>
+    <p class="note" id="restNote"></p>
+  </div>
+  <button class="btn btn-pri" id="btnGo">▶ Continue Progress</button>
+  <button class="btn btn-sec" id="btnReset">↺ Start All Over</button>
+  <div class="topics" id="topics"></div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="screen">
+  <div class="qtop">
+    <span class="badge" id="qBadge"></span>
+    <button class="home-link" id="qHome">Save &amp; exit</button>
+    <span class="qnum" id="qNum"></span>
+  </div>
+  <div class="card">
+    <p class="qtext" id="qText"></p>
+    <button class="hintbtn" id="hintBtn">💡 Show hint</button>
+    <div class="hint" id="hintBox"></div>
+    <div class="opts" id="opts"></div>
+    <div class="expl" id="expl"><div class="verdict" id="verdict"></div><div id="explText"></div></div>
+    <div class="insight" id="insight"><b>Exam phrasing</b><span id="insightText"></span></div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results" class="screen">
+  <div class="hdr"><h1>Round complete</h1></div>
+  <div class="card">
+    <div class="score"><b id="rScore"></b><div>correct this round</div></div>
+    <div class="done-badge" id="rBadge"></div>
+  </div>
+  <div class="card">
+    <table><thead><tr><th>Topic</th><th class="n">Correct</th><th class="n">Drawn this session</th></tr></thead><tbody id="rTable"></tbody></table>
+  </div>
+  <button class="btn btn-pri" id="btnBack">Continue Studying →</button>
+</section>
+
+</div>
+
+<div class="nextbar" id="nextBar"><button class="btn btn-pri" id="btnNext">Next →</button></div>
+
+<div class="modal" id="resetModal">
+  <div class="card">
+    <h2 style="font-size:20px">Start all over?</h2>
+    <p>This will erase all your progress. Are you sure?</p>
+    <div class="mrow"><button class="btn btn-ghost" id="mCancel">Cancel</button><button class="btn btn-danger" id="mConfirm">Confirm</button></div>
+  </div>
+</div>
+
+<div class="modal" id="restModal">
+  <div class="card">
+    <h2 style="font-size:20px">Questions are resting</h2>
+    <p id="restText"></p>
+    <div class="mrow"><button class="btn btn-ghost" id="rCancel">Wait</button><button class="btn btn-pri" id="rGo">Review now</button></div>
+  </div>
+</div>
+
+<script>
+const BANK = [
+// ===================== KEY CONCEPTS (32) =====================
+{t:"Key Concepts",q:"Which statement best defines a 'cause' in History?",
+o:["The conditions or events that make something happen, including long-term factors and triggers.","The results that follow an event, which can be felt over the short, medium and long term.","The reasons a historian gives for judging that an event is still important to people today.","The particular viewpoint a person holds about an event, shaped by their culture and background."],a:0,
+h:"Think about what comes BEFORE an event.",
+expl:"A cause is something (or the conditions) that makes an event happen. Causes can be long-term, medium-term or short-term, and include triggers.",
+insight:"Cause = the conditions which make something happen; long-term, medium-term and short-term, including triggers."},
+{t:"Key Concepts",q:"Which statement best defines a 'consequence' in History?",
+o:["The conditions that existed before an event and slowly made it more likely to happen.","The result of an event, meaning what happens because that event took place.","The meaning or conclusion a historian draws from carefully observing the evidence.","The single short-term event that sparks a long-building crisis into open conflict."],a:1,
+h:"Think about what comes AFTER an event.",
+expl:"A consequence is the result of an event: what happens because of it. Option A describes a cause, C an interpretation, D a trigger.",
+insight:"Consequence = the result of an event; consequences can be political, economic, social and/or cultural."},
+{t:"Key Concepts",q:"In History, what is a 'trigger'?",
+o:["A long-term cause that slowly builds up tension over many decades before an event finally happens.","A consequence that appears suddenly in the first few years straight after an event has ended.","A short-term cause that sets an event off once longer-term pressures have built up.","A primary source that historians use to test whether a particular interpretation is reliable."],a:2,
+h:"Think of the spark that lights a fire that was already prepared.",
+expl:"A trigger is the immediate, short-term cause that sets an event off after long- and medium-term causes have built up.",
+insight:"Trigger = the short-term cause that immediately sparks an event."},
+{t:"Key Concepts",q:"A government passes a new law banning an opposition party. Which PESC category best fits this?",
+o:["Political","Economic","Social","Cultural"],a:0,
+h:"Laws, power and decision making in government.",
+expl:"Laws, power and control over who can take part in government are political.",
+insight:"Political = power and control, conflict, laws and decision making in government."},
+{t:"Key Concepts",q:"Britain forces Indian farmers to grow opium for profit instead of food crops. Which PESC factor is MOST directly shown?",
+o:["Political","Economic","Social","Cultural"],a:1,
+h:"Ask: is the main aim about money and resources?",
+expl:"Using land and labour to make profit from a cash crop is about money and resources, so it is economic.",
+insight:"Economic = money and resources; how limited resources are used to meet unlimited wants."},
+{t:"Key Concepts",q:"After years of forced labour, families are split up and village community life breaks down. Which PESC category best describes this impact?",
+o:["Political","Economic","Social","Cultural"],a:2,
+h:"Think about how people live together and interact.",
+expl:"Families and community life are about how people behave and interact in society, so this is social.",
+insight:"Social = how people behave; community life and interaction between individuals and groups."},
+{t:"Key Concepts",q:"During the Meiji era, Japanese officials begin wearing Western suits and adopting Western art styles. Which PESC category best fits?",
+o:["Political","Economic","Social","Cultural"],a:3,
+h:"Clothing and art are ways people express themselves.",
+expl:"Clothing, arts and traditions are part of a group's shared way of life, so this is cultural.",
+insight:"Cultural = how people express themselves: shared habits, beliefs, traditions, arts and way of life."},
+{t:"Key Concepts",q:"Which definition matches 'economic' in the PESC framework?",
+o:["Anything to do with power and control, conflict, laws and decision making in government.","Anything to do with how people behave and interact with each other in community life.","Anything to do with shared beliefs, traditions, arts and a group's whole way of life.","Anything to do with money and resources, and how limited resources meet unlimited wants."],a:3,
+h:"Think about money and what people can afford.",
+expl:"Economic factors are about money and resources and how people choose to use limited resources.",
+insight:"Economic = money and resources; how limited resources are used to meet unlimited wants."},
+{t:"Key Concepts",q:"Which definition matches 'cultural' in the PESC framework?",
+o:["Anything to do with the shared habits, beliefs, traditions and arts of a group of people.","Anything to do with how businesses, households and governments use limited money and resources.","Anything to do with laws, conflict and the decisions that governments make about power and control.","Anything to do with community life and how individuals and different groups interact with each other."],a:0,
+h:"Think about how people express who they are.",
+expl:"Cultural factors cover the way people express themselves: their habits, beliefs, traditions and arts.",
+insight:"Cultural = shared habits, beliefs, traditions, arts and way of life of a group."},
+{t:"Key Concepts",q:"Which key term means 'why an event is important'?",
+o:["Significance","Consequence","Perspective","Interpretation"],a:0,
+h:"The 5 R's are used to measure this.",
+expl:"Significance is why an event matters. Historians test it with the 5 R's.",
+insight:"Significance = why something/an event is important."},
+{t:"Key Concepts",q:"Which key term means 'a way of viewing something, shaped by a person's culture, way of thinking or background'?",
+o:["Interpretation","Significance","Perspective","Consequence"],a:2,
+h:"Two people can look at the same event from different angles.",
+expl:"A perspective is a viewpoint shaped by someone's culture or background.",
+insight:"Perspective = a way of viewing something, shaped by an individual's culture, way of thinking or background."},
+{t:"Key Concepts",q:"A historian studies a cartoon and concludes that it criticises Leopold II. Which key term best describes that conclusion?",
+o:["Perspective","Interpretation","Consequence","Significance"],a:1,
+h:"It is the meaning you draw from what you observe.",
+expl:"An interpretation is the specific meaning or conclusion drawn from what is observed in evidence.",
+insight:"Interpretation = the specific meaning, explanation or conclusion you draw from what you observe."},
+{t:"Key Concepts",q:"Which of these is NOT one of the 5 R's of historical significance?",
+o:["Remarkable","Radiant","Reliable","Revealing"],a:2,
+h:"One of these words belongs to source analysis, not significance.",
+expl:"The 5 R's are Remarkable, Resulted in change, Radiant, Relevant and Revealing. 'Reliable' is used when judging sources.",
+insight:"5 R's = Remarkable, Resulted in change, Radiant, Relevant, Revealing."},
+{t:"Key Concepts",q:"In the 5 R's, what does it mean if an event is 'Radiant'?",
+o:["The event was shocking at the time and made people stop and take notice of it.","The event still matters today, and its impact shows in modern laws or technology.","The event opens a window into what people at the time valued, feared or believed.","The event spread out like ripples in a pond and affected people all over the world."],a:3,
+h:"Think of light spreading outward.",
+expl:"Radiant means the event's effects spread widely, like ripples, reaching many people and places.",
+insight:"Radiant = the event spread out like ripples, affecting people all over the world, not just one small group."},
+{t:"Key Concepts",q:"Which 'R' asks whether an event opens a window into what people valued, feared or believed at the time?",
+o:["Relevant","Revealing","Remarkable","Radiant"],a:1,
+h:"It 'reveals' something about the past.",
+expl:"Revealing asks what the event teaches us about people's values, fears and beliefs at that time.",
+insight:"Revealing = the event opens a window into the past, showing what people valued, feared or believed."},
+{t:"Key Concepts",q:"A student argues the Berlin Conference is significant because many African borders today still follow its lines. Which 'R' is this?",
+o:["Radiant","Revealing","Remarkable","Relevant"],a:3,
+h:"Does it still matter to us today?",
+expl:"Showing that an event still affects the world today is the 'Relevant' test.",
+insight:"Relevant = the event still matters today; its impact can be seen in modern lives, laws or technology."},
+{t:"Key Concepts",q:"The Industrial Revolution built up a need for raw materials for decades before the Scramble for Africa. What type of cause is this?",
+o:["Short-term cause","Long-term cause","Immediate trigger","Medium-term consequence"],a:1,
+h:"It built up slowly over many decades.",
+expl:"A cause that builds over many decades before an event is a long-term cause.",
+insight:"Long-term causes build over many years; short-term causes and triggers happen just before an event."},
+{t:"Key Concepts",q:"The 'Fan Incident' led straight to France invading Algeria in 1830. What type of cause was it?",
+o:["Long-term cause","Medium-term cause","Long-term consequence","Immediate trigger"],a:3,
+h:"It came right before the invasion and set it off.",
+expl:"An event that immediately sets off another event is a trigger, the most short-term type of cause.",
+insight:"Trigger = the short-term cause that immediately sparks an event (e.g. the Fan Incident for the invasion of Algeria)."},
+{t:"Key Concepts",q:"Which statement describes a protectorate?",
+o:["A territory that the imperialist power rules directly through its own appointed officials, like British India.","A country that keeps its local government, while officials of a foreign power guide its policies.","A region of a country or continent in which one foreign power holds exclusive investment or trading rights.","An independent but less developed nation that is controlled by foreign private businesses, not governments."],a:1,
+h:"The local government still exists, but someone else is guiding it.",
+expl:"In a protectorate the local government remains, but a foreign power's officials guide its policies.",
+insight:"Protectorate = local government, but officials of a foreign power guide its policies."},
+{t:"Key Concepts",q:"Which statement describes a sphere of influence?",
+o:["A region in which one imperialist power holds exclusive rights to invest or to trade.","A territory ruled directly by the imperialist power, such as British India or Australia.","A country whose own rulers stay in place but follow policies set by foreign officials.","A nation controlled by foreign private companies instead of by a foreign government."],a:0,
+h:"Think of 'exclusive rights' rather than full rule.",
+expl:"A sphere of influence is a region where one imperialist power has exclusive investment or trading rights.",
+insight:"Sphere of influence = region in which an imperialist power held exclusive investment or trading rights."},
+{t:"Key Concepts",q:"A weak but independent country is controlled by foreign private companies rather than a foreign government. Which form of imperialism is this?",
+o:["Direct rule","Indirect rule","Economic imperialism","Colonial rule"],a:2,
+h:"Who is in control here: businesses or governments?",
+expl:"When private businesses, not foreign governments, control an independent nation, it is economic imperialism.",
+insight:"Economic imperialism = independent but less developed nations controlled by private businesses rather than other governments."},
+{t:"Key Concepts",q:"After 1858, Britain ruled India directly through its own government. Which form of imperialism is this?",
+o:["Protectorate","Mandate","Commonwealth","Colony"],a:3,
+h:"The slides use British India as the main example of this form.",
+expl:"A colony is a territory an imperialist power rules directly, such as British India.",
+insight:"Colony = a territory that an imperialist power ruled directly (e.g. British India, Australia)."},
+{t:"Key Concepts",q:"Nations grabbed colonies for wealth and prestige so that a rival country would not upstage them. Which cause of imperialism is this?",
+o:["New markets","Civilizing mission","Political rivalries","Religious freedom"],a:2,
+h:"Think about competition between European nations.",
+expl:"Competing with rival nations for prestige and wealth is the cause called political rivalries.",
+insight:"Political rivalries: nations sought colonies for wealth and prestige so they would not be upstaged by a rival."},
+{t:"Key Concepts",q:"Why did the Industrial Revolution push Europeans to look for colonies as new markets?",
+o:["Factories needed fewer workers after mechanization, so colonies offered new jobs for unemployed Europeans.","Governments taxed factories heavily at home, so colonies were needed to raise extra state income instead.","Factories produced a huge surplus of goods, and colonies provided new consumers for them.","Factory owners faced strict new laws in Europe, so they moved all their production out to the colonies."],a:2,
+h:"Factories were making more than people at home could buy.",
+expl:"The Industrial Revolution created a surplus of goods, and colonies supplied new consumers to buy them.",
+insight:"Desire for new markets: the Industrial Revolution created a huge surplus of goods; colonies provided new consumers."},
+{t:"Key Concepts",q:"The 'civilizing mission' was also known as the...",
+o:["Open Door Policy","White Man's Burden","Divide and Rule","Balance of Power"],a:1,
+h:"It is a phrase from a famous poem about European 'duty'.",
+expl:"The civilizing mission, linked to Christian missionaries, was also called the White Man's Burden.",
+insight:"Civilizing Mission = the White Man's Burden; missionaries sought to Christianize Africa and Asia, driven by Social Darwinism."},
+{t:"Key Concepts",q:"Which idea drove the civilizing mission by wrongly claiming some races were 'fitter' and should rule others?",
+o:["Free Trade","Absolute Monarchy","Social Darwinism","Mandala System"],a:2,
+h:"It misapplied a scientist's theory about evolution to society.",
+expl:"Social Darwinism misused ideas about evolution to claim some peoples were superior and should rule others.",
+insight:"The civilizing mission was driven by Social Darwinism."},
+{t:"Key Concepts",q:"What is the difference between direct rule and indirect rule?",
+o:["Direct rule uses the colonizer's own officials, while indirect rule works through local rulers.","Direct rule uses local rulers as officials, while indirect rule sends European officials instead.","Direct rule is used only in Asian colonies, while indirect rule is used only in African ones.","Direct rule means open free trade, while indirect rule means one power holds trading rights."],a:0,
+h:"'Indirect' means going through someone else.",
+expl:"Direct rule governs through the colonizer's own officials; indirect rule governs through existing local rulers.",
+insight:"Direct rule = colonizer's own officials govern; indirect rule = local rulers govern on the colonizer's behalf."},
+{t:"Key Concepts",q:"What did the French policy of assimilation aim to do?",
+o:["Let colonized peoples keep their own customs while they cooperated with French rulers.","Hand local territory back to traditional chiefs once French trade had been secured.","Make colonized peoples adopt the French language, culture and laws to become 'French'.","Share each colony equally with Britain in order to reduce conflict between the empires."],a:2,
+h:"'Assimilate' means to absorb into something.",
+expl:"Assimilation aimed to turn colonized peoples into French people in language, culture and law. Option A describes association.",
+insight:"Assimilation = colonized peoples absorbed into French culture; Association = local customs kept, cooperation with rulers."},
+{t:"Key Concepts",q:"In a PEEL paragraph, what does the 'L' stand for?",
+o:["Logic","List","Link","Length"],a:2,
+h:"The last step connects back to the question.",
+expl:"PEEL = Point, Explanation, Evidence, Link. The Link connects your argument back to the question.",
+insight:"Link = link back to the question and make a final statement."},
+{t:"Key Concepts",q:"In a PEEL paragraph for Question B, what belongs in the Evidence section?",
+o:["A clear opening statement that answers the question in one simple sentence.","Specific facts, dates or examples that prove your point, such as the Bowring Treaty.","A final sentence that links your argument back to the wording of the question.","A general description of the topic that sets the scene before your argument."],a:1,
+h:"This is the part that proves your point is true.",
+expl:"Evidence means specific facts and examples that prove your point. A is the Point, C is the Link.",
+insight:"Evidence = specific contextual knowledge (facts, dates, examples) proving the point."},
+{t:"Key Concepts",q:"According to the Question B markscheme, what earns the full 6 marks?",
+o:["One reason, explained in detail and supported by several specific examples.","Four separate points, each identified and briefly described in one sentence.","Two reasons, each identified clearly but described without further explanation.","Two reasons, each one explained and supported by specific contextual knowledge."],a:3,
+h:"Level 4 needs more than one reason, and each must be explained.",
+expl:"Level 4 (6 marks) = explains two reasons. One explained reason gets 4-5 marks; identifying without explaining gets 2-3.",
+insight:"Level 4 (6 marks): explains two reasons; Level 3 (4-5): explains one reason, 5 if supported by specific contextual knowledge."},
+{t:"Key Concepts",q:"When judging the reliability of a source, what does 'provenance' refer to?",
+o:["What the source shows, including the people, objects and actions that appear in it.","How the source's message compares with a second source on the same topic.","Who made the source, when it was made, and why it was created.","Which facts from your own knowledge support the main message of the source."],a:2,
+h:"Think: author, date, purpose.",
+expl:"Provenance is the origin of a source: who made it, when, and why. It is key to judging reliability.",
+insight:"Reliability Level 4: use own/contextual knowledge AND provenance, discussing BOTH sides of reliability."},
+
+// ===================== SCRAMBLE FOR AFRICA (10) =====================
+{t:"Scramble for Africa",q:"What is imperialism?",
+o:["A policy of keeping a country closed to foreign trade in order to protect local culture.","A policy of extending a country's power and influence through diplomacy or military force.","A policy of sharing all of a country's land and resources equally among its citizens.","A policy of building factories so that industry replaces farming as the main source of work."],a:1,
+h:"It is about a country spreading its power beyond its borders.",
+expl:"Imperialism is a policy of extending a country's power and influence through diplomacy or military force.",
+insight:"Imperialism = a policy of extending a country's power and influence through diplomacy or military force."},
+{t:"Scramble for Africa",q:"For most of the 19th century, European control in Africa was mostly limited to...",
+o:["Inland plantations","Desert oases","Coastal ports","Mountain forts"],a:2,
+h:"Under 'old imperialism', Europeans stayed near the sea.",
+expl:"Before New Imperialism, European power in Africa was mostly coastal trading ports.",
+insight:"Old imperialism: European empires were limited to coastal power; focus on cash crops and raw materials."},
+{t:"Scramble for Africa",q:"What allowed Europeans to move from the coast into the interior of Africa?",
+o:["New treaties with Ottoman rulers granted Europeans free passage across the Sahara Desert.","New technology such as railroads and telegraphs allowed transport and control inland.","New trade deals with African kings handed over interior land in exchange for guns.","New missionary schools trained local leaders to govern the interior for Europeans."],a:1,
+h:"Think about inventions of the Industrial Revolution.",
+expl:"Railroads and telegraphs let Europeans move troops and goods and control interior lands.",
+insight:"New technology (railroads, telegraphs) allowed transport and control over interior lands."},
+{t:"Scramble for Africa",q:"Who arranged the contract with Egypt to dig the Suez Canal?",
+o:["Cecil John Rhodes","Henry Morton Stanley","Ferdinand de Lesseps","Charles de Gaulle"],a:2,
+h:"He was French.",
+expl:"Frenchman Ferdinand de Lesseps contracted with Egypt; the canal was built 1859-1869.",
+insight:"Suez Canal: French Ferdinand de Lesseps; built 1859-1869; Britain took military control in 1882."},
+{t:"Scramble for Africa",q:"What did Great Britain do about the Suez Canal in 1882?",
+o:["Signed a treaty that handed the canal back to Egyptian control.","Invaded outright and took military control over the canal.","Destroyed part of the canal to stop French ships passing through.","Agreed to share control of the canal with Germany and Russia."],a:1,
+h:"Britain used force, not diplomacy.",
+expl:"In 1882 Britain invaded and took military control of the canal, its key route to India.",
+insight:"GB outright invaded and took military control over the Suez Canal in 1882."},
+{t:"Scramble for Africa",q:"At the Berlin Conference, what guaranteed a European power the rights to African interior territory?",
+o:["Signing a trade agreement with the Ottoman Empire gave rights to the land inland.","Sending missionaries to convert local people first gave rights to the land inland.","Controlling settlement along the African coast gave rights to the land inland.","Paying African kings a fixed price in gold gave rights to the land inland."],a:2,
+h:"Where were Europeans already based before the Scramble?",
+expl:"The conference decided that control of coastal settlement guaranteed rights to the interior behind it.",
+insight:"Berlin Conference (1884-85): control of settlement along the African coast guaranteed rights to interior territory."},
+{t:"Scramble for Africa",q:"What was one major impact of the way the Berlin Conference divided Africa?",
+o:["New borders followed rivers and mountains, which kept most ethnic groups united.","New borders were drawn by African leaders, who chose which empire they would join.","New borders gave each African kingdom its own protected and independent state.","New borders cut across African cultural and ethnic boundaries, splitting peoples."],a:3,
+h:"Were any Africans at the conference?",
+expl:"With no Africans present, Europeans 'dissected' the continent, cutting across cultural and ethnic boundaries.",
+insight:"The Berlin Conference dissected the continent and cut across African cultural and ethnic boundaries."},
+{t:"Scramble for Africa",q:"The Berlin Conference was supposed to reduce bloodshed. What actually happened?",
+o:["Conquest and violence increased as European powers raced to claim territory.","Violence ended because the powers agreed to leave the African interior untouched.","Fighting moved to Asia as the powers swapped their African claims for Asian ones.","Peace lasted for decades until African independence movements began in 1960."],a:0,
+h:"The 'Scramble' got faster, not slower.",
+expl:"It was supposed to reduce bloodshed, but it actually increased conquest and violence.",
+insight:"Supposed to reduce bloodshed, but actually increased conquest and violence."},
+{t:"Scramble for Africa",q:"Which of these was NOT part of the General Act of the Berlin Conference?",
+o:["Slavery in Africa was to be abolished across the claimed territories.","Every African kingdom was guaranteed its own independent government.","Sale of alcohol and firearms to indigenous peoples was banned.","Member countries received free trade in the Congo Basin and rivers."],a:1,
+h:"The Act served European interests, not African self-rule.",
+expl:"The General Act abolished slavery, banned alcohol/firearm sales, created the Congo Free State and gave free trade. It did not protect African independence.",
+insight:"General Act: slavery abolished; alcohol and firearms sales banned; Congo Free State created; free trade in the Congo Basin and the Niger and Congo rivers."},
+{t:"Scramble for Africa",q:"Under the General Act, what did a country need in order to keep its rights over an African territory?",
+o:["Missionary schools","Military presence","Local elections","Royal marriage"],a:1,
+h:"Claims on paper were not enough.",
+expl:"To maintain rights over a territory, a country had to have a military presence there.",
+insight:"To maintain rights over a territory, one must have military presence in the area."},
+
+// ===================== BELGIAN CONGO (9) =====================
+{t:"Belgian Congo",q:"Which of these was NOT one of Leopold II's promises for the Congo?",
+o:["Abolish slavery in the Congo","Open the Congo Basin for free trade","Give the Congolese self-government","Preach Christianity to the Congolese"],a:2,
+h:"His promises sounded humanitarian, but none handed over power.",
+expl:"Leopold promised to abolish slavery, open free trade, preach Christianity and improve Congolese lives. He broke them all.",
+insight:"Leopold's promises: abolish slavery, open the Congo Basin to free trade, preach Christianity, improve the lives of the Congolese."},
+{t:"Belgian Congo",q:"How did Leopold II rule the Congo Free State?",
+o:["As a colony of the Belgian Parliament, which he visited at least once each year.","As a protectorate, with local Congolese chiefs guiding most of his policies.","As his own personal property, reigning as king without ever visiting it.","As a free trade zone shared equally among all Berlin Conference members."],a:2,
+h:"It belonged to him, not to Belgium.",
+expl:"Leopold founded the Congo Free State as his personal property and ruled as king but never visited.",
+insight:"Leopold founded the Congo Free State as his personal property; he reigned as king and never visited."},
+{t:"Belgian Congo",q:"What status did Leopold's laws give to the Congolese people?",
+o:["Citizens","Merchants","Soldiers","Serfs"],a:3,
+h:"They were forced to work the land for their ruler.",
+expl:"Leopold passed laws making all Congolese serfs, forced to work for the state.",
+insight:"He passed laws to make all of the Congolese serfs."},
+{t:"Belgian Congo",q:"What was the Force Publique?",
+o:["A Congolese resistance army that fought to drive Leopold's agents out of the colony.","Leopold's military force of non-Congolese men that enforced rubber quotas.","A group of Christian missionaries sent by Leopold to build schools in the Congo.","A Belgian Parliament committee that investigated abuses in the colony."],a:1,
+h:"It worked for Leopold, not against him.",
+expl:"The Force Publique was Leopold's military force, made of non-Congolese men, which enforced quotas and tortured those who failed.",
+insight:"Force Publique carried out the quota collection and tortured those who did not comply."},
+{t:"Belgian Congo",q:"After ivory, which resource did Leopold's Congo shift to collecting?",
+o:["Cotton","Rubber","Opium","Gold"],a:1,
+h:"It was needed for tyres and machines in industrial Europe.",
+expl:"Collection shifted from ivory to rubber, with quotas the Congolese were forced to meet.",
+insight:"Initial collection of ivory then shifted to rubber; all resources belonged to the state (Leopold)."},
+{t:"Belgian Congo",q:"What happened to Congolese people who did not meet their rubber quota?",
+o:["They were fined and made to work extra days building the new railroads.","They were sent to Belgium to work in factories as their punishment.","They were tortured by the Force Publique, and many lost their limbs.","They lost their land, which was then given to French settlers instead."],a:2,
+h:"Think of the cartoons and the 'hands' symbolism.",
+expl:"The Force Publique tortured those who failed quotas; many lost limbs and whole villages were wiped out.",
+insight:"Many people lost their limbs and whole villages and towns were wiped out."},
+{t:"Belgian Congo",q:"Using the class figure, roughly how many people died in the Congo under Leopold II?",
+o:["2 million","5 million","10 million","20 million"],a:2,
+h:"About half the population.",
+expl:"Around 10 million people were killed, about half the population. (Historians' estimates vary.)",
+insight:"Around 10 million people were killed, around half of the population."},
+{t:"Belgian Congo",q:"Why did Leopold hand the Congo over to the Belgian Parliament in 1908?",
+o:["Congolese rebels defeated the Force Publique and drove all his agents out.","The rubber ran out, so the colony no longer made him any money at all.","France bought the colony from him after he fell heavily into personal debt.","Intense international pressure over the abuses forced him to give up control."],a:3,
+h:"Think about how the world reacted to reports and cartoons.",
+expl:"After gaining huge personal wealth, Leopold had to give the colony to the Belgian Parliament due to intense international pressure.",
+insight:"Leopold turned the colony over to the Belgian Parliament in 1908 due to intense international pressure; Belgium controlled it until 1960."},
+{t:"Belgian Congo",q:"Which of these did Leopold order to be built in the Congo?",
+o:["Textile factories","Public schools","Rubber plantations","Christian hospitals"],a:2,
+h:"Think about what made him money.",
+expl:"Leopold ordered port cities, railroads, a military force and rubber plantations, all to extract wealth.",
+insight:"Leopold built port cities, railroads, a military force (Force Publique) and rubber plantations."},
+
+// ===================== FRENCH AFRICA (5) =====================
+{t:"French Africa",q:"Which incident did France use as its reason to invade Algeria in 1830?",
+o:["Fashoda Crisis","Suez Crisis","Fan Incident","Boxer Rebellion"],a:2,
+h:"It involved an insult to a French diplomat.",
+expl:"France invaded Algeria after the 'Fan Incident' and took over most of the coastline.",
+insight:"France invaded Algeria after the 'Fan Incident' in 1830 and took over most of the coastline."},
+{t:"French Africa",q:"How successful were France's 'divide and rule' tactics in the Sahara?",
+o:["They fully succeeded, so France ruled the Sahara without facing any resistance.","They were never tried, because France ruled the Sahara through Britain instead.","They mostly failed, so France struggled to control the Sahara with this method.","They worked only in the cities, so France gave the open desert to Belgium."],a:2,
+h:"The slides say France 'tried' this tactic.",
+expl:"France tried divide-and-rule tactics in the Sahara, but they mostly failed.",
+insight:"France tried to use divide and rule tactics in the Sahara but mostly failed."},
+{t:"French Africa",q:"According to the class notes, why did France want more African territory after the Berlin Conference?",
+o:["To look bigger on the map and gain prestige over rival European powers.","To find new land for French farmers who had lost their fields at home.","To end the slave trade, which the Berlin Conference required them to do.","To build a railroad linking Algeria to French colonies in Southeast Asia."],a:0,
+h:"Link this to the cause called political rivalries.",
+expl:"France used Algeria as a base to gain more territory, wanting to look bigger on the map.",
+insight:"France used its colony in Algeria to gain more territory after Berlin; they wanted to look bigger on the map."},
+{t:"French Africa",q:"Using the class figure, about how many Algerians did the French kill over three decades?",
+o:["1 million","2 million","3 million","4 million"],a:0,
+h:"It was about one third of the population of 3 million.",
+expl:"The French killed around 1 million Algerians out of a population of 3 million in 3 decades. (Estimates vary.)",
+insight:"The French killed around 1 million Algerians out of a population of 3 million in 3 decades."},
+{t:"French Africa",q:"After invading Algeria in 1830, what did France take over first?",
+o:["Most of the Saharan oases","Most of the Algerian coastline","Most of the Nile valley","Most of the Congo Basin"],a:1,
+h:"Europeans usually started where ships could land.",
+expl:"France invaded Algeria and took over most of the coastline before pushing further.",
+insight:"France invaded Algeria (1830) and took over most of the coastline."},
+
+// ===================== JAPAN / MEIJI (12) =====================
+{t:"Japan & Meiji",q:"Who held real power in Japan under the Tokugawa system (1603-1868)?",
+o:["Emperor","Shogun","Parliament","Daimyo"],a:1,
+h:"Not the Emperor.",
+expl:"Tokugawa Japan was ruled by the shogun, not the Emperor.",
+insight:"Tokugawa Shogunate: ruled by shogun, not the Emperor; strict class system; sakoku."},
+{t:"Japan & Meiji",q:"What was sakoku?",
+o:["Japan's policy of opening every one of its ports to free trade with all Western nations.","Japan's policy of closing itself off, trading only through the port of Nagasaki.","Japan's plan to copy Western armies and quickly build a modern steam-powered navy of its own.","Japan's agreement to let Dutch merchants at Nagasaki run all of its foreign policy and trade."],a:1,
+h:"It means 'closed country'.",
+expl:"Sakoku closed Japan to the world; only Nagasaki was open to Dutch and Chinese merchants.",
+insight:"Sakoku: Japan was closed to the world (only Nagasaki open to Dutch and Chinese merchants)."},
+{t:"Japan & Meiji",q:"Under sakoku, which merchants were allowed to trade at Nagasaki?",
+o:["British and French","Dutch and Chinese","American and Russian","Portuguese and Spanish"],a:1,
+h:"One Asian and one European group.",
+expl:"Only Dutch and Chinese merchants could trade, and only at Nagasaki.",
+insight:"Only Nagasaki open to Dutch and Chinese merchants."},
+{t:"Japan & Meiji",q:"How did Commodore Matthew Perry force Japan to open up in 1853-54?",
+o:["He offered Japan modern steam warships and weapons in exchange for access to its ports.","He threatened to blow up Japanese cities unless Japan agreed to trade.","He blockaded Nagasaki for a year until the Dutch handed over their trading rights to him.","He invaded Edo with American marines and put the Emperor back in power by military force."],a:1,
+h:"It was 'gunboat diplomacy'.",
+expl:"Perry threatened to blow up Japanese cities unless Japan traded, forcing the Treaty of Kanagawa (1854).",
+insight:"Commodore Perry threatened to blow up Japanese cities unless they traded; Treaty of Kanagawa 1854 ended seclusion."},
+{t:"Japan & Meiji",q:"What did the Treaty of Kanagawa (1854) give the Americans?",
+o:["Five ports","Two ports","Hong Kong","Taiwan island"],a:1,
+h:"A small number at first; Britain and Russia followed later.",
+expl:"The Treaty of Kanagawa opened 2 ports to Americans and ended Japan's seclusion policy.",
+insight:"Treaty of Kanagawa, 1854: 2 ports for Americans; Great Britain and Russia follow; ends seclusion policy."},
+{t:"Japan & Meiji",q:"Why did the Tokugawa shogunate fall in 1868?",
+o:["It lost a war against China, so the Dutch took control of trade at Edo.","It looked too weak after giving in to foreigners, so the Emperor took power.","It was defeated by Russia, so Britain placed a new shogun on the throne.","It ran out of money building warships, so the samurai elected a president."],a:1,
+h:"Giving in to Perry made it look powerless.",
+expl:"The government was too weak against foreign pressure, so the Emperor took power and focused on change.",
+insight:"Tokugawa Shogunate falls: government too weak; Emperor takes power; focus on change."},
+{t:"Japan & Meiji",q:"During the Meiji Restoration, Japan modeled its NAVY on which country?",
+o:["Prussia","France","America","Britain"],a:3,
+h:"The world's greatest sea power at the time.",
+expl:"Japan copied the best: the navy from Britain and the army from Prussia.",
+insight:"Meiji: looked at who was doing well; Navy -> British, Army -> Prussia."},
+{t:"Japan & Meiji",q:"During the Meiji Restoration, Japan modeled its ARMY on which country?",
+o:["Britain","Prussia","America","Russia"],a:1,
+h:"A German state famous for its military.",
+expl:"The army was modeled on Prussia and the navy on Britain.",
+insight:"Meiji: Navy -> British, Army -> Prussia; transformed the country in 30 years."},
+{t:"Japan & Meiji",q:"What was the Meiji government's main approach to modernizing Japan?",
+o:["Reject all Western ideas and rebuild the traditional samurai government.","Invite Western powers to run Japan's government until it was ready.","Study the countries doing well and copy their best systems for Japan.","Focus on culture and the arts, leaving industry and the military alone."],a:2,
+h:"They 'looked at who was doing well'.",
+expl:"Meiji Japan studied successful nations and adopted their best systems, transforming the country in about 30 years.",
+insight:"Meiji Restoration: Emperor in charge; huge changes to society; looked at who was doing well; transformed the country in 30 years."},
+{t:"Japan & Meiji",q:"The Sino-Japanese War (1894-95) was fought over trading rights in which region?",
+o:["Manchuria","Korea","Taiwan","Mongolia"],a:1,
+h:"A peninsula between China and Japan.",
+expl:"The war was fought for trading rights in Korea; Japan drove China out of Korea.",
+insight:"Sino-Japanese War (1894-1895): fought for trading rights in Korea."},
+{t:"Japan & Meiji",q:"Which was a result of the Sino-Japanese War?",
+o:["China drove Japan out of Korea and then seized the port of Nagasaki.","Japan drove China out of Korea and destroyed the Chinese navy.","Russia drove both sides out of Korea and took it as its own colony.","Britain stopped the war and made Korea a British protectorate."],a:1,
+h:"Japan's new military was tested for the first time.",
+expl:"In just a few months Japan drove China out of Korea, destroyed the Chinese navy and gained a foothold in Manchuria.",
+insight:"Japan drove China out of Korea, destroyed the Chinese navy, and gained a foothold in Manchuria."},
+{t:"Japan & Meiji",q:"Why was the result of the Russo-Japanese War so surprising?",
+o:["The much smaller Japan was quickly defeated and lost control of Korea.","The much larger Russia suffered an embarrassing defeat by Japan.","The war ended in a draw after both sides ran out of money and troops.","Japan won the war but then handed Manchuria straight back to China."],a:1,
+h:"An Asian power beat a European great power.",
+expl:"The war over Manchuria ended in an embarrassing defeat for the much larger Russia.",
+insight:"Russo-Japanese War (1904-05): fought for control of Manchuria; ends in an embarrassing defeat for the much larger Russians."},
+
+// ===================== SIAM (11) =====================
+{t:"Siam",q:"What was the Mandala system in Siam before imperialism?",
+o:["Relations with neighbors based on tribute networks rather than rigid borders.","Relations with neighbors based on fixed borders drawn up by royal surveyors.","A system of ministries that replaced the old feudal provincial governors.","A treaty system that gave foreign merchants legal immunity inside Siam."],a:0,
+h:"Influence spread out from the center, like circles.",
+expl:"The Mandala system based relations on tribute networks rather than rigid borders, which Europeans later took advantage of.",
+insight:"Mandala System: relations with neighbors based on tribute networks rather than rigid borders."},
+{t:"Siam",q:"Why was Siam useful to Britain and France as a 'buffer state'?",
+o:["It supplied both empires with soldiers for their wars elsewhere in Asia.","It was jointly ruled by both empires, so neither could claim it alone.","It sat neutral between their empires, helping to prevent conflict between them.","It controlled the main sea route, so both empires needed it to reach China."],a:2,
+h:"Think about what sat on each side of Siam: British Burma and French Indochina.",
+expl:"Siam was a neutral state between the British and French empires, which helped prevent conflict between them.",
+insight:"Buffer state: neutral state between French and British colonial empires to prevent conflicts."},
+{t:"Siam",q:"How did Rama V change education in Siam?",
+o:["He closed the state schools and returned all education to Buddhist temples.","He set up free state schools in place of temple education, building nationalism.","He sent every Thai child abroad to study at universities in Britain and France.","He let foreign missionaries run all schools so Siam would look 'civilized'."],a:1,
+h:"Education moved out of the temples.",
+expl:"Free state education replaced temple schooling and boosted nationalism; scholars trained abroad, leading to Chulalongkorn University.",
+insight:"Free state education (no more education in temples, but state schools), bolstering nationalism; Chulalongkorn University, first uni in Siam."},
+{t:"Siam",q:"Under the Bowring Treaty, what did 'extraterritoriality' mean?",
+o:["British subjects were tried under their own laws, not in Siamese courts.","British subjects could own any land in Siam without paying any tax.","British subjects had to obey Siamese law but could appeal to their queen.","British subjects were banned from living outside a few named ports."],a:0,
+h:"Foreigners had legal immunity.",
+expl:"Extraterritoriality gave the British legal immunity: they were not subject to Siamese law.",
+insight:"Extraterritoriality: British had legal immunity; Siam lost tax and law independence."},
+{t:"Siam",q:"Which of these was NOT a term of the Bowring Treaty (1855)?",
+o:["Free trade with the British, including the trade in opium from India.","British subjects gained legal immunity from Siamese courts while living in Siam.","Siam lost the right to set its own taxes on imported and exported goods.","Siam handed Laos and Cambodia over to British control."],a:3,
+h:"Laos and Cambodia were lost later, and not to Britain.",
+expl:"Bowring gave free trade (including opium), extraterritoriality and loss of tax independence. Laos and Cambodia were later lost to France.",
+insight:"Bowring Treaty (1855): free trade with British incl. opium; extraterritoriality; Siam lost tax and law independence; abolished gradually after WWI (1920-39)."},
+{t:"Siam",q:"Which territories did Siam give up to preserve its independence?",
+o:["Burma, Vietnam, Java and several of the islands of the Philippines.","Korea, Taiwan, Manchuria and several of the Chinese ports.","Laos, Cambodia, the Shan states and several of the Malay states.","Bengal, Ceylon, Singapore and several of the princely Indian states."],a:2,
+h:"They were all on Siam's own borders.",
+expl:"Siam gave up Laos, Cambodia, the Shan states and several Malay states to keep its core independence.",
+insight:"Territorial losses to preserve independence: Laos, Cambodia, Shan state, several Malay states."},
+{t:"Siam",q:"What does Siam's 'bamboo diplomacy' (bending in the wind) mean?",
+o:["Standing rigid against every foreign demand, whatever the cost to the country.","Building a strong army quickly so that Siam could conquer all its neighbors.","Bending to foreign pressure with flexible deals so that Siam would not break.","Closing Siam off from foreigners until it was strong enough to trade again."],a:2,
+h:"Bamboo bends in a storm but does not snap.",
+expl:"Bamboo diplomacy means being flexible: giving way on some things (treaties, land) to keep independence.",
+insight:"Siam avoided war using flexible 'Bamboo diplomacy' (bamboo bending in the wind)."},
+{t:"Siam",q:"What pushed Chulalongkorn (Rama V) to modernize Siam?",
+o:["Seeing Japan defeat Russia and wanting to build a larger empire of his own.","Seeing Siam's farmers grow rich and wanting to tax their new wealth more.","Seeing France leave Africa and hoping it would leave Southeast Asia too.","Seeing British rule in India and China's Opium Wars and humiliation."],a:3,
+h:"He learned from what happened to Siam's large neighbors.",
+expl:"British rule in India, China's Opium Wars and Century of Humiliation, and the European 'civilizing mission' pushed Rama V to modernize to protect Siam.",
+insight:"Rama V: India (British rule) or China (Opium Wars, Century of Humiliation) and the European 'civilizing mission' push Siam to modernize."},
+{t:"Siam",q:"Why did Rama V have maps made to define Siam's borders?",
+o:["The new railways needed maps, so engineers drew the borders along the tracks.","The old Mandala system had no fixed borders, which Europeans took advantage of.","The Bowring Treaty required Siam to map its borders before trade could begin.","The British asked for maps so that they could rule Siam as a protectorate."],a:1,
+h:"Link this to how Siam dealt with neighbors before.",
+expl:"Cartography defined borders because the Mandala system had none, and Europeans had exploited that.",
+insight:"Cartography: maps to define borders (Mandala system didn't help and Europeans took advantage of it)."},
+{t:"Siam",q:"Which of these was one of Rama V's reforms?",
+o:["A new samurai class that ran the provinces on behalf of the king.","A new judicial system that abolished slavery and forced labor.","A new rule that all education must take place only in temples.","A new treaty that let Britain choose the next king of Siam."],a:1,
+h:"It changed the law and freed people.",
+expl:"Rama V reforms: centralized ministries, telegraph and railways, maps, a new judicial system abolishing slavery, and free state education.",
+insight:"Rama V: centralized ministries; telegraph and railways; cartography; new judicial system abolishing slavery and forced labor; free state education."},
+{t:"Siam",q:"Which statement correctly compares how Japan and Siam responded to imperialism?",
+o:["Japan used diplomacy to modernize, while Siam built military power to conquer.","Japan built military power to conquer, while Siam used diplomacy to modernize.","Both built military power, fighting wars against China and Russia to stay free.","Both used diplomacy, signing treaties and giving up land to stay independent."],a:1,
+h:"Which one fought wars, and which one avoided them?",
+expl:"Japan industrialized and conquered, becoming an imperial power; Siam modernized laws, schools and borders through diplomacy and kept its independence.",
+insight:"Japan: military power (industrialize and conquer) -> imperial superpower. Siam: diplomatic defense (modernize laws, schools, borders) -> preserved independence."},
+
+// ===================== CHINA / OPIUM WAR (5) =====================
+{t:"China & Opium",q:"Why did Britain smuggle opium into Qing China?",
+o:["To weaken the Qing army before a planned British invasion of Beijing.","To reverse the trade imbalance, selling to the Qing instead of buying.","To pay Indian farmers, who refused to grow any other kind of cash crop.","To help the Qing government, which needed opium to treat a disease."],a:1,
+h:"Britain was buying a lot of Chinese goods like tea.",
+expl:"Britain forced India to grow opium to reverse trade with China: selling to the Qing rather than only buying.",
+insight:"Britain forced large areas of India to grow opium; the plan was to reverse trade with China (sell to the Qing rather than buy)."},
+{t:"China & Opium",q:"How did the Qing government respond to British opium before the First Opium War?",
+o:["It bought British opium and resold it to raise money for its navy.","It allowed opium only in Hong Kong and taxed it heavily there.","It seized British opium and destroyed it after its bans were ignored.","It asked Japan to send warships to stop the British opium traders."],a:2,
+h:"Banning it, writing to the Queen and then direct action.",
+expl:"The Qing banned opium, passed laws and wrote to the Queen; officials then seized and destroyed British opium.",
+insight:"Qing banned opium, passed laws and reached out to the Queen; officials seized British opium and destroyed it."},
+{t:"China & Opium",q:"Which of these was NOT a term of the Treaty of Nanking (1842)?",
+o:["China had to pay reparations to Britain.","Britain gained control of Hong Kong.","Britain agreed to stop all opium trade.","Foreigners got extraterritoriality in ports."],a:2,
+h:"The treaty punished China, not Britain.",
+expl:"Nanking forced reparations, opened ports, gave Hong Kong to Britain and gave extraterritoriality in 5 ports. It did not end the opium trade.",
+insight:"Treaty of Nanking: reparations; ports opened to the British; Hong Kong to Britain (returned 1997); extraterritoriality in 5 major port cities."},
+{t:"China & Opium",q:"Who were the 'Boxers' in the Boxer Rebellion?",
+o:["A British army unit sent to protect opium traders in China's busy treaty ports.","Qing government officials who signed the Treaty of Nanking on behalf of China.","Japanese soldiers who invaded Korea and Manchuria during the Sino-Japanese War.","A Chinese group who resented foreign influence and wanted foreigners out."],a:3,
+h:"Their real name was the Order of the Patriotic Harmonious Fists.",
+expl:"The Boxers (Order of the Patriotic Harmonious Fists) resented foreign influence, demanded foreigners leave and attacked foreign missionaries and property.",
+insight:"Boxers = Order of the Patriotic Harmonious Fists; demanded foreigners leave; killed c.300 Western religious figures."},
+{t:"China & Opium",q:"What was one result of the Boxer Rebellion?",
+o:["China expelled all foreigners and closed every one of its ports to trade for fifty years.","China won back Hong Kong from Britain and ended extraterritoriality in all its treaty ports.","China paid huge damages and had to allow foreign troops in Beijing.","China joined Japan in a military alliance against all of the European powers in Asia."],a:2,
+h:"Foreign powers, including Japan, invaded in response.",
+expl:"Europeans, Americans and Japanese invaded; China paid hundreds of millions in damages and allowed foreign troops in Beijing.",
+insight:"Result: foreign invasion; China paid hundreds of millions in damages; forced to allow military forces in Beijing and other major cities."},
+
+// ===================== KEY DATES (8) =====================
+{t:"Key Dates",q:"In which year did the Berlin Conference begin?",
+o:["1854","1868","1884","1898"],a:2,
+h:"It ran across two years in the 1880s.",
+expl:"The Berlin Conference ran 1884-1885.",
+insight:"Conference of Berlin (1884-1885)."},
+{t:"Key Dates",q:"In which year did Leopold II hand the Congo over to the Belgian Parliament?",
+o:["1885","1890","1899","1908"],a:3,
+h:"Early in the 20th century.",
+expl:"Leopold turned the colony over to the Belgian Parliament in 1908.",
+insight:"Leopold had to turn the colony over to the Belgian Parliament in 1908."},
+{t:"Key Dates",q:"Belgium controlled the Congo until which year?",
+o:["1960","1965","1975","1990"],a:0,
+h:"The same year many African colonies became independent.",
+expl:"Belgium controlled the Congo from 1908 until 1960.",
+insight:"Belgium took over (1908) and controlled the territory until 1960."},
+{t:"Key Dates",q:"In which year did France invade Algeria?",
+o:["1830","1855","1869","1884"],a:0,
+h:"Long before the Berlin Conference.",
+expl:"France invaded Algeria in 1830 after the 'Fan Incident'.",
+insight:"France invaded Algeria after the 'Fan Incident' in 1830."},
+{t:"Key Dates",q:"In which year did Commodore Perry arrive in Japan?",
+o:["1839","1853","1868","1894"],a:1,
+h:"One year before the Treaty of Kanagawa.",
+expl:"Perry arrived in 1853; the Treaty of Kanagawa followed in 1854.",
+insight:"Commodore Matthew Perry, 1853; Treaty of Kanagawa, 1854."},
+{t:"Key Dates",q:"In which year did the Tokugawa shogunate end and the Meiji Restoration begin?",
+o:["1842","1853","1855","1868"],a:3,
+h:"The Tokugawa era was 1603 to this year.",
+expl:"The Tokugawa shogunate lasted 1603-1868, when the Meiji Restoration began.",
+insight:"Tokugawa Shogunate 1603-1868; Meiji Restoration from 1868."},
+{t:"Key Dates",q:"In which year was the Bowring Treaty signed between Siam and Britain?",
+o:["1842","1855","1882","1897"],a:1,
+h:"One year after the Treaty of Kanagawa.",
+expl:"The Bowring Treaty was signed in 1855.",
+insight:"Bowring Treaty (1855)."},
+{t:"Key Dates",q:"In which year was the Treaty of Nanking signed, ending the First Opium War?",
+o:["1823","1834","1842","1856"],a:2,
+h:"The First Opium War ran 1839 to this year.",
+expl:"The First Opium War (1839-42) ended with the Treaty of Nanking in 1842.",
+insight:"Treaty of Nanking, 1842: first of many treaties which led to decreased Chinese power."}
+];
+if (typeof module !== "undefined") module.exports = BANK;
+
+</script>
+<script>
+(function(){
+"use strict";
+var VERSION="ver1.00";
+var QUIZ_NAME="G8 History MYS Quiz";
+var QS_PER_ROUND=12;
+var STREAK_TO_MASTER=2;
+var FINAL_PASS_SPACING_MS=5*60*1000;
+function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
+var LS_KEY=slugify(QUIZ_NAME)+"_v1";
+
+BANK.forEach(function(q,i){q.id=i;});
+
+var TOPIC_COLORS=["#3949ab","#00897b","#8e24aa","#d81b60","#c62828","#2e7d32","#6d4c41","#0277bd","#ef6c00","#546e7a"];
+var topics=[];BANK.forEach(function(q){if(topics.indexOf(q.t)<0)topics.push(q.t);});
+var colorOf={};topics.forEach(function(t,i){colorOf[t]=TOPIC_COLORS[i%TOPIC_COLORS.length];});
+
+var $=function(id){return document.getElementById(id);};
+
+/* ---------- storage ---------- */
+var store=null;try{store=window.localStorage;}catch(e){store=null;}
+function freshState(){var s={ledger:{}};BANK.forEach(function(q){s.ledger[q.id]={streak:0,status:"active",lastCorrect:0};});return s;}
+function loadState(){
+  var s=null;
+  try{var raw=store?store.getItem(LS_KEY):null;if(raw)s=JSON.parse(raw);}catch(e){s=null;}
+  if(!s||typeof s!=="object"||!s.ledger||typeof s.ledger!=="object")s=freshState();
+  BANK.forEach(function(q){
+    var l=s.ledger[q.id];
+    if(!l||typeof l!=="object")s.ledger[q.id]={streak:0,status:"active",lastCorrect:0};
+    else{l.streak=+l.streak||0;l.lastCorrect=+l.lastCorrect||0;l.status=(l.status==="mastered")?"mastered":"active";}
+  });
+  return s;
+}
+function saveState(){try{if(store)store.setItem(LS_KEY,JSON.stringify(state));}catch(e){}}
+var state=loadState();
+
+/* ---------- helpers ---------- */
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function L(q){return state.ledger[q.id];}
+function isFinalPass(q){var l=L(q);return l.status==="active"&&l.streak===STREAK_TO_MASTER-1;}
+function isEligible(q,now){
+  var l=L(q);if(l.status!=="active")return false;
+  if(l.streak===STREAK_TO_MASTER-1&&FINAL_PASS_SPACING_MS>0)return (now-l.lastCorrect)>=FINAL_PASS_SPACING_MS;
+  return true;
+}
+function resting(now){return BANK.filter(function(q){var l=L(q);return l.status==="active"&&!isEligible(q,now);});}
+function mins(ms){return Math.max(1,Math.ceil(ms/60000));}
+function show(id){["home","quiz","results"].forEach(function(s){$(s).classList.toggle("on",s===id);});$("nextBar").style.display="none";window.scrollTo(0,0);}
+
+/* ---------- home ---------- */
+function renderHome(){
+  $("ver").textContent=VERSION;
+  $("title").textContent=QUIZ_NAME;
+  var pills=$("pills");pills.innerHTML="";
+  topics.forEach(function(t){var p=document.createElement("span");p.className="pill";p.textContent=t;p.style.borderColor=colorOf[t];p.style.color=colorOf[t];pills.appendChild(p);});
+  var total=BANK.length,done=BANK.filter(function(q){return L(q).status==="mastered";}).length;
+  $("sActive").textContent=total-done;$("sDone").textContent=done;
+  $("how").textContent="Answer correctly "+STREAK_TO_MASTER+" times in a row to complete a question. A wrong answer resets your progress on that question. Work through all "+total+" questions to finish.";
+  var now=Date.now(),rest=resting(now),elig=BANK.filter(function(q){return isEligible(q,now);}).length;
+  var note=$("restNote");
+  if(done===total){note.style.display="block";note.textContent="🎉 All "+total+" questions completed. Great work!";}
+  else if(rest.length){
+    var soon=Math.min.apply(null,rest.map(function(q){return FINAL_PASS_SPACING_MS-(now-L(q).lastCorrect);}));
+    note.style.display="block";
+    note.textContent=rest.length+" question"+(rest.length>1?"s are":" is")+" resting before a final try (next one ready in about "+mins(soon)+" min)."+(elig<QS_PER_ROUND&&elig>0?" The next round will be shorter: "+elig+" question"+(elig>1?"s":"")+".":"");
+  } else note.style.display="none";
+  $("btnGo").disabled=(done===total);
+  var box=$("topics");box.innerHTML="";box.classList.toggle("two",topics.length>=7);
+  var bars=[];
+  topics.forEach(function(t){
+    var qs=BANK.filter(function(q){return q.t===t;});
+    var m=qs.filter(function(q){return L(q).status==="mastered";}).length;
+    var half=qs.filter(function(q){var l=L(q);return l.status==="active"&&l.streak>0;}).length;
+    var c=document.createElement("div");c.className="tcard";
+    var n=document.createElement("div");n.className="tname";n.style.color=colorOf[t];n.textContent=t;
+    var meta=document.createElement("div");meta.className="tmeta";
+    var h=document.createElement("span");
+    if(half>0){h.className="half";h.textContent="▶"+half;h.title="One more correct answer to complete these";}
+    var cnt=document.createElement("span");cnt.textContent=m+"/"+qs.length;
+    meta.appendChild(h);meta.appendChild(cnt);
+    var bar=document.createElement("div");bar.className="bar";var fill=document.createElement("i");fill.style.background=colorOf[t];bar.appendChild(fill);
+    c.appendChild(n);c.appendChild(meta);c.appendChild(bar);box.appendChild(c);
+    bars.push([fill,qs.length?100*m/qs.length:0]);
+  });
+  bars.push([$("mainBar"),100*done/total]);
+  bars.forEach(function(b){b[0].style.width="0";});
+  requestAnimationFrame(function(){requestAnimationFrame(function(){bars.forEach(function(b){b[0].style.width=b[1]+"%";});});});
+  show("home");
+}
+
+/* ---------- session ---------- */
+var session=null;
+function startSession(includeResting){
+  var now=Date.now();
+  var elig=shuffle(BANK.filter(function(q){return isEligible(q,now);}));
+  // put questions the student has never got right / got wrong before the others
+  elig.sort(function(a,b){return L(a).streak-L(b).streak;});
+  elig=shuffle(elig.slice(0,QS_PER_ROUND));
+  if(includeResting&&elig.length<QS_PER_ROUND){
+    var r=resting(now).sort(function(a,b){return L(a).lastCorrect-L(b).lastCorrect;});
+    elig=elig.concat(r.slice(0,QS_PER_ROUND-elig.length));
+  }
+  if(!elig.length)return;
+  session={qs:elig,i:0,correct:0,completed:0,per:{}};
+  renderQ();
+}
+function onContinue(){
+  var now=Date.now();
+  var elig=BANK.filter(function(q){return isEligible(q,now);}).length;
+  var rest=resting(now);
+  if(elig>0){startSession(false);return;}
+  if(rest.length){
+    var soon=Math.min.apply(null,rest.map(function(q){return FINAL_PASS_SPACING_MS-(now-L(q).lastCorrect);}));
+    $("restText").textContent="Your remaining "+rest.length+" question"+(rest.length>1?"s are":" is")+" resting before a final try. The next one is ready in about "+mins(soon)+" min. Wait for best results, or review them now.";
+    $("restModal").classList.add("on");
+  }
+}
+
+var answered=false;
+function renderQ(){
+  show("quiz");answered=false;
+  var q=session.qs[session.i];
+  var b=$("qBadge");b.textContent=q.t;b.style.borderColor=colorOf[q.t];b.style.color=colorOf[q.t];
+  $("qNum").textContent="Q "+(session.i+1)+" of "+session.qs.length;
+  $("qText").textContent=q.q;
+  var hb=$("hintBtn"),hx=$("hintBox");hx.style.display="none";hx.textContent=q.h;
+  if(isFinalPass(q)){hb.disabled=true;hb.textContent="💡 Hint off: final try for this question";}
+  else{hb.disabled=false;hb.textContent="💡 Show hint";}
+  var box=$("opts");box.innerHTML="";
+  shuffle([0,1,2,3]).forEach(function(idx){
+    var o=document.createElement("button");o.className="opt";o.textContent=q.o[idx];o.dataset.idx=idx;
+    o.addEventListener("click",function(){pick(idx);});box.appendChild(o);
+  });
+  $("expl").style.display="none";$("insight").style.display="none";$("nextBar").style.display="none";
+  window.scrollTo(0,0);
+}
+function pick(idx){
+  if(answered)return;answered=true;
+  var q=session.qs[session.i],l=L(q),ok=(idx===q.a);
+  var per=session.per[q.t]||(session.per[q.t]={c:0,d:0});per.d++;
+  if(ok){
+    l.streak++;l.lastCorrect=Date.now();session.correct++;per.c++;
+    if(l.streak>=STREAK_TO_MASTER){l.status="mastered";session.completed++;}
+  } else {l.streak=0;}
+  saveState();
+  Array.prototype.forEach.call($("opts").children,function(b){
+    var i=+b.dataset.idx;b.disabled=true;
+    if(i===q.a)b.classList.add("ok");else if(i===idx)b.classList.add("bad");
+  });
+  var v=$("verdict");v.textContent=ok?"✓ Correct":"✗ Not quite";v.style.color=ok?"#2e7d32":"#c62828";
+  $("explText").textContent=q.expl;$("expl").style.display="block";
+  $("insightText").textContent=q.insight;$("insight").style.display="block";
+  $("btnNext").textContent=(session.i===session.qs.length-1)?"See results →":"Next →";
+  $("nextBar").style.display="block";
+}
+function next(){session.i++;if(session.i>=session.qs.length)renderResults();else renderQ();}
+
+function renderResults(){
+  show("results");
+  $("rScore").textContent=session.correct+" / "+session.qs.length;
+  var rb=$("rBadge");
+  if(session.completed>0){rb.style.display="block";rb.textContent="+ "+session.completed+" question"+(session.completed>1?"s":"")+" completed this session";}
+  else rb.style.display="none";
+  var tb=$("rTable");tb.innerHTML="";
+  topics.forEach(function(t){
+    var p=session.per[t];if(!p)return;
+    var tr=document.createElement("tr");
+    var a=document.createElement("td");a.textContent=t;a.style.color=colorOf[t];a.style.fontWeight="600";
+    var b=document.createElement("td");b.className="n";b.textContent=p.c;
+    var c=document.createElement("td");c.className="n";c.textContent=p.d;
+    tr.appendChild(a);tr.appendChild(b);tr.appendChild(c);tb.appendChild(tr);
+  });
+}
+
+/* ---------- events ---------- */
+$("btnGo").addEventListener("click",onContinue);
+$("btnReset").addEventListener("click",function(){$("resetModal").classList.add("on");});
+$("mCancel").addEventListener("click",function(){$("resetModal").classList.remove("on");});
+$("mConfirm").addEventListener("click",function(){
+  try{if(store)store.removeItem(LS_KEY);}catch(e){}
+  state=freshState();$("resetModal").classList.remove("on");renderHome();
+});
+$("rCancel").addEventListener("click",function(){$("restModal").classList.remove("on");});
+$("rGo").addEventListener("click",function(){$("restModal").classList.remove("on");startSession(true);});
+$("hintBtn").addEventListener("click",function(){if(this.disabled)return;var h=$("hintBox");h.style.display=(h.style.display==="block")?"none":"block";});
+$("btnNext").addEventListener("click",next);
+$("btnBack").addEventListener("click",renderHome);
+$("qHome").addEventListener("click",renderHome);
+
+renderHome();
+})();
+</script>
+</body>
+</html>
