@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grade 8 Geography MYE Quiz</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Helvetica Neue",Arial,sans-serif;background:#f5f6fa;color:#1a1a2e;line-height:1.45;-webkit-text-size-adjust:100%}
+.app{max-width:620px;margin:0 auto;padding:16px 14px 110px;position:relative}
+.card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:16px;margin-bottom:14px}
+.hidden{display:none!important}
+/* header */
+.ver{position:absolute;top:10px;right:14px;font-size:12px;color:#6b6f80;font-weight:600}
+h1{font-size:24px;font-weight:800;color:#1a1a2e;margin:14px 0 10px;padding-right:60px}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.pill{background:#fff;border:1.5px solid;border-radius:999px;font-size:12px;font-weight:600;padding:3px 10px}
+/* progress */
+.stats{display:flex;gap:12px;margin-bottom:12px}
+.stat{flex:1;text-align:center;background:#f5f6fa;border-radius:10px;padding:10px 6px}
+.stat b{display:block;font-size:30px;font-weight:800;line-height:1.1}
+.stat span{font-size:13px;color:#555a6e}
+.bar{height:10px;background:#e6e8ef;border-radius:999px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;border-radius:999px;transition:width .9s ease}
+.pct{font-size:13px;color:#555a6e;margin:6px 0 10px;text-align:right}
+.how{font-size:14px;color:#3a3d50;background:#f8f9fc;border-radius:8px;padding:10px 12px}
+.note{font-size:13px;color:#3a3d50;background:#fff7ec;border:1.5px solid #f57c00;border-radius:8px;padding:9px 12px;margin-top:10px}
+/* buttons */
+.btn{display:block;width:100%;border-radius:10px;font:inherit;font-weight:700;font-size:16px;padding:14px;cursor:pointer;border:2px solid #1a1a2e;transition:opacity .15s}
+.btn:active{opacity:.85}
+.primary{background:#1a1a2e;color:#fff}
+.primary:disabled{background:#9a9cab;border-color:#9a9cab;cursor:default}
+.danger{background:#fff;color:#c62828;border-color:#c62828;margin-top:10px}
+.btns{margin-bottom:16px}
+/* topics */
+.topics{display:grid;grid-template-columns:1fr;gap:10px}
+.topics.two{grid-template-columns:1fr 1fr}
+.tcard{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:10px 11px;min-width:0}
+.tname{font-weight:700;font-size:14px;line-height:1.25;margin-bottom:6px}
+.trow{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#555a6e;margin-bottom:6px}
+.half{color:#f57c00;font-weight:700;cursor:help}
+.tcard .bar{height:7px}
+/* quiz */
+.qtop{display:flex;justify-content:space-between;align-items:center;margin:4px 0 12px;gap:8px}
+.badge{background:#fff;border:1.5px solid;border-radius:999px;font-size:12px;font-weight:700;padding:3px 10px}
+.qnum{font-size:14px;font-weight:700;color:#555a6e}
+.home-link{background:none;border:none;font:inherit;font-size:13px;color:#6b6f80;cursor:pointer;padding:4px 0;margin-bottom:4px}
+.qtext{font-size:20px;font-weight:700;text-align:center;margin:8px 4px 16px;line-height:1.35}
+.review{font-size:12.5px;color:#8a5a00;background:#fff7ec;border-radius:8px;padding:6px 10px;text-align:center;margin:-6px 0 12px}
+.hintbtn{width:100%;background:#fff;border:1.5px dashed #9aa0b5;color:#3a3d50;border-radius:10px;font:inherit;font-size:14px;font-weight:600;padding:9px;cursor:pointer;margin-bottom:12px;text-align:left}
+.hintbtn.off{color:#a6a9b6;border-color:#d4d6de;background:#f1f2f6;cursor:not-allowed}
+.hintbody{display:block;font-weight:400;margin-top:6px;color:#3a3d50}
+.opt{display:block;width:100%;text-align:left;background:#fff;border:2px solid #dfe2ea;border-radius:10px;font:inherit;font-size:16px;padding:13px 14px;margin-bottom:10px;cursor:pointer;color:#1a1a2e;transition:background .15s,border-color .15s,color .15s}
+.opt:hover:not(:disabled){border-color:#1a1a2e}
+.opt:disabled{cursor:default}
+.opt.ok{background:#e8f5e9;border-color:#2e7d32;color:#1b5e20;font-weight:600}
+.opt.bad{background:#ffebee;border-color:#c62828;color:#b71c1c}
+.opt.dim{opacity:.6}
+.expl{margin-top:6px;font-size:15px}
+.expl h3,.insight h3{font-size:13px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.expl h3.r{color:#2e7d32}.expl h3.w{color:#c62828}
+.insight{margin-top:12px;border:1.5px solid #1a1a2e;background:#f3f4fb;border-radius:10px;padding:12px 14px;font-size:15px}
+.insight h3{color:#1a1a2e}
+.nextbar{position:fixed;left:0;right:0;bottom:0;background:rgba(245,246,250,.96);padding:12px 14px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -2px 8px rgba(0,0,0,.08)}
+.nextbar .btn{max-width:592px;margin:0 auto}
+/* results */
+.score{text-align:center;font-size:44px;font-weight:800;margin:6px 0}
+.sub{text-align:center;color:#555a6e;margin-bottom:10px}
+.done{display:block;text-align:center;background:#e8f5e9;color:#2e7d32;border:1.5px solid #2e7d32;border-radius:999px;font-weight:700;padding:7px 12px;margin:0 auto 6px;width:fit-content}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 6px;border-bottom:1px solid #eceef3;text-align:left}
+th{font-size:12px;text-transform:uppercase;color:#6b6f80}
+td.n,th.n{text-align:center}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(26,26,46,.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal .card{max-width:380px;width:100%;text-align:center}
+.modal p{font-size:17px;font-weight:600;margin:6px 0 16px}
+.mrow{display:flex;gap:10px}
+.mrow .btn{margin:0}
+.cancel{background:#fff;color:#1a1a2e}
+.confirm{background:#c62828;border-color:#c62828;color:#fff}
+@media (max-width:400px){
+  h1{font-size:21px}.qtext{font-size:18px}
+  .tcard{padding:9px}.tname{font-size:13px}.trow{font-size:12px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- HOME -->
+<section id="home">
+  <div class="ver" id="ver"></div>
+  <h1 id="title"></h1>
+  <div class="pills" id="pills"></div>
+  <div class="card">
+    <div class="stats">
+      <div class="stat"><b id="activeCount">0</b><span>Active Questions</span></div>
+      <div class="stat"><b id="doneCount">0</b><span>Completed</span></div>
+    </div>
+    <div class="bar"><i id="mainBar" style="background:#1a1a2e"></i></div>
+    <div class="pct" id="mainPct"></div>
+    <div class="how" id="how"></div>
+    <div class="note hidden" id="restNote"></div>
+  </div>
+  <div class="btns">
+    <button class="btn primary" id="continueBtn">▶ Continue Progress</button>
+    <button class="btn danger" id="resetBtn">↺ Start All Over</button>
+  </div>
+  <div class="topics" id="topics"></div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="hidden">
+  <button class="home-link" id="quitBtn">← Home (progress is saved)</button>
+  <div class="qtop"><span class="badge" id="qBadge"></span><span class="qnum" id="qNum"></span></div>
+  <div class="card">
+    <div class="qtext" id="qText"></div>
+    <div class="review hidden" id="qReview">Early practice: this question is resting, so this answer won't count toward completing it.</div>
+    <button class="hintbtn" id="hintBtn"></button>
+    <div id="opts"></div>
+    <div id="feedback" class="hidden">
+      <div class="expl"><h3 id="fbHead"></h3><div id="fbExpl"></div></div>
+      <div class="insight"><h3>📝 Exam insight</h3><div id="fbInsight"></div></div>
+    </div>
+  </div>
+  <div class="nextbar hidden" id="nextBar"><button class="btn primary" id="nextBtn">Next →</button></div>
+</section>
+
+<!-- RESULTS -->
+<section id="results" class="hidden">
+  <h1>Round complete</h1>
+  <div class="card">
+    <div class="score" id="rScore"></div>
+    <div class="sub">correct this round</div>
+    <span class="done hidden" id="rDone"></span>
+  </div>
+  <div class="card">
+    <table><thead><tr><th>Topic</th><th class="n">Correct</th><th class="n">Drawn this session</th></tr></thead><tbody id="rTable"></tbody></table>
+  </div>
+  <button class="btn primary" id="backBtn">Continue Studying →</button>
+</section>
+
+<!-- RESET MODAL -->
+<div class="modal hidden" id="modal">
+  <div class="card">
+    <p>This will erase all your progress. Are you sure?</p>
+    <div class="mrow"><button class="btn cancel" id="mCancel">Cancel</button><button class="btn confirm" id="mConfirm">Confirm</button></div>
+  </div>
+</div>
+
+</div>
+<script>
+const VERSION = "ver1.00";
+const QUIZ_NAME = "Grade 8 Geography MYE Quiz";
+const QS_PER_ROUND = 12;
+const STREAK_TO_MASTER = 2;
+const FINAL_PASS_SPACING_MS = 5 * 60 * 1000;
+const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+const LS_KEY = slugify(QUIZ_NAME) + "_v1";
+
+const BANK = [
+{
+"t": "Plate Tectonics",
+"q": "Which layer is made of the crust and upper mantle together, forming Earth's rigid plates?",
+"o": [
+"Lithosphere",
+"Asthenosphere",
+"Hydrosphere",
+"Biosphere"
+],
+"a": 0,
+"h": "Its name comes from the Greek word 'lithos', meaning stone.",
+"expl": "The crust and upper mantle together form a hard, rigid layer called the lithosphere. It is cracked into slabs called plates.",
+"insight": "Lithosphere = crust + upper mantle; rigid; broken into tectonic plates."
+},
+{
+"t": "Plate Tectonics",
+"q": "At which type of plate margin do two plates move apart, so new crust is formed?",
+"o": [
+"Constructive",
+"Destructive",
+"Conservative",
+"Collision"
+],
+"a": 0,
+"h": "Think about which margin 'builds' something new.",
+"expl": "Where plates move apart, magma rises and hardens into new lithosphere. New crust is constructed, so it is a constructive margin.",
+"insight": "Constructive margin: plates diverge; magma rises; new crust/lithosphere is created."
+},
+{
+"t": "Plate Tectonics",
+"q": "Why does the Nazca plate sink beneath the South American plate?",
+"o": [
+"Oceanic crust is denser than continental crust, so it sinks at a trench",
+"The continental plate is moving faster, so it pushes over the oceanic one",
+"Convection currents only flow downward under oceans, pulling ocean plates under",
+"Oceanic crust is younger and hotter, so it melts and flows underneath"
+],
+"a": 0,
+"h": "Compare how heavy oceanic and continental crust are.",
+"expl": "The Nazca plate is made of oceanic crust, which is heavier (denser) than continental crust. So its edge sinks at an ocean trench.",
+"insight": "At a destructive margin the denser oceanic plate is subducted (sinks) beneath the less dense continental plate."
+},
+{
+"t": "Plate Tectonics",
+"q": "Why are there earthquakes but no volcanoes at a conservative plate margin?",
+"o": [
+"Plates slide past each other, so no rock melts to form magma",
+"Plates pull apart too slowly for magma to reach the surface",
+"Plates collide head-on, so pressure blocks magma from rising upward",
+"Plates there are continental crust, which is too thick to erupt"
+],
+"a": 0,
+"h": "Think about whether crust is created or destroyed at this margin.",
+"expl": "At a conservative margin plates slide past each other. They stick and jolt free, causing earthquakes, but no rock is melted, so there is no magma.",
+"insight": "Conservative margin: plates slide past; friction builds then releases (earthquakes); no crust created or destroyed, so no volcanoes."
+},
+{
+"t": "Plate Tectonics",
+"q": "How did the Himalayas form?",
+"o": [
+"Two continental plates of similar density collided, so rock was squeezed upwards",
+"An oceanic plate sank under a continental plate, building volcanoes over time",
+"Two plates pulled apart, letting magma rise and harden into tall mountains",
+"Two plates slid past each other, pushing rock sideways into high ridges"
+],
+"a": 0,
+"h": "The Indo-Australian and Eurasian plates are both made of the same type of crust.",
+"expl": "The Indo-Australian and Eurasian plates have the same density, so neither sinks. Rock is squeezed upwards to form fold mountains.",
+"insight": "Collision margin: two continental plates converge; neither subducts; crust folds upward forming fold mountains."
+},
+{
+"t": "Plate Tectonics",
+"q": "Which feature forms where two plates move apart under the ocean?",
+"o": [
+"Ocean ridge",
+"Ocean trench",
+"Fold mountains",
+"Island arc"
+],
+"a": 0,
+"h": "Magma rises and hardens into a long underwater mountain range.",
+"expl": "As plates move apart, magma rises and hardens into a ridge of new crust, such as the Mid-Atlantic Ridge.",
+"insight": "Constructive margins form mid-ocean ridges (e.g. Mid-Atlantic Ridge)."
+},
+{
+"t": "Plate Tectonics",
+"q": "The Atlantic Ocean is getting wider by about 2 cm a year. What explains this?",
+"o": [
+"The North American and Eurasian plates are moving apart at a constructive margin",
+"The Pacific plate is sinking under North America, pulling the Atlantic much wider",
+"Sea levels are rising because of climate change, spreading the ocean outward",
+"The African and South American plates are colliding, pushing ocean water northwards"
+],
+"a": 0,
+"h": "Think about what happens at the Mid-Atlantic Ridge.",
+"expl": "Under the Atlantic, the North American and Eurasian plates are diverging. New ocean floor forms between them, so the ocean widens.",
+"insight": "Plates diverging at the Mid-Atlantic Ridge create new ocean floor, so the Atlantic widens."
+},
+{
+"t": "Plate Tectonics",
+"q": "Why do most earthquakes happen along plate margins?",
+"o": [
+"Pressure builds as plates move, then rock suddenly slips and releases energy",
+"The crust is thinnest at margins, so heat from the core escapes there",
+"Magma always collects at margins, and its weight cracks the crust apart",
+"Ocean water seeps into margins and makes the rock expand and shake"
+],
+"a": 0,
+"h": "Think about strain building up and then being released.",
+"expl": "Moving plates push or drag against each other. Strain builds up in the rock until it suddenly gives way, releasing energy as seismic waves.",
+"insight": "Earthquakes: build-up of pressure/strain at plate margins, sudden release of energy as seismic waves."
+},
+{
+"t": "Plate Tectonics",
+"q": "At the San Andreas Fault, the Pacific plate slides past the North American plate. Which type of margin is this?",
+"o": [
+"Conservative",
+"Constructive",
+"Destructive",
+"Collision"
+],
+"a": 0,
+"h": "Crust is neither made nor destroyed here. It is 'kept as it is'.",
+"expl": "Plates sliding past each other form a conservative margin. Crust is conserved, neither created nor destroyed.",
+"insight": "Conservative margin: plates move sideways past each other; earthquakes but no volcanoes."
+},
+{
+"t": "Plate Tectonics",
+"q": "A student says: 'Earth must be getting bigger, because new crust forms at ocean ridges.' Why is this wrong?",
+"o": [
+"Crust is destroyed at destructive margins at the same rate it forms elsewhere",
+"New crust forms so slowly that its effect on Earth's size is zero",
+"New crust melts back into magma at the same ridge within a few years",
+"Earthquakes compress the crust at conservative margins to balance the growth"
+],
+"a": 0,
+"h": "New crust is made at one type of margin. What happens at the opposite type?",
+"expl": "New crust forms at constructive margins, but old crust sinks and is destroyed at destructive margins. The two balance out, so Earth stays the same size.",
+"insight": "Crust created at constructive margins is balanced by crust destroyed (subducted) at destructive margins."
+},
+{
+"t": "Volcano Types",
+"q": "Which type of volcano has steep sides made of alternating layers of ash and lava?",
+"o": [
+"Composite",
+"Shield",
+"Fissure",
+"Cinder"
+],
+"a": 0,
+"h": "It is also called a stratovolcano.",
+"expl": "Composite volcanoes are built from alternating layers of ash and lava, giving a steep cone shape.",
+"insight": "Composite (strato) volcano: steep sides; alternating layers of ash and lava."
+},
+{
+"t": "Volcano Types",
+"q": "Why do composite volcanoes have steep sides?",
+"o": [
+"Their thick, sticky lava cools and hardens before it can flow far",
+"Their runny lava flows quickly downhill and piles up near the top",
+"Their eruptions push the ground upward, like plates forming fold mountains",
+"Their ash is washed away by rain, leaving only steep rock behind"
+],
+"a": 0,
+"h": "Think about how far viscous lava can travel.",
+"expl": "Composite volcanoes have acidic, viscous (sticky) lava. It does not flow far before it solidifies, so the slopes build up steeply.",
+"insight": "Viscous/acidic lava solidifies quickly and does not travel far, so it forms steep sides."
+},
+{
+"t": "Volcano Types",
+"q": "Why are eruptions at composite volcanoes more violent than at shield volcanoes?",
+"o": [
+"Viscous, gassy magma traps pressure until it suddenly explodes out",
+"Runny magma flows out too fast, so it sprays out explosively",
+"They sit on constructive margins, where plates pull apart very quickly",
+"They erupt much more often, so each eruption releases more energy"
+],
+"a": 0,
+"h": "Thick magma makes it hard for gas to escape.",
+"expl": "Sticky, gassy magma cannot escape easily. Pressure builds up inside until the gas propels it out in an explosion.",
+"insight": "Viscous magma traps gas; pressure builds; violent/explosive eruption."
+},
+{
+"t": "Volcano Types",
+"q": "On which type of plate margin are shield volcanoes usually found?",
+"o": [
+"Constructive",
+"Destructive",
+"Conservative",
+"Collision"
+],
+"a": 0,
+"h": "Shield volcanoes have runny basic lava that rises where plates separate.",
+"expl": "Shield volcanoes form at constructive margins, where two plates move apart and runny basaltic magma rises. Some, like Mauna Loa, form over hot spots.",
+"insight": "Shield volcanoes: constructive margins (or hot spots); composite volcanoes: destructive margins."
+},
+{
+"t": "Volcano Types",
+"q": "Which correctly describes a shield volcano compared with a composite volcano?",
+"o": [
+"Gentle slopes, runny lava, gentler eruptions, and shorter gaps between eruptions",
+"Steep slopes, runny lava, violent eruptions, and longer gaps between eruptions",
+"Gentle slopes, sticky lava, violent eruptions, and shorter gaps between eruptions",
+"Steep slopes, sticky lava, gentle eruptions, and layers of ash and lava"
+],
+"a": 0,
+"h": "Runny lava travels a long way before it sets.",
+"expl": "Shield volcanoes have runny basic lava that flows far, giving gentle slopes. Eruptions are less violent and happen more often.",
+"insight": "Shield: basic/runny lava, gentle sides, no layers, less violent and more frequent eruptions."
+},
+{
+"t": "Volcano Types",
+"q": "Mauna Loa in Hawaii is an example of which type of volcano?",
+"o": [
+"Shield",
+"Composite",
+"Fissure",
+"Cinder"
+],
+"a": 0,
+"h": "Hawaii's lava is very runny and flows into the sea.",
+"expl": "Mauna Loa is a shield volcano with gentle slopes and runny lava. It formed over a hot spot rather than at a plate margin.",
+"insight": "Example: Mauna Loa = shield volcano (hot spot); Mount Pinatubo = composite volcano."
+},
+{
+"t": "Volcano Types",
+"q": "A volcano has acidic lava, layers of ash and lava, and erupts violently every few hundred years. Where is it most likely found?",
+"o": [
+"On a destructive margin, where oceanic crust sinks under continental crust",
+"On a constructive margin, where two oceanic plates are pulling apart",
+"On a conservative margin, where two plates slide past each other",
+"Over a hot spot, far from any plate margin in the ocean"
+],
+"a": 0,
+"h": "These are features of a composite volcano.",
+"expl": "Acidic lava, ash layers and violent eruptions describe a composite volcano. These form at destructive margins, where oceanic crust sinks.",
+"insight": "Composite volcanoes form at destructive margins where oceanic crust is subducted beneath continental crust."
+},
+{
+"t": "Volcano Types",
+"q": "What does 'strato' in 'stratovolcano' mean?",
+"o": [
+"Layers",
+"Steep",
+"Sticky",
+"Explosive"
+],
+"a": 0,
+"h": "Think about how a composite volcano is built up over time.",
+"expl": "'Strato' means layers. Composite volcanoes are called stratovolcanoes because they are made of alternating layers of ash and lava.",
+"insight": "Stratovolcano = composite volcano; 'strato' = layers."
+},
+{
+"t": "Volcanic Impacts",
+"q": "Categorise this impact: 'People lost their homes and had to live in evacuation shelters.'",
+"o": [
+"Social",
+"Economic",
+"Environmental",
+"Political"
+],
+"a": 0,
+"h": "Is this about people's lives, money, or nature?",
+"expl": "Losing homes and living in shelters affects people's lives and wellbeing, so it is a social impact.",
+"insight": "Social impacts affect people: deaths, injuries, homelessness, health, displacement."
+},
+{
+"t": "Volcanic Impacts",
+"q": "Categorise this impact: 'Farmers' crops were buried under ash, so they had nothing to sell.'",
+"o": [
+"Economic",
+"Social",
+"Environmental",
+"Political"
+],
+"a": 0,
+"h": "Focus on what the farmers lose: their income.",
+"expl": "Losing a harvest means lost income for farmers, so this is an economic impact.",
+"insight": "Economic impacts involve money: lost income, jobs, businesses, tourism, cost of rebuilding."
+},
+{
+"t": "Volcanic Impacts",
+"q": "Why do many people continue to farm on the slopes of active volcanoes like Mount Etna?",
+"o": [
+"Weathered lava and ash create very fertile soil that gives rich crops",
+"Volcanic slopes are cooler and wetter, so crops never need irrigation",
+"Lava flows clear away weeds and pests, so farmers can skip pesticides",
+"Governments pay farmers to stay, because farms stop lava from spreading"
+],
+"a": 0,
+"h": "Think about what lava and ash break down into.",
+"expl": "Lava and ash break down into very fertile soil. On Mount Etna, farmers grow rich crops of grapes and other fruit.",
+"insight": "Positive impact: volcanic ash/lava weathers into fertile soil, good for farming."
+},
+{
+"t": "Volcanic Impacts",
+"q": "How can a volcanic eruption damage a country's economy, even long after it ends?",
+"o": [
+"Tourists stay away and businesses struggle to reopen, so jobs and income are lost",
+"Only the area hit by lava loses money, and it recovers once the lava cools",
+"Ash in the air raises temperatures, so crops fail in countries across the whole world",
+"Damage is mostly to wildlife and forests, which has no real effect on people's incomes"
+],
+"a": 0,
+"h": "Think about businesses, tourism and jobs in the months after.",
+"expl": "It is hard for businesses to operate and recover after an eruption. Tourism falls, so jobs and income are lost for a long time.",
+"insight": "Economic impact: businesses struggle to operate and recover; loss of tourism, jobs and income."
+},
+{
+"t": "Volcanic Impacts",
+"q": "Which is a POSITIVE economic impact of volcanoes?",
+"o": [
+"Geothermal energy from hot rock can heat homes and generate electricity",
+"Volcanic gases cause acid rain, which cleans pollution off city buildings",
+"Pyroclastic flows clear land quickly, so new farms can be built immediately",
+"Ash clouds block sunlight, which lowers air-conditioning costs for nearby towns"
+],
+"a": 0,
+"h": "Iceland uses this to heat over 90% of its homes.",
+"expl": "In volcanic areas the hot rock can be used for geothermal energy. Iceland heats over 90% of its homes this way.",
+"insight": "Positive impacts: geothermal energy, tourism income, fertile soil, valuable minerals."
+},
+{
+"t": "Volcanic Impacts",
+"q": "Which volcanic hazard is a fast-moving cloud of scorching gas, ash and rock?",
+"o": [
+"Pyroclastic flow",
+"Lava flow",
+"Ash fall",
+"Acid rain"
+],
+"a": 0,
+"h": "It can travel at over 100 km per hour, far faster than people can run.",
+"expl": "A pyroclastic flow is a heavy cloud of hot gas (up to 1000°C) and rock fragments that rushes down the slope, destroying everything in its path.",
+"insight": "Pyroclastic flow: fast-moving, very hot cloud of gas, ash and rock; the deadliest volcanic hazard."
+},
+{
+"t": "Volcanic Impacts",
+"q": "What is a lahar?",
+"o": [
+"Volcanic mudflow",
+"Lava fountain",
+"Ash cloud",
+"Gas cloud"
+],
+"a": 0,
+"h": "It forms when volcanic material mixes with water from rivers or melting snow.",
+"expl": "A lahar is a volcanic mudflow, formed when ash and rock mix with water. It can travel at 100 km/h and bury villages.",
+"insight": "Lahar = volcanic mudflow (ash + water)."
+},
+{
+"t": "Volcanic Impacts",
+"q": "Why can a large eruption affect people in countries far from the volcano?",
+"o": [
+"Fine ash rises high into the atmosphere, spreading widely and blocking sunlight",
+"Lava flows can travel thousands of kilometres across land in a few days",
+"Earthquakes from eruptions always trigger tsunamis that reach every coastline",
+"Pyroclastic flows travel along the jet stream to reach other continents quickly"
+],
+"a": 0,
+"h": "What can travel through the sky for long distances?",
+"expl": "Fine ash rises high into the atmosphere and spreads widely. It can block sunlight, lower temperatures and disrupt flights in other countries.",
+"insight": "Ash clouds can spread globally, affecting climate and air travel far from the volcano."
+},
+{
+"t": "Volcanic Impacts",
+"q": "Mount Sinabung erupted many times after 2010, but deaths stayed fairly low. What best explains this?",
+"o": [
+"Warning signs like gas emissions and small earthquakes allowed people to evacuate",
+"Its lava was runny, so it flowed gently and caused no real damage",
+"It is a shield volcano, so its eruptions are always small and harmless",
+"Nobody lived on its slopes, because the soil was poor"
+],
+"a": 0,
+"h": "Volcanoes often give signs before they erupt.",
+"expl": "Volcanoes show warning signs such as gas emissions and swarms of small earthquakes. People were warned and most moved to safety.",
+"insight": "Monitoring warning signs (gas, tremors, ground swelling) allows evacuation and reduces deaths."
+},
+{
+"t": "Volcanic Impacts",
+"q": "Why might an eruption kill more people in a low-income country than in a high-income country?",
+"o": [
+"Less money for monitoring, warnings, and evacuation means people escape later",
+"Low-income countries only have composite volcanoes, which are always more violent",
+"Lava flows much faster in hot climates, so people have less time to escape",
+"High-income countries can stop eruptions by draining magma before it rises"
+],
+"a": 0,
+"h": "Think about what money pays for before and during an eruption.",
+"expl": "Richer countries can afford monitoring equipment, warning systems, evacuation plans and emergency services. Poorer countries often lack these, so more people die.",
+"insight": "Wealth affects monitoring, preparation and response, so impacts are usually greater in LICs."
+},
+{
+"t": "Volcanic Impacts",
+"q": "Categorise this impact: 'Acid rain from volcanic gases killed trees and damaged wildlife habitats.'",
+"o": [
+"Environmental",
+"Social",
+"Economic",
+"Political"
+],
+"a": 0,
+"h": "Who or what is harmed here: people, money, or nature?",
+"expl": "Killing trees and damaging habitats harms the natural world, so this is an environmental impact.",
+"insight": "Environmental impacts: damage to habitats, plants, animals, air, water and landscape."
+},
+{
+"t": "Earthquake Preparedness",
+"q": "Which of the '3 Ps' involves designing buildings so they will not collapse?",
+"o": [
+"Protection",
+"Prediction",
+"Preparation",
+"Prevention"
+],
+"a": 0,
+"h": "It's about making structures safe to live in.",
+"expl": "Protection means constructing buildings that are safe and will not collapse, e.g. shock absorbers and steel frames.",
+"insight": "Protection = earthquake-resistant buildings and infrastructure."
+},
+{
+"t": "Earthquake Preparedness",
+"q": "Which of the '3 Ps' includes earthquake drills in schools and hospitals?",
+"o": [
+"Preparation",
+"Prediction",
+"Protection",
+"Prevention"
+],
+"a": 0,
+"h": "It's about people practising what to do.",
+"expl": "Preparation means practising for an earthquake, such as drills in public buildings, so people know what to do.",
+"insight": "Preparation = drills, emergency plans and kits, so people know how to respond."
+},
+{
+"t": "Earthquake Preparedness",
+"q": "Why is it so hard to predict earthquakes?",
+"o": [
+"Scientists know where they are likely, but not when they will happen",
+"Seismometers only work after an earthquake starts, so tremors go unrecorded",
+"Earthquakes only occur in remote oceans, where scientists cannot place instruments",
+"The time between earthquakes is regular, but far too long to record properly"
+],
+"a": 0,
+"h": "Location versus timing: which one is the problem?",
+"expl": "Experts know where earthquakes are likely (along plate margins) but cannot say when. Even the time between past earthquakes does not help.",
+"insight": "Prediction: seismometers monitor tremors; location is known but timing cannot be predicted."
+},
+{
+"t": "Earthquake Preparedness",
+"q": "How do rubber shock absorbers in a building's foundations reduce earthquake damage?",
+"o": [
+"They absorb some of the shaking, so less movement reaches the building",
+"They make the building heavier, so it stays pinned firmly to the ground",
+"They stop seismic waves from forming in the rock directly under the building",
+"They warn people inside by bouncing and ringing alarms when the first tremors arrive"
+],
+"a": 0,
+"h": "Think of how a car's suspension works on a bumpy road.",
+"expl": "Rubber shock absorbers in the foundations absorb the earth tremors, so the building shakes less and is less likely to collapse.",
+"insight": "Shock absorbers absorb tremors/vibrations, reducing movement of the building."
+},
+{
+"t": "Earthquake Preparedness",
+"q": "Why are steel frames used in earthquake-proof buildings?",
+"o": [
+"Steel can bend and sway with the ground movement without snapping",
+"Steel is so rigid that it does not move at all during shaking",
+"Steel is magnetic, so it detects earthquakes before people can feel them",
+"Steel is light, so if the building falls it causes much less harm"
+],
+"a": 0,
+"h": "Rigid materials crack. Flexible ones survive.",
+"expl": "Steel frames can sway during earth movements instead of cracking, so the building stays standing.",
+"insight": "Flexible steel frames sway with movement rather than collapsing."
+},
+{
+"t": "Earthquake Preparedness",
+"q": "Why is Japan usually better prepared for earthquakes than Haiti?",
+"o": [
+"Japan is wealthier, so it can afford strict building laws, monitoring, and drills",
+"Japan has fewer earthquakes, so it can focus its money on each one",
+"Japan lies far from any plate margin, so its earthquakes are much weaker",
+"Haiti's rock is softer, so no type of building there can resist shaking"
+],
+"a": 0,
+"h": "Japan has over 1500 earthquakes a year, so its location isn't the reason.",
+"expl": "Japan is a high-income country. It can afford earthquake-proof buildings, enforced building codes, monitoring, warning systems and regular drills. Haiti is a low-income country with fewer resources.",
+"insight": "HICs are better prepared because they can afford protection (building codes), prediction (monitoring) and preparation (drills, trained emergency services)."
+},
+{
+"t": "Earthquake Preparedness",
+"q": "In the 2008 Sichuan earthquake, many schools collapsed. What does this show about earthquake deaths?",
+"o": [
+"Earthquakes rarely kill directly; collapsing, poorly built buildings cause most deaths",
+"Earthquakes are most deadly in the morning, when children are at school",
+"Schools are built on faults, because cheap land is found along plate edges",
+"Seismic waves are strongest in cities, so city buildings will always collapse"
+],
+"a": 0,
+"h": "'Earthquakes don't kill people. ____ do.'",
+"expl": "Most deaths happened because buildings could not withstand the shaking and collapsed. Many schools had been badly built.",
+"insight": "Most earthquake deaths are caused by collapsing buildings, so building quality is key."
+},
+{
+"t": "Earthquake Preparedness",
+"q": "Why do open spaces around buildings help during an earthquake?",
+"o": [
+"People can gather there safely during evacuation, away from falling debris",
+"They let seismic waves escape into the air instead of into buildings",
+"They give space for buildings to slide sideways without hitting each other",
+"They let helicopters land to predict the next tremor"
+],
+"a": 0,
+"h": "Where would you go when you run out of a shaking building?",
+"expl": "Open areas give people a safe place to assemble during an evacuation, away from buildings that might collapse.",
+"insight": "Open spaces = safe assembly points during evacuation."
+},
+{
+"t": "Earthquake Preparedness",
+"q": "A student says: 'Earthquake drills are pointless because you can't stop an earthquake.' What is the best response?",
+"o": [
+"Drills don't stop earthquakes, but they teach people how to act and survive",
+"Drills do stop earthquakes, because practice reduces pressure at the fault",
+"Drills are only useful for scientists, who need to practise reading seismometers",
+"Drills are pointless in high-income countries, because their buildings never collapse"
+],
+"a": 0,
+"h": "Preparation reduces the impact, not the earthquake itself.",
+"expl": "Drills don't prevent earthquakes, but people who have practised know what to do. This reduces the impact and increases their chance of survival.",
+"insight": "Preparation (drills) reduces the impact of an earthquake and increases chances of survival."
+},
+{
+"t": "Earthquake Preparedness",
+"q": "After the 2004 Indian Ocean tsunami, a warning system was set up. How does it reduce deaths?",
+"o": [
+"It detects ocean earthquakes and uses sirens to warn coastal people to move",
+"It stops waves forming by releasing pressure from the ocean floor early",
+"It builds sea walls automatically whenever a large earthquake is detected nearby",
+"It predicts the exact day of an earthquake, several weeks before it happens"
+],
+"a": 0,
+"h": "A tsunami takes time to cross the ocean.",
+"expl": "When an ocean earthquake is detected, people are warned through sirens and loudspeakers, giving them time to reach higher ground.",
+"insight": "Warning systems detect the trigger and give people time to evacuate."
+},
+{
+"t": "Earthquake Preparedness",
+"q": "Which instrument records the shaking of the ground during an earthquake?",
+"o": [
+"Seismometer",
+"Tiltmeter",
+"Barometer",
+"Hygrometer"
+],
+"a": 0,
+"h": "'Seismic' means to do with earthquakes.",
+"expl": "A seismometer records the shaking as waves on a graph. Scientists use it to work out the earthquake's magnitude.",
+"insight": "Seismometers measure seismic waves; magnitude is shown on the Richter scale."
+},
+{
+"t": "Spheres & Resources",
+"q": "Which sphere includes all of Earth's water: oceans, rivers, ice, and groundwater?",
+"o": [
+"Hydrosphere",
+"Lithosphere",
+"Atmosphere",
+"Biosphere"
+],
+"a": 0,
+"h": "'Hydro' is a Greek word to do with water.",
+"expl": "The hydrosphere is all the water on Earth, in liquid, frozen and vapour form.",
+"insight": "Hydrosphere = all water on Earth (oceans, rivers, lakes, ice, groundwater)."
+},
+{
+"t": "Spheres & Resources",
+"q": "Which sphere is made up of all living things on Earth?",
+"o": [
+"Biosphere",
+"Lithosphere",
+"Hydrosphere",
+"Atmosphere"
+],
+"a": 0,
+"h": "'Bio' means life.",
+"expl": "The biosphere is all living things (plants, animals, fungi, bacteria) and the places where they live.",
+"insight": "Biosphere = all living organisms on Earth."
+},
+{
+"t": "Spheres & Resources",
+"q": "Which sphere is the layer of gases surrounding Earth?",
+"o": [
+"Atmosphere",
+"Lithosphere",
+"Hydrosphere",
+"Biosphere"
+],
+"a": 0,
+"h": "This is where weather happens.",
+"expl": "The atmosphere is the layer of gases (mainly nitrogen and oxygen) surrounding Earth.",
+"insight": "Atmosphere = layer of gases around Earth."
+},
+{
+"t": "Spheres & Resources",
+"q": "Which example shows the hydrosphere interacting with the lithosphere?",
+"o": [
+"Rainwater weathers rock and carries soil into rivers",
+"Plants take in carbon dioxide from the air",
+"Animals breathe in oxygen released by forest trees",
+"Wind carries volcanic ash high into the sky"
+],
+"a": 0,
+"h": "You need one example involving water AND rock.",
+"expl": "Rain (hydrosphere) breaks down rock and moves soil (lithosphere). The other options link the biosphere or the atmosphere.",
+"insight": "The four spheres interact, e.g. water (hydrosphere) weathers and erodes rock (lithosphere)."
+},
+{
+"t": "Spheres & Resources",
+"q": "Which of these is a natural resource?",
+"o": [
+"Wind",
+"Plastic",
+"Glass",
+"Paper"
+],
+"a": 0,
+"h": "A natural resource occurs without any help from humans.",
+"expl": "Wind occurs naturally and we can use it. Plastic, glass and paper are all made by people in factories from natural resources.",
+"insight": "Natural resource: occurs naturally without human help and can be used by people."
+},
+{
+"t": "Spheres & Resources",
+"q": "Why are fossil fuels classed as non-renewable even though they are still forming?",
+"o": [
+"We use them far faster than the millions of years they take to form",
+"They stopped forming when dinosaurs died out, so no more can be made",
+"They are found in only a few countries, which limits how much is available",
+"Burning them releases carbon dioxide, which is what makes a resource non-renewable"
+],
+"a": 0,
+"h": "Compare how fast we use them with how fast they form.",
+"expl": "Fossil fuels are still forming somewhere on Earth, but we are using them up much faster than they form. So they are non-renewable.",
+"insight": "Non-renewable: finite, being used faster than it can be replaced."
+},
+{
+"t": "Spheres & Resources",
+"q": "Which metal is mined mainly in DR Congo and is used in rechargeable phone and car batteries?",
+"o": [
+"Cobalt",
+"Copper",
+"Lithium",
+"Iron"
+],
+"a": 0,
+"h": "Its name starts with 'Co' and demand is rising with electric cars.",
+"expl": "Cobalt is used in rechargeable (lithium-ion) batteries. Most of the world's cobalt is mined in DR Congo. It is a finite, non-renewable resource.",
+"insight": "Cobalt: non-renewable metal used in rechargeable batteries; mostly mined in DR Congo."
+},
+{
+"t": "Spheres & Resources",
+"q": "Under what condition is timber a renewable resource?",
+"o": [
+"When new trees are planted to replace those cut down",
+"When the trees are cut down only in the dry season",
+"When the wood is burned for fuel rather than for building",
+"When the timber is imported from another country instead"
+],
+"a": 0,
+"h": "Can the supply keep going forever?",
+"expl": "Timber (wood used for building and fuel) can be renewable, but only if forests are managed sustainably by replanting trees.",
+"insight": "Timber is renewable only if harvested sustainably (trees replanted at the rate they are cut)."
+},
+{
+"t": "Spheres & Resources",
+"q": "Why is coal considered the most polluting fossil fuel?",
+"o": [
+"Burning it gives off the most carbon dioxide and sulphur dioxide per unit of energy",
+"It is the newest fossil fuel, so it contains the most harmful chemicals",
+"It is used mainly in transport, where exhaust fumes stay close to the ground",
+"It is mined underwater, so extracting it always causes large oil spills"
+],
+"a": 0,
+"h": "Think about what comes out of a coal power station chimney.",
+"expl": "Coal releases more carbon dioxide per unit of energy than oil or gas. It also gives off sulphur dioxide (acid rain) and soot.",
+"insight": "Coal: non-renewable fossil fuel; highest CO2 emissions; also releases SO2 and particulates."
+},
+{
+"t": "Spheres & Resources",
+"q": "Why can the uneven distribution of natural resources cause problems?",
+"o": [
+"Some countries become wealthy while others lack them, which can lead to conflict",
+"Resources move between countries naturally, so no country can keep its own supply",
+"Every country has the same amount, so no country can trade with another",
+"Resources exist only in high-income countries, so poorer countries must use plastic"
+],
+"a": 0,
+"h": "Think about oil and which countries have it.",
+"expl": "Resources are not shared equally. Uneven distribution, such as of oil, has made some countries very wealthy and has also led to conflict.",
+"insight": "Uneven distribution of resources creates inequality in wealth and can cause conflict."
+},
+{
+"t": "Water Insecurity",
+"q": "What term describes a country that cannot meet its demand for fresh water?",
+"o": [
+"Water stress",
+"Water surplus",
+"Water cycle",
+"Water table"
+],
+"a": 0,
+"h": "Demand is greater than supply.",
+"expl": "Water stress is when a country cannot meet its demand for fresh water. It is calculated by comparing water extracted with water available.",
+"insight": "Water stress: demand for fresh water exceeds the available supply."
+},
+{
+"t": "Water Insecurity",
+"q": "About what percentage of Earth's total water is fresh water that we can actually use?",
+"o": [
+"About 1%",
+"About 3%",
+"About 6%",
+"About 9%"
+],
+"a": 0,
+"h": "Most fresh water is locked up as ice, and most water is salty.",
+"expl": "97% of Earth's water is salty. Of the 3% that is fresh, most is frozen in ice caps. Less than 1% of all water is available to use.",
+"insight": "Less than 1% of Earth's water is accessible fresh water."
+},
+{
+"t": "Water Insecurity",
+"q": "About what percentage of the world's fresh water is used for farming?",
+"o": [
+"About 70%",
+"About 19%",
+"About 45%",
+"About 11%"
+],
+"a": 0,
+"h": "Irrigating crops is by far the biggest use.",
+"expl": "About 70% of fresh water is used in farming, mostly for irrigation. Industry uses about 19% and homes about 11%.",
+"insight": "Agriculture is the largest user of fresh water (~70%), mainly for irrigation."
+},
+{
+"t": "Water Insecurity",
+"q": "Why is water stress increasing around the world?",
+"o": [
+"Population growth raises demand, while climate change makes rainfall less reliable",
+"Earth's total amount of water is shrinking as the oceans slowly evaporate into space",
+"Most fresh water is used in homes, and people now drink much more water",
+"Desalination plants are taking fresh water from rivers and sending it to sea"
+],
+"a": 0,
+"h": "One cause increases demand; the other affects supply.",
+"expl": "The population grows by over 80 million a year, raising demand. Climate change makes rain more unequal, so dry places may get even less.",
+"insight": "Causes of water stress: rising population and demand; climate change; over-extraction; uneven rainfall."
+},
+{
+"t": "Water Insecurity",
+"q": "Which type of water scarcity happens when water exists, but people cannot afford the infrastructure to reach it?",
+"o": [
+"Economic scarcity",
+"Physical scarcity",
+"Seasonal scarcity",
+"Climatic scarcity"
+],
+"a": 0,
+"h": "It's about money, not the amount of rainfall.",
+"expl": "Economic water scarcity means there is water, but a lack of money or infrastructure (pipes, wells, treatment) stops people getting it.",
+"insight": "Economic water scarcity: lack of investment/infrastructure; physical water scarcity: not enough water to meet demand."
+},
+{
+"t": "Water Insecurity",
+"q": "Which statement best describes the global pattern of PHYSICAL water scarcity?",
+"o": [
+"It is concentrated in dry regions such as North Africa and Western Asia",
+"It is concentrated in rainforest regions such as Southeast Asia and the Amazon",
+"It is spread evenly across all continents, with no clear clusters anywhere",
+"It is found mainly in Europe and North America, where populations are largest"
+],
+"a": 0,
+"h": "Think about latitude and where the hot deserts are.",
+"expl": "Physical scarcity is clustered in dry regions around the tropics: Northern Africa, Western Asia (Middle East), Central Asia, northern China and the southwest USA.",
+"insight": "Physical water scarcity is concentrated in arid regions (N. Africa, Middle East, Central Asia), mostly around 20–40° latitude."
+},
+{
+"t": "Water Insecurity",
+"q": "Most of sub-Saharan Africa has economic water scarcity. What does this mean?",
+"o": [
+"Water exists, but there is not enough money for pipes, wells, and treatment",
+"The region has almost no rainfall, so there is no water to collect at all",
+"Water is available, but people sell it abroad because exporting it earns more money",
+"Water is plentiful, but the government bans people from using it during the dry season"
+],
+"a": 0,
+"h": "Economic scarcity is about access, not amount.",
+"expl": "Many sub-Saharan countries have water sources, but lack the money and infrastructure to supply clean water to everyone.",
+"insight": "Economic scarcity: water available but inaccessible due to poverty/lack of infrastructure."
+},
+{
+"t": "Water Insecurity",
+"q": "Why is the water level in the Ogallala aquifer falling?",
+"o": [
+"Farmers pump water out much faster than rain can refill it",
+"Rising temperatures are boiling the water deep inside the aquifer away",
+"Earthquakes have cracked the rock, so water drains into the ocean",
+"Factories have paved the land, so rain cannot soak in"
+],
+"a": 0,
+"h": "Compare water going in with water going out.",
+"expl": "The Ogallala lies in a dry area, so little rain trickles in. But thousands of pumps take water out for irrigation every day.",
+"insight": "Over-extraction: water is pumped out faster than it is recharged."
+},
+{
+"t": "Water Insecurity",
+"q": "Why is drip irrigation better for tackling water stress than sprinklers?",
+"o": [
+"Water goes straight to plant roots, so far less is lost to evaporation",
+"It uses salt water from the sea, so no fresh water is needed at all",
+"It soaks the whole field at once, so crops need watering less often",
+"It collects rainwater from rooftops, so farmers never need to pump water"
+],
+"a": 0,
+"h": "Where does the water go in each system?",
+"expl": "Drip irrigation releases water through tubes right beside the plants, so little is wasted. Sprinklers soak the whole field and much evaporates.",
+"insight": "Drip irrigation delivers water directly to roots, reducing waste and evaporation."
+},
+{
+"t": "Water Insecurity",
+"q": "What is a major disadvantage of desalination?",
+"o": [
+"It needs a lot of energy, so it is expensive to run",
+"It makes water too salty for crops, so it only suits drinking",
+"It can only work in cold countries where seawater freezes easily",
+"It removes all the fish from the sea near the plant forever"
+],
+"a": 0,
+"h": "Think about what is needed to evaporate or force water through a membrane.",
+"expl": "Desalination needs a great deal of electricity, so it is expensive. It is used most in countries with cheap oil or gas, like those on the Arabian Peninsula.",
+"insight": "Desalination is energy-intensive and expensive, so it suits wealthy coastal countries."
+},
+{
+"t": "Water Insecurity",
+"q": "Which is the most effective way a household can save water?",
+"o": [
+"Fixing dripping taps, taking shorter showers, and reusing rainwater for the garden",
+"Leaving taps running briefly to stop pipes blocking, and watering gardens at noon",
+"Running the dishwasher half-full more often, and taking baths instead of showers",
+"Buying bottled water for drinking, so the tap water is saved for washing"
+],
+"a": 0,
+"h": "Which option reduces waste instead of moving it somewhere else?",
+"expl": "Fixing leaks, shorter showers and reusing rainwater all cut waste. Watering at noon loses water to evaporation, and baths use more than short showers.",
+"insight": "Water conservation: reduce waste (fix leaks, shorter showers) and reuse/harvest rainwater."
+},
+{
+"t": "Water Insecurity",
+"q": "Which is a HUMAN cause of water insecurity?",
+"o": [
+"Pollution from factories and farms makes rivers unsafe to drink from",
+"Low and unreliable rainfall in hot desert regions near the tropics",
+"High temperatures that increase evaporation from lakes and reservoirs",
+"Rocks underground that are impermeable, so aquifers cannot form there"
+],
+"a": 0,
+"h": "Which one is caused by people rather than by nature?",
+"expl": "Pollution is caused by human activity. Low rainfall, high temperatures and geology are physical (natural) factors.",
+"insight": "Human factors: pollution, over-extraction, population growth, poverty; physical factors: low rainfall, high evaporation, geology."
+},
+{
+"t": "Water Insecurity",
+"q": "Why might water recycling (reusing cleaned waste water) suit a dry country like Israel?",
+"o": [
+"It turns used water into a new supply, reducing demand on scarce rivers",
+"It increases rainfall, because the cleaned water evaporates and forms more rain clouds",
+"It removes salt from seawater, giving an endless supply of fresh water for farming",
+"It refills aquifers instantly, so farmers can pump groundwater out without any limit"
+],
+"a": 0,
+"h": "Israel recycles about 90% of its waste water for farming.",
+"expl": "Instead of sending cleaned waste water to the sea, Israel reuses it for farming. This creates extra supply without taking more from rivers or aquifers.",
+"insight": "Recycling waste water increases supply and reduces pressure on natural sources."
+},
+{
+"t": "Soil & Desertification",
+"q": "What is desertification?",
+"o": [
+"Land in dry areas becomes desert-like as soil loses fertility and plants die",
+"Deserts spreading because sand dunes are blown by wind into nearby cities",
+"Rainforests turning into deserts after heavy rainfall washes away all the trees",
+"Desert areas becoming fertile after irrigation projects bring in river water"
+],
+"a": 0,
+"h": "It happens on the edges of deserts and involves soil becoming useless.",
+"expl": "Desertification is when land in dry (semi-arid) areas becomes degraded and desert-like, as vegetation is lost and soil becomes infertile.",
+"insight": "Desertification: degradation of land in dry areas, caused by human activity and climate change."
+},
+{
+"t": "Soil & Desertification",
+"q": "How do trees help reduce desertification?",
+"o": [
+"Roots hold soil together, and leaves shelter it from wind and rain",
+"Trees use up groundwater, so the soil dries out and becomes firmer",
+"Trees attract grazing animals, and their dung adds sand to the soil",
+"Trees block all rain from reaching the soil, which stops erosion completely"
+],
+"a": 0,
+"h": "Think about what roots do underground and what leaves do above ground.",
+"expl": "Tree roots bind the soil so wind and rain cannot erode it. Their leaves and branches shelter the soil and reduce wind speed.",
+"insight": "Trees reduce soil erosion: roots bind soil; canopy shelters the surface; trees act as windbreaks."
+},
+{
+"t": "Soil & Desertification",
+"q": "Besides holding soil in place, how else do trees improve soil in dry areas?",
+"o": [
+"Fallen leaves rot into humus, adding nutrients and helping soil hold water",
+"Their roots release salt, which keeps the soil from drying out in heat",
+"Their shade warms the ground, which speeds up evaporation and drainage",
+"Their bark breaks down into sand, making the soil more crumbly"
+],
+"a": 0,
+"h": "What happens to leaves that fall to the ground?",
+"expl": "Fallen leaves rot into humus, which adds nutrients and helps soil hold water. Shade also cools the ground and reduces evaporation.",
+"insight": "Trees add organic matter (humus), improving fertility and moisture; shade reduces evaporation."
+},
+{
+"t": "Soil & Desertification",
+"q": "Which human activity is a major cause of desertification?",
+"o": [
+"Overgrazing, where too many animals eat the plants that protect the soil",
+"Crop rotation, where farmers change crops so the soil can recover",
+"Terracing, where hillsides are cut into steps to slow down rainwater",
+"Contour ploughing, where fields are ploughed across slopes to trap water"
+],
+"a": 0,
+"h": "Three of these are actually ways to protect soil.",
+"expl": "Overgrazing removes the plant cover that protects soil, so it is eroded by wind and rain. The other three are soil conservation methods.",
+"insight": "Human causes of desertification: overgrazing, deforestation, over-cultivation, poor irrigation."
+},
+{
+"t": "Soil & Desertification",
+"q": "Why is soil important to humans?",
+"o": [
+"It grows most of our food and supplies the nutrients that plants pass on to us",
+"It produces most of the oxygen we breathe, through the billions of bacteria living in it",
+"It is the main source of our drinking water, which it filters directly into our homes",
+"It provides most of the energy we use, since dried soil can be burned just like coal"
+],
+"a": 0,
+"h": "Think about where almost all crops grow.",
+"expl": "We depend on soil for most of our food. Plants take nutrients from the soil, and we get them by eating plants and animals. Soil also supports ecosystems and farmers' livelihoods.",
+"insight": "Soil is essential for food production, ecosystems/biodiversity and livelihoods."
+},
+{
+"t": "Soil & Desertification",
+"q": "Which layer of soil is richest in humus and best for growing crops?",
+"o": [
+"Topsoil",
+"Subsoil",
+"Bedrock",
+"Regolith"
+],
+"a": 0,
+"h": "It's the layer nearest the surface.",
+"expl": "Topsoil is rich in humus and minerals from the rock, so it is the main layer for growing crops.",
+"insight": "Topsoil: rich in humus and nutrients; the most important layer for crops."
+},
+{
+"t": "Soil & Desertification",
+"q": "What is the rotting plant material in soil called?",
+"o": [
+"Humus",
+"Clay",
+"Silt",
+"Loam"
+],
+"a": 0,
+"h": "It is made of decaying leaves and grass.",
+"expl": "Humus is a layer of rotting vegetation. Its nutrients return to the soil and make it fertile.",
+"insight": "Humus = decomposed organic matter that adds nutrients to soil."
+},
+{
+"t": "Soil & Desertification",
+"q": "On a world map of soil degradation, where are the largest clusters of severely degraded land?",
+"o": [
+"In dry regions on desert edges, such as the Sahel south of the Sahara",
+"In cold regions near the poles, such as northern Canada, Alaska, Greenland, and Siberia",
+"In wet tropical rainforests near the Equator, such as the Amazon and Congo Basin",
+"Evenly spread across every continent, with no clear clusters or concentrations in any region"
+],
+"a": 0,
+"h": "Desertification happens on the edges of deserts.",
+"expl": "Severe degradation is concentrated in drylands on desert margins, such as the Sahel, the Middle East, Central Asia and parts of India and China.",
+"insight": "Describe distributions using clusters/concentration: degraded soils cluster in semi-arid regions on desert margins."
+},
+{
+"t": "Soil & Desertification",
+"q": "Which strategy helps slow desertification in the Sahel?",
+"o": [
+"Planting a belt of trees, like the Great Green Wall, to shelter the soil",
+"Increasing herd sizes, so that more manure is added to the dry, sandy soil",
+"Clearing bushes for firewood and farmland, so rain can reach the ground more easily",
+"Ploughing fields deeper each year, so the topsoil is turned over and dries out faster"
+],
+"a": 0,
+"h": "Protect the vegetation.",
+"expl": "Planting trees, such as the Great Green Wall across Africa, binds and shelters the soil. Bigger herds, clearing bushes and deep ploughing all make degradation worse.",
+"insight": "Strategies: tree planting/afforestation, controlled grazing, sustainable farming, protecting vegetation."
+},
+{
+"t": "Soil & Desertification",
+"q": "Why can growing crops year after year without fertiliser degrade soil?",
+"o": [
+"Each harvest removes nutrients, so over time the soil becomes infertile",
+"Each harvest adds salt, so over time the soil becomes far too acidic",
+"The crop's roots grow deeper, so they break up the bedrock below",
+"The crop shades the soil, so earthworms and bacteria move away"
+],
+"a": 0,
+"h": "What do plants take from the soil as they grow?",
+"expl": "Each crop removes nutrients from the soil. After many crops the soil is low in nutrients and crops won't grow well, unless fertilisers are added.",
+"insight": "Over-cultivation removes nutrients, reducing soil fertility."
+},
+{
+"t": "Energy & Fossil Fuels",
+"q": "Categorise these energy sources. Which one is renewable?",
+"o": [
+"Solar",
+"Coal",
+"Oil",
+"Uranium"
+],
+"a": 0,
+"h": "It won't run out for billions of years.",
+"expl": "Solar energy comes from the Sun, which will not run out. Coal and oil are fossil fuels, and uranium (nuclear) is also non-renewable.",
+"insight": "Renewable: solar, wind, hydro, tidal, wave, geothermal, biomass. Non-renewable: coal, oil, gas, nuclear."
+},
+{
+"t": "Energy & Fossil Fuels",
+"q": "Which of these energy sources is NOT renewable?",
+"o": [
+"Natural gas",
+"Tidal power",
+"Wind power",
+"Solar power"
+],
+"a": 0,
+"h": "Which one is a fossil fuel?",
+"expl": "Natural gas is a fossil fuel. It is finite and we are using it faster than it forms.",
+"insight": "Fossil fuels (coal, oil, natural gas) are non-renewable."
+},
+{
+"t": "Energy & Fossil Fuels",
+"q": "How does burning fossil fuels lead to climate change?",
+"o": [
+"It releases carbon dioxide, a greenhouse gas that traps heat in the atmosphere",
+"It releases oxygen, which thickens the atmosphere and stops heat from escaping into space",
+"It produces ash and soot, which block the Sun and make Earth warmer overall",
+"It uses up the ozone layer, letting much more heat from the Sun reach Earth"
+],
+"a": 0,
+"h": "Which gas forms when carbon-based fuels burn?",
+"expl": "Carbon dioxide forms when fossil fuels burn. It is a greenhouse gas, so rising levels trap more heat and Earth gets warmer.",
+"insight": "Burning fossil fuels releases CO2 (a greenhouse gas), causing the enhanced greenhouse effect and climate change."
+},
+{
+"t": "Energy & Fossil Fuels",
+"q": "How can burning coal cause acid rain?",
+"o": [
+"It releases sulphur dioxide, which dissolves in rain to form a weak acid",
+"It releases carbon monoxide, which turns rainwater into salty droplets",
+"Its ash falls into clouds and turns the rain into a thick black liquid",
+"It warms the air so much that rain boils into an acid before landing"
+],
+"a": 0,
+"h": "Coal contains sulphur.",
+"expl": "Burning coal releases sulphur dioxide (and nitrogen oxides). These dissolve in water in clouds to make acid rain, which damages trees, lakes and buildings.",
+"insight": "Air pollution: SO2 and NOx from burning fossil fuels cause acid rain."
+},
+{
+"t": "Energy & Fossil Fuels",
+"q": "How does extracting oil damage water environments?",
+"o": [
+"Oil spills from rigs, pipelines, and tankers poison sea life and coastlines",
+"Drilling for oil makes the sea too warm for fish to survive there",
+"Oil rigs take so much seawater that local sea levels drop sharply",
+"Pumping oil out makes the ocean floor sink and form deep trenches"
+],
+"a": 0,
+"h": "Think about famous accidents at sea.",
+"expl": "Spills from rigs, pipelines and tankers coat the water and coastlines, killing fish, seabirds and other wildlife.",
+"insight": "Water pollution from fossil fuel extraction: oil spills, and contaminated water from mines."
+},
+{
+"t": "Energy & Fossil Fuels",
+"q": "How can coal mining damage land and habitats?",
+"o": [
+"Open-cast mines strip away vegetation and soil, destroying habitats over large areas",
+"Underground mines release oxygen, which makes nearby plants grow far too quickly",
+"Coal dust adds nutrients to the soil, causing invasive species to take over",
+"Mines lower the air temperature, so nearby animals must hibernate for longer"
+],
+"a": 0,
+"h": "To reach coal near the surface, what has to be removed first?",
+"expl": "Open-cast mining removes all the vegetation and soil above the coal, destroying habitats. Water draining from mines can also pollute rivers.",
+"insight": "Extraction impacts: habitat loss and land damage from mining; polluted run-off into rivers."
+},
+{
+"t": "Energy & Fossil Fuels",
+"q": "How does burning fossil fuels affect people's health in cities?",
+"o": [
+"It releases tiny particles and gases that form smog and harm breathing",
+"It removes carbon dioxide from the air, which makes breathing more difficult",
+"It cools the air so much that more people catch colds in winter",
+"It adds water vapour that spreads malaria in cities"
+],
+"a": 0,
+"h": "Think about the haze over busy cities and PM2.5.",
+"expl": "Vehicles, factories and power stations release particulates (like PM2.5) and gases that form smog. These cause asthma and other breathing problems.",
+"insight": "Air pollution: particulates and smog from burning fossil fuels cause respiratory health problems."
+},
+{
+"t": "Energy & Fossil Fuels",
+"q": "Why is Thailand a good location for solar power?",
+"o": [
+"It is close to the Equator, so it receives strong sunlight all year",
+"It has cool, cloudy weather, which stops solar panels from overheating",
+"It is far from the Equator, so the Sun stays up longer each day",
+"It has strong, steady winds that keep the solar panels clean and efficient"
+],
+"a": 0,
+"h": "Near the Equator, the Sun's rays hit the ground more directly.",
+"expl": "Thailand is in the tropics, near the Equator. The Sun's rays are strong all year, so solar panels produce more electricity than in, say, the UK.",
+"insight": "Solar suits countries near the Equator: high, consistent levels of sunlight."
+},
+{
+"t": "Energy & Fossil Fuels",
+"q": "What is a main disadvantage of solar and wind power?",
+"o": [
+"Output depends on the weather, and large farms take up a lot of land",
+"They release carbon dioxide while running, which adds to climate change and air pollution",
+"Their fuel will eventually run out, so they are only short-term solutions for energy",
+"They can only be built in cold, windy countries that are far from the Equator"
+],
+"a": 0,
+"h": "What happens at night, or on a calm day?",
+"expl": "Solar panels produce nothing at night and less on cloudy days; turbines stop when the wind drops. Solar and wind farms also need a lot of land.",
+"insight": "Disadvantages of renewables: intermittent/weather-dependent; large land use; high set-up costs."
+},
+{
+"t": "Energy & Fossil Fuels",
+"q": "Why might wind power be less useful than solar power across much of Thailand?",
+"o": [
+"Wind speeds across much of Thailand are low and less reliable than sunshine",
+"Wind turbines cannot work in hot weather, because the blades melt easily",
+"Wind power is non-renewable, so Thailand would eventually run out of wind",
+"Wind farms need snow to cool their generators, which Thailand does not have"
+],
+"a": 0,
+"h": "Turbines need strong, steady winds.",
+"expl": "Much of Thailand has fairly low average wind speeds, while sunshine is strong all year. So solar is usually the more reliable choice.",
+"insight": "Choice of renewable depends on physical geography: wind needs high, steady wind speeds; solar needs strong sunlight."
+},
+{
+"t": "Energy & Fossil Fuels",
+"q": "What is a main advantage of renewable energy compared with fossil fuels?",
+"o": [
+"It produces little or no pollution and will not run out",
+"It always produces more electricity than fossil fuels, even at night",
+"It is cheap to set up, so no investment is needed at all",
+"It can be stored in barrels and transported just like oil"
+],
+"a": 0,
+"h": "Think: clean and ...?",
+"expl": "Renewable energy releases little or no CO2 or air pollution when generating electricity, and its sources will not run out.",
+"insight": "Advantages of renewables: clean (low emissions) and renewable (will not run out)."
+}
+];
+BANK.forEach((q, i) => q.id = i);
+
+const TOPIC_COLORS = ["#7b1fa2", "#c2185b", "#6d4c41", "#3949ab", "#00796b", "#0288d1", "#827717", "#546e7a"];
+const TOPICS = [...new Set(BANK.map(q => q.t))];
+const COLOR = {}; TOPICS.forEach((t, i) => COLOR[t] = TOPIC_COLORS[i % TOPIC_COLORS.length]);
+
+const $ = id => document.getElementById(id);
+
+/* ---------- storage ---------- */
+function freshState() { return { ledger: {} }; }
+function loadState() {
+  let s = null;
+  try {
+    if (typeof localStorage !== "undefined") {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) s = JSON.parse(raw);
+    }
+  } catch (e) { s = null; }
+  if (!s || typeof s !== "object" || !s.ledger || typeof s.ledger !== "object") s = freshState();
+  BANK.forEach(q => {
+    const e = s.ledger[q.id];
+    if (!e || typeof e !== "object" || typeof e.streak !== "number") s.ledger[q.id] = { streak: 0, status: "active", lastCorrect: 0 };
+    else if (e.status !== "mastered") e.status = "active";
+  });
+  return s;
+}
+function saveState() {
+  try { if (typeof localStorage !== "undefined") localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
+}
+let state = loadState();
+const L = id => state.ledger[id];
+
+/* ---------- helpers ---------- */
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const isActive = q => L(q.id).status === "active";
+function isWaiting(q) {
+  const e = L(q.id);
+  return e.status === "active" && FINAL_PASS_SPACING_MS > 0 && e.streak === STREAK_TO_MASTER - 1 &&
+    Date.now() - e.lastCorrect < FINAL_PASS_SPACING_MS;
+}
+const isEligible = q => isActive(q) && !isWaiting(q);
+const isFinalPass = q => L(q.id).streak === STREAK_TO_MASTER - 1;
+
+/* pick up to n questions, spreading across topics */
+function pickSpread(pool, n) {
+  const byT = {}; shuffle(pool).forEach(q => (byT[q.t] = byT[q.t] || []).push(q));
+  const order = shuffle(Object.keys(byT)), out = [];
+  while (out.length < n && order.some(t => byT[t].length)) {
+    for (const t of order) { if (out.length >= n) break; if (byT[t].length) out.push(byT[t].shift()); }
+  }
+  return shuffle(out);
+}
+
+/* ---------- home ---------- */
+function renderHome() {
+  show("home");
+  $("ver").textContent = VERSION;
+  $("title").textContent = QUIZ_NAME;
+  $("pills").innerHTML = "";
+  TOPICS.forEach(t => {
+    const p = document.createElement("span"); p.className = "pill"; p.textContent = t;
+    p.style.borderColor = COLOR[t]; p.style.color = COLOR[t]; $("pills").appendChild(p);
+  });
+  const total = BANK.length, done = BANK.filter(q => !isActive(q)).length;
+  $("activeCount").textContent = total - done;
+  $("doneCount").textContent = done;
+  const pct = Math.round(100 * done / total);
+  $("mainPct").textContent = pct + "% completed";
+  $("how").textContent = `Answer correctly ${STREAK_TO_MASTER} times in a row to complete a question. A wrong answer resets your progress on that question. Work through all ${total} questions to finish.`;
+
+  const eligible = BANK.filter(isEligible).length, waiting = BANK.filter(isWaiting);
+  const note = $("restNote"), btn = $("continueBtn");
+  note.classList.add("hidden"); btn.disabled = false; btn.textContent = "▶ Continue Progress";
+  if (done === total) {
+    btn.disabled = true; btn.textContent = "🎉 All questions completed!";
+  } else if (eligible < QS_PER_ROUND && waiting.length) {
+    const soonest = Math.min(...waiting.map(q => FINAL_PASS_SPACING_MS - (Date.now() - L(q.id).lastCorrect)));
+    const mins = Math.max(1, Math.ceil(soonest / 60000));
+    note.textContent = `${waiting.length} question${waiting.length > 1 ? "s are" : " is"} resting before the final try (next one ready in about ${mins} min). ` +
+      (eligible ? "Rounds will be topped up with early practice of these." : "You can still practise them now, but they won't count until they're ready.");
+    note.classList.remove("hidden");
+  }
+
+  const grid = $("topics"); grid.innerHTML = "";
+  grid.className = "topics" + (TOPICS.length >= 7 ? " two" : "");
+  TOPICS.forEach(t => {
+    const qs = BANK.filter(q => q.t === t);
+    const m = qs.filter(q => !isActive(q)).length;
+    const halfway = qs.filter(q => isActive(q) && L(q.id).streak >= 1).length;
+    const c = document.createElement("div"); c.className = "tcard";
+    c.innerHTML = `<div class="tname" style="color:${COLOR[t]}"></div>
+      <div class="trow"><span>${halfway > 0 ? `<span class="half" title="One more correct answer to complete these">▶${halfway}</span>` : ""}</span><span>${m}/${qs.length}</span></div>
+      <div class="bar"><i style="background:${COLOR[t]}" data-w="${Math.round(100 * m / qs.length)}"></i></div>`;
+    c.querySelector(".tname").textContent = t;
+    grid.appendChild(c);
+  });
+  $("mainBar").style.width = "0";
+  grid.querySelectorAll(".bar>i").forEach(i => i.style.width = "0");
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    $("mainBar").style.width = pct + "%";
+    grid.querySelectorAll(".bar>i").forEach(i => i.style.width = i.dataset.w + "%");
+  }));
+}
+
+/* ---------- session ---------- */
+let session = null;
+function startSession() {
+  const eligible = BANK.filter(isEligible);
+  let items = pickSpread(eligible, QS_PER_ROUND).map(q => ({ q, review: false }));
+  if (items.length < QS_PER_ROUND) {               // relief valve: top up with resting questions as practice
+    const waiting = BANK.filter(isWaiting).sort((a, b) => L(a.id).lastCorrect - L(b.id).lastCorrect);
+    items = items.concat(waiting.slice(0, QS_PER_ROUND - items.length).map(q => ({ q, review: true })));
+  }
+  if (!items.length) { renderHome(); return; }
+  session = { items, i: 0, correct: 0, completed: 0, perTopic: {} };
+  renderQuestion();
+}
+
+function renderQuestion() {
+  show("quiz");
+  const { q, review } = session.items[session.i];
+  const b = $("qBadge"); b.textContent = q.t; b.style.borderColor = COLOR[q.t]; b.style.color = COLOR[q.t];
+  $("qNum").textContent = `Q ${session.i + 1} of ${session.items.length}`;
+  $("qText").textContent = q.q;
+  $("qReview").classList.toggle("hidden", !review);
+
+  const hb = $("hintBtn"); hb.className = "hintbtn"; hb.onclick = null;
+  if (!review && isFinalPass(q)) {
+    hb.classList.add("off"); hb.disabled = true; hb.textContent = "💡 No hint on the final try";
+  } else {
+    hb.disabled = false; hb.textContent = "💡 Show hint";
+    hb.onclick = () => {
+      if (hb.querySelector(".hintbody")) { hb.textContent = "💡 Show hint"; return; }
+      hb.textContent = "💡 Hide hint";
+      const s = document.createElement("span"); s.className = "hintbody"; s.textContent = q.h; hb.appendChild(s);
+    };
+  }
+
+  const box = $("opts"); box.innerHTML = "";
+  shuffle(q.o.map((text, idx) => ({ text, idx }))).forEach(o => {
+    const btn = document.createElement("button"); btn.className = "opt"; btn.textContent = o.text;
+    btn.dataset.idx = o.idx; btn.onclick = () => answer(o.idx);
+    box.appendChild(btn);
+  });
+  $("feedback").classList.add("hidden"); $("nextBar").classList.add("hidden");
+  window.scrollTo(0, 0);
+}
+
+function answer(choice) {
+  const { q, review } = session.items[session.i];
+  const right = choice === q.a, e = L(q.id);
+  session.perTopic[q.t] = session.perTopic[q.t] || { c: 0, d: 0 };
+  session.perTopic[q.t].d++;
+  if (right) { session.correct++; session.perTopic[q.t].c++; }
+
+  if (right && !review) {
+    e.streak++; e.lastCorrect = Date.now();
+    if (e.streak >= STREAK_TO_MASTER) { e.status = "mastered"; session.completed++; }
+  } else if (!right) {
+    e.streak = 0;
+  }
+  saveState();                                       // save immediately after every answer
+
+  document.querySelectorAll(".opt").forEach(b => {
+    b.disabled = true; const idx = +b.dataset.idx;
+    if (idx === q.a) b.classList.add("ok");
+    else if (idx === choice) b.classList.add("bad");
+    else b.classList.add("dim");
+  });
+  const h = $("fbHead"); h.textContent = right ? "✓ Correct" : "✗ Not quite"; h.className = right ? "r" : "w";
+  $("fbExpl").textContent = q.expl;
+  $("fbInsight").textContent = q.insight;
+  $("feedback").classList.remove("hidden");
+  $("nextBtn").textContent = session.i + 1 < session.items.length ? "Next →" : "See results →";
+  $("nextBar").classList.remove("hidden");
+}
+
+function next() {
+  session.i++;
+  if (session.i < session.items.length) renderQuestion(); else renderResults();
+}
+
+/* ---------- results ---------- */
+function renderResults() {
+  show("results");
+  $("rScore").textContent = `${session.correct} / ${session.items.length}`;
+  const d = $("rDone");
+  if (session.completed > 0) { d.textContent = `+ ${session.completed} question${session.completed > 1 ? "s" : ""} completed this session`; d.classList.remove("hidden"); }
+  else d.classList.add("hidden");
+  const tb = $("rTable"); tb.innerHTML = "";
+  TOPICS.filter(t => session.perTopic[t]).forEach(t => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td style="color:${COLOR[t]};font-weight:600"></td><td class="n">${session.perTopic[t].c}</td><td class="n">${session.perTopic[t].d}</td>`;
+    tr.firstChild.textContent = t; tb.appendChild(tr);
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- wiring ---------- */
+function show(id) { ["home", "quiz", "results"].forEach(s => $(s).classList.toggle("hidden", s !== id)); if (id !== "quiz") $("nextBar").classList.add("hidden"); }
+$("continueBtn").onclick = startSession;
+$("nextBtn").onclick = next;
+$("backBtn").onclick = renderHome;
+$("quitBtn").onclick = renderHome;
+$("resetBtn").onclick = () => $("modal").classList.remove("hidden");
+$("mCancel").onclick = () => $("modal").classList.add("hidden");
+$("mConfirm").onclick = () => {
+  try { if (typeof localStorage !== "undefined") localStorage.removeItem(LS_KEY); } catch (e) {}
+  state = loadState(); $("modal").classList.add("hidden"); renderHome();
+};
+renderHome();
+</script>
+</body>
+</html>
