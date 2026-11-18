@@ -103,6 +103,12 @@ td.n,th.n{text-align:center}
     <div class="how" id="how"></div>
     <div class="note hidden" id="restNote"></div>
   </div>
+  <div class="card hidden" id="earlierCard">
+    <div style="font-weight:700;margin-bottom:4px">Already finished the earlier version?</div>
+    <div style="font-size:14px;color:#3a3d50;margin-bottom:10px">Tap below to keep only the 9 questions that were updated, and mark the other 75 as completed.</div>
+    <button class="btn primary" id="earlierYes" style="font-size:15px;padding:11px">Yes, show only the 9 updated questions</button>
+    <button class="btn cancel" id="earlierNo" style="font-size:14px;padding:9px;margin-top:8px">No, start from the beginning</button>
+  </div>
   <div class="btns">
     <button class="btn primary" id="continueBtn">▶ Continue Progress</button>
     <button class="btn danger" id="resetBtn">↺ Start All Over</button>
@@ -151,7 +157,7 @@ td.n,th.n{text-align:center}
 
 </div>
 <script>
-const VERSION = "ver1.00";
+const VERSION = "ver1.02";
 const QUIZ_NAME = "Grade 8 Geography MYE Quiz";
 const QS_PER_ROUND = 12;
 const STREAK_TO_MASTER = 2;
@@ -472,15 +478,15 @@ const BANK = [
 "t": "Volcanic Impacts",
 "q": "Which is a POSITIVE economic impact of volcanoes?",
 "o": [
-"Geothermal energy from hot rock can heat homes and generate electricity",
+"Tourists come to see volcanoes and hot springs, bringing money to local businesses",
 "Volcanic gases cause acid rain, which cleans pollution off city buildings",
 "Pyroclastic flows clear land quickly, so new farms can be built immediately",
 "Ash clouds block sunlight, which lowers air-conditioning costs for nearby towns"
 ],
 "a": 0,
-"h": "Iceland uses this to heat over 90% of its homes.",
-"expl": "In volcanic areas the hot rock can be used for geothermal energy. Iceland heats over 90% of its homes this way.",
-"insight": "Positive impacts: geothermal energy, tourism income, fertile soil, valuable minerals."
+"h": "Think about visitors to Mount Fuji, Iceland and Italy.",
+"expl": "Volcanoes attract tourists, who spend money in hotels, restaurants and tour companies. This brings income and jobs to the local economy. Geothermal energy and fertile soil are other positives.",
+"insight": "Positive economic impact: tourism brings money and jobs to the local economy (also geothermal energy, fertile soil for farming)."
 },
 {
 "t": "Volcanic Impacts",
@@ -542,7 +548,7 @@ const BANK = [
 "t": "Volcanic Impacts",
 "q": "Why might an eruption kill more people in a low-income country than in a high-income country?",
 "o": [
-"Less money for monitoring, warnings, and evacuation means people escape later",
+"Less money for monitoring and warnings means people are warned too late",
 "Low-income countries only have composite volcanoes, which are always more violent",
 "Lava flows much faster in hot climates, so people have less time to escape",
 "High-income countries can stop eruptions by draining magma before it rises"
@@ -646,7 +652,7 @@ const BANK = [
 "Haiti's rock is softer, so no type of building there can resist shaking"
 ],
 "a": 0,
-"h": "Japan has over 1500 earthquakes a year, so its location isn't the reason.",
+"h": "Think about what money can pay for before an earthquake strikes.",
 "expl": "Japan is a high-income country. It can afford earthquake-proof buildings, enforced building codes, monitoring, warning systems and regular drills. Haiti is a low-income country with fewer resources.",
 "insight": "HICs are better prepared because they can afford protection (building codes), prediction (monitoring) and preparation (drills, trained emergency services)."
 },
@@ -696,7 +702,7 @@ const BANK = [
 "t": "Earthquake Preparedness",
 "q": "After the 2004 Indian Ocean tsunami, a warning system was set up. How does it reduce deaths?",
 "o": [
-"It detects ocean earthquakes and uses sirens to warn coastal people to move",
+"It detects ocean earthquakes and uses sirens to warn coastal people to flee",
 "It stops waves forming by releasing pressure from the ocean floor early",
 "It builds sea walls automatically whenever a large earthquake is detected nearby",
 "It predicts the exact day of an earthquake, several weeks before it happens"
@@ -711,7 +717,7 @@ const BANK = [
 "q": "Which instrument records the shaking of the ground during an earthquake?",
 "o": [
 "Seismometer",
-"Tiltmeter",
+"Anemometer",
 "Barometer",
 "Hygrometer"
 ],
@@ -814,7 +820,7 @@ const BANK = [
 "Iron"
 ],
 "a": 0,
-"h": "Its name starts with 'Co' and demand is rising with electric cars.",
+"h": "It is one of the new vocabulary words in your learner guide.",
 "expl": "Cobalt is used in rechargeable (lithium-ion) batteries. Most of the world's cobalt is mined in DR Congo. It is a finite, non-renewable resource.",
 "insight": "Cobalt: non-renewable metal used in rechargeable batteries; mostly mined in DR Congo."
 },
@@ -941,8 +947,8 @@ const BANK = [
 ],
 "a": 0,
 "h": "Think about latitude and where the hot deserts are.",
-"expl": "Physical scarcity is clustered in dry regions around the tropics: Northern Africa, Western Asia (Middle East), Central Asia, northern China and the southwest USA.",
-"insight": "Physical water scarcity is concentrated in arid regions (N. Africa, Middle East, Central Asia), mostly around 20–40° latitude."
+"expl": "Physical scarcity is clustered in dry regions: Northern Africa, Western Asia (Middle East), Central Asia, northern China and the southwest USA. Many of these lie in the hot desert belt just north of the tropics.",
+"insight": "Physical water scarcity is concentrated in arid (dry) regions such as North Africa, the Middle East and Central Asia."
 },
 {
 "t": "Water Insecurity",
@@ -1047,7 +1053,7 @@ const BANK = [
 "q": "What is desertification?",
 "o": [
 "Land in dry areas becomes desert-like as soil loses fertility and plants die",
-"Deserts spreading because sand dunes are blown by wind into nearby cities",
+"Sandstorms carrying desert sand into cities, where it buries roads and buildings",
 "Rainforests turning into deserts after heavy rainfall washes away all the trees",
 "Desert areas becoming fertile after irrigation projects bring in river water"
 ],
@@ -1312,14 +1318,14 @@ const BANK = [
 "t": "Energy & Fossil Fuels",
 "q": "Why might wind power be less useful than solar power across much of Thailand?",
 "o": [
-"Wind speeds across much of Thailand are low and less reliable than sunshine",
+"Average wind speeds in most of Thailand are too low for turbines to work well",
 "Wind turbines cannot work in hot weather, because the blades melt easily",
 "Wind power is non-renewable, so Thailand would eventually run out of wind",
 "Wind farms need snow to cool their generators, which Thailand does not have"
 ],
 "a": 0,
 "h": "Turbines need strong, steady winds.",
-"expl": "Much of Thailand has fairly low average wind speeds, while sunshine is strong all year. So solar is usually the more reliable choice.",
+"expl": "Wind turbines need strong, steady winds. Average wind speeds across most of Thailand are fairly low, while sunshine is strong for much of the year, so solar is usually the better choice.",
 "insight": "Choice of renewable depends on physical geography: wind needs high, steady wind speeds; solar needs strong sunlight."
 },
 {
@@ -1337,6 +1343,8 @@ const BANK = [
 "insight": "Advantages of renewables: clean (low emissions) and renewable (will not run out)."
 }
 ];
+const UPDATE_ID = "v1.01-revised-questions";
+const UPDATED_IDS = [22, 27, 34, 38, 39, 46, 55, 63, 82];   // Q23, Q28, Q35, Q39, Q40, Q47, Q56, Q64, Q83
 BANK.forEach((q, i) => q.id = i);
 
 const TOPIC_COLORS = ["#7b1fa2", "#c2185b", "#6d4c41", "#3949ab", "#00796b", "#0288d1", "#827717", "#546e7a"];
@@ -1361,7 +1369,24 @@ function loadState() {
     if (!e || typeof e !== "object" || typeof e.streak !== "number") s.ledger[q.id] = { streak: 0, status: "active", lastCorrect: 0 };
     else if (e.status !== "mastered") e.status = "active";
   });
+  if (!Array.isArray(s.updates)) s.updates = [];
+  // One-time update: questions revised in ver1.01 come back; all other progress is kept.
+  if (!s.updates.includes(UPDATE_ID)) {
+    UPDATED_IDS.forEach(id => s.ledger[id] = { streak: 0, status: "active", lastCorrect: 0 });
+    s.updates.push(UPDATE_ID);
+  }
   return s;
+}
+function hasProgress() { return BANK.some(q => L(q.id).status === "mastered" || L(q.id).streak > 0); }
+/* For a browser that never saw the old progress: mark everything except the revised questions as completed. */
+function applyFinishedEarlier() {
+  BANK.forEach(q => {
+    state.ledger[q.id] = UPDATED_IDS.includes(q.id)
+      ? { streak: 0, status: "active", lastCorrect: 0 }
+      : { streak: STREAK_TO_MASTER, status: "mastered", lastCorrect: Date.now() };
+  });
+  state.finishedEarlierDismissed = true;
+  saveState(); renderHome();
 }
 function saveState() {
   try { if (typeof localStorage !== "undefined") localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
@@ -1419,6 +1444,8 @@ function renderHome() {
       (eligible ? "Rounds will be topped up with early practice of these." : "You can still practise them now, but they won't count until they're ready.");
     note.classList.remove("hidden");
   }
+
+  $("earlierCard").classList.toggle("hidden", hasProgress() || !!state.finishedEarlierDismissed);
 
   const grid = $("topics"); grid.innerHTML = "";
   grid.className = "topics" + (TOPICS.length >= 7 ? " two" : "");
@@ -1538,6 +1565,8 @@ function renderResults() {
 /* ---------- wiring ---------- */
 function show(id) { ["home", "quiz", "results"].forEach(s => $(s).classList.toggle("hidden", s !== id)); if (id !== "quiz") $("nextBar").classList.add("hidden"); }
 $("continueBtn").onclick = startSession;
+$("earlierYes").onclick = applyFinishedEarlier;
+$("earlierNo").onclick = () => { state.finishedEarlierDismissed = true; saveState(); renderHome(); };
 $("nextBtn").onclick = next;
 $("backBtn").onclick = renderHome;
 $("quitBtn").onclick = renderHome;
@@ -1545,7 +1574,7 @@ $("resetBtn").onclick = () => $("modal").classList.remove("hidden");
 $("mCancel").onclick = () => $("modal").classList.add("hidden");
 $("mConfirm").onclick = () => {
   try { if (typeof localStorage !== "undefined") localStorage.removeItem(LS_KEY); } catch (e) {}
-  state = loadState(); $("modal").classList.add("hidden"); renderHome();
+  state = loadState(); state.finishedEarlierDismissed = true; saveState(); $("modal").classList.add("hidden"); renderHome();
 };
 renderHome();
 </script>
